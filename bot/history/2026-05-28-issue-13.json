@@ -1,0 +1,15 @@
+{
+  "id": "13",
+  "title": "AI自治体コンシェルジュ / GovAgent / OpenGov API",
+  "generated_at": "2026-05-28T01:58:08.073Z",
+  "domain_id": "wild_card",
+  "spoke_id": "unassigned",
+  "mirukarte_score": 1,
+  "structured_attrs": {
+    "data_source_type": "regulated_format",
+    "target_industry": "other-government",
+    "revenue_model": "saas-subscription",
+    "value_layer": "both",
+    "regulation_level": "medium-financial"
+  }
+}

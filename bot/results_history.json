@@ -127,5 +127,24 @@
       "input": 3532,
       "output": 10436
     }
+  },
+  {
+    "date": "2026-05-28",
+    "theme": "自治体・GovTech",
+    "domainId": "wild_card",
+    "spokeId": "unassigned",
+    "hash": "3ebb65b4151fa299",
+    "summary": "LLM+RAG技術で自治体の問い合わせ対応を自動化。成果報酬型課金で自治体の予算制約に対応。職員の人手不足をAIで補完。 / 自治体職員向けAI業務支援エージェント。議会答弁準備、書類チェック、住民対応を自動化。職員の生産性を2倍に。 / 自治体データを統一APIで提供。民間企業がワンストップで行政データを取得可能に。本人同意ベースでプライバシー保護。",
+    "hypothesisNames": [
+      "AI自治体コンシェルジュ",
+      "GovAgent",
+      "OpenGov API"
+    ],
+    "mirukarteScore": 1,
+    "issueUrl": "https://github.com/beru3/business-ideation-bot/issues/13",
+    "tokens": {
+      "input": 3524,
+      "output": 9299
+    }
   }
 ]
