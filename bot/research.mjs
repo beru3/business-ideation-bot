@@ -386,9 +386,10 @@ if (attrsMatch) {
   }
 }
 
-// ミルカルテ適合度スコア抽出
+// ミルカルテ適合度スコア抽出（複数パターン対応）
 let mirukarteScore = null;
-const scoreMatch = content.match(/総合スコア\s*[:\n]\s*(\d+(?:\.\d+)?)\s*\/\s*10/);
+const scoreMatch = content.match(/総合スコア[\s\S]*?(\d+(?:\.\d+)?)\s*[\/／]\s*10/)
+  || content.match(/適合度[\s\S]*?(\d+(?:\.\d+)?)\s*[\/／]\s*10/);
 if (scoreMatch) {
   mirukarteScore = parseFloat(scoreMatch[1]);
 }
@@ -518,8 +519,8 @@ console.log('='.repeat(60));
 
 if (dryRun) {
   console.log('(dry run: Issue投稿・メール送信・履歴保存をスキップ)');
-  console.log('\n--- Issue body (first 500 chars) ---');
-  console.log(issueBody.slice(0, 500));
+  console.log('\n--- Issue body (first 1000 chars) ---');
+  console.log(issueBody.slice(0, 1000));
   console.log(`\n--- 構造化属性 ---`);
   console.log(JSON.stringify(structuredAttrs, null, 2));
   console.log(`\n--- 類似度判定 ---`);

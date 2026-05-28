@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
 function extractMirukarteScore(content) {
-  const match = content.match(/総合スコア\s*[:\n]\s*(\d+(?:\.\d+)?)\s*\/\s*10/);
+  const match = content.match(/総合スコア[\s\S]*?(\d+(?:\.\d+)?)\s*[\/／]\s*10/)
+    || content.match(/適合度[\s\S]*?(\d+(?:\.\d+)?)\s*[\/／]\s*10/);
   return match ? parseFloat(match[1]) : null;
 }
 
