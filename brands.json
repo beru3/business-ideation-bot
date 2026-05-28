@@ -1,0 +1,44 @@
+{
+  "hub": {
+    "id": "hub_barbara",
+    "name": "バーバラ企画",
+    "description": "医療SaaSの個人開発・Build in Public",
+    "channels": {
+      "twitter": "@beru3",
+      "note": null,
+      "github": "https://github.com/beru3"
+    }
+  },
+  "spokes": [
+    {
+      "id": "spoke_mirukarte",
+      "name": "ミルカルテ",
+      "status": "active_testing",
+      "target_domains": ["core_medical"],
+      "target_keywords": ["慢性疾患", "クリニック", "レセプト", "内科", "循環器", "糖尿病", "医療事務", "予約", "待合", "オンライン診療", "遠隔医療", "健診", "予防医療", "SNS", "LINE活用", "在宅医療", "訪問看護", "医療スタッフ", "採用", "教育", "医療機関"],
+      "lp_url": null,
+      "twitter": null,
+      "started_at": "2025-12-01"
+    },
+    {
+      "id": "spoke_dental",
+      "name": "（仮）歯科向け",
+      "status": "candidate",
+      "target_domains": ["core_medical"],
+      "target_keywords": ["歯科", "デンタル", "歯科衛生士"],
+      "lp_url": null,
+      "twitter": null,
+      "started_at": null
+    },
+    {
+      "id": "spoke_kaigo",
+      "name": "（仮）介護向け",
+      "status": "candidate",
+      "target_domains": ["care_adjacent"],
+      "target_keywords": ["介護", "ケアマネ", "認知症", "サ高住", "福祉", "障害", "福祉用具", "在宅介護"],
+      "lp_url": null,
+      "twitter": null,
+      "started_at": null
+    }
+  ]
+}
