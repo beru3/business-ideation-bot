@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
   schedule:
-    - cron: '0 0 * * *'   # 毎日 00:00 UTC = JST 09:00
+    - cron: '30 23 * * *'  # 毎日 23:30 UTC = JST 08:30（UTC 00:00の混雑回避）
 
 permissions:
   contents: write
