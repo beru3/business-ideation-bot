@@ -1,0 +1,15 @@
+{
+  "id": "10",
+  "title": "医療機関向けAI-SNS運用代行SaaS / 美容医療特化SNS×予約管理統合プラットフォーム / 医療機関向けLINE公式アカウント運用最適化SaaS",
+  "generated_at": "2026-05-28T01:38:33.772Z",
+  "domain_id": "core_medical",
+  "spoke_id": "spoke_mirukarte",
+  "mirukarte_score": 5,
+  "structured_attrs": {
+    "data_source_type": "unregulated_paper",
+    "target_industry": "other-beauty-medical",
+    "revenue_model": "saas-subscription",
+    "value_layer": "execution",
+    "regulation_level": "medium-financial"
+  }
+}

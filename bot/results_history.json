@@ -89,5 +89,24 @@
       "input": 2657,
       "output": 10771
     }
+  },
+  {
+    "date": "2026-05-28",
+    "theme": "医療機関のSNS・LINE活用",
+    "domainId": "core_medical",
+    "spokeId": "spoke_mirukarte",
+    "hash": "e209aac9d9d57aa4",
+    "summary": "AIが医療広告規制に準拠したSNS投稿を自動生成・予約投稿。医師は週1回5分の確認のみで、月額3万円で運用代行を実現。GPT-4oの性能向上で2023年比1/10のコストで実現可能に。 / 美容医療に特化したAIコンテンツ生成＋予約管理＋患者フォローアップを統合。Before/After写真の規制準拠テンプレート提供で差別化。成果報酬モデルで初期抵抗を低減。 / LINE公式アカウントの友だち獲得・開封率向上・予約連携をワンストップで支援。AIによる最適配信時間・コンテンツ提案で、既存LINEエコシステムに乗る形で価値を提供。",
+    "hypothesisNames": [
+      "医療機関向けAI-SNS運用代行SaaS",
+      "美容医療特化SNS×予約管理統合プラットフォーム",
+      "医療機関向けLINE公式アカウント運用最適化SaaS"
+    ],
+    "mirukarteScore": 5,
+    "issueUrl": "https://github.com/beru3/business-ideation-bot/issues/10",
+    "tokens": {
+      "input": 3531,
+      "output": 9001
+    }
   }
 ]
