@@ -108,5 +108,24 @@
       "input": 3531,
       "output": 9001
     }
+  },
+  {
+    "date": "2026-05-28",
+    "theme": "ケアマネジャー業務支援",
+    "domainId": "care_adjacent",
+    "spokeId": "spoke_kaigo",
+    "hash": "08f734763a05e97b",
+    "summary": "音声入力 + AIによるケアプラン草案自動作成 + 法改正自動反映を月額5,000円で提供。ケアマネの事務作業時間を半減し、利用者対面時間を増やす。 / 異なる介護ソフト・電子カルテ・薬局システム間をつなぐAPI連携プラットフォーム。FAX・電話による情報連携をチャットベースに置き換え、情報連携加算を経済的インセンティブとして活用。 / AI + 人間のハイブリッドBPOで、小規模事業所の定型的業務（給付管理・請求書作成）を月額15,000円で代行。AIで自動化できる部分と人手が必要な部分を明確に区別。",
+    "hypothesisNames": [
+      "CarePlan AI",
+      "CareHub",
+      "CareAuto"
+    ],
+    "mirukarteScore": 1,
+    "issueUrl": "https://github.com/beru3/business-ideation-bot/issues/11",
+    "tokens": {
+      "input": 3532,
+      "output": 10436
+    }
   }
 ]
