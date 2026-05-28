@@ -2,6 +2,11 @@ name: Daily business ideation research
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no Issue/email/history)'
+        type: boolean
+        default: false
   schedule:
     - cron: '0 0 * * *'   # 毎日 00:00 UTC = JST 09:00
 
@@ -26,7 +31,7 @@ jobs:
       - run: npm ci --prefix bot
 
       - name: 調査実行・メール送信
-        run: node bot/research.mjs
+        run: node bot/research.mjs ${{ inputs.dry_run == true && '--dry' || '' }}
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
