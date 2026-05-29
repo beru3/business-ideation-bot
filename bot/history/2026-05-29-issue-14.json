@@ -1,0 +1,15 @@
+{
+  "id": "14",
+  "title": "在宅医療コーディネートAIアシスタント / 医療・介護連携データブリッジ / 在宅医療経営ダッシュボード",
+  "generated_at": "2026-05-29T01:34:33.495Z",
+  "domain_id": "core_medical",
+  "spoke_id": "spoke_mirukarte",
+  "mirukarte_score": 1,
+  "structured_attrs": {
+    "data_source_type": "regulated_format",
+    "target_industry": "medical-clinic",
+    "revenue_model": "saas-subscription",
+    "value_layer": "execution",
+    "regulation_level": "high-medical"
+  }
+}
