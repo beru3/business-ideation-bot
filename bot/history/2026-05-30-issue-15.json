@@ -1,0 +1,15 @@
+{
+  "id": "15",
+  "title": "AI契約レビュー特化SaaS / AI法務ドキュメント生成・管理プラットフォーム / 法務タスクアウトソーシングマーケットプレイス",
+  "generated_at": "2026-05-30T01:29:58.674Z",
+  "domain_id": "wild_card",
+  "spoke_id": "unassigned",
+  "mirukarte_score": 1,
+  "structured_attrs": {
+    "data_source_type": "unregulated_paper",
+    "target_industry": "other-legal",
+    "revenue_model": "saas-subscription",
+    "value_layer": "execution",
+    "regulation_level": "low-general"
+  }
+}

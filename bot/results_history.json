@@ -165,5 +165,24 @@
       "input": 3533,
       "output": 6414
     }
+  },
+  {
+    "date": "2026-05-30",
+    "theme": "法務・LegalTech",
+    "domainId": "wild_card",
+    "spokeId": "unassigned",
+    "hash": "8488a70004d4dfe7",
+    "summary": "中小企業向けに月額3万円でAI契約書レビューを提供。LLMの精度向上とコスト低下により、従来は高額で手が届かなかった市場を開拓する。 / AIが質問に答えるだけで法務ドキュメントを自動生成・管理。電子帳簿保存法対応も含めたオールインワンソリューション。 / タスク単位で弁護士を依頼できるマーケットプレイス。AIが事前タスク整理し、弁護士の作業時間を短縮することで単価を下げる。",
+    "hypothesisNames": [
+      "AI契約レビュー特化SaaS",
+      "AI法務ドキュメント生成・管理プラットフォーム",
+      "法務タスクアウトソーシングマーケットプレイス"
+    ],
+    "mirukarteScore": 1,
+    "issueUrl": "https://github.com/beru3/business-ideation-bot/issues/15",
+    "tokens": {
+      "input": 3524,
+      "output": 8679
+    }
   }
 ]
