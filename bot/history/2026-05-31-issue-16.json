@@ -1,0 +1,15 @@
+{
+  "id": "16",
+  "title": "給付費明細書AI解析×キャッシュフロー改善SaaS / 介護事業所向けAI請求書監査・過誤防止サービス / 介護事業所M&A・事業承継マッチングプラットフォーム",
+  "generated_at": "2026-05-31T01:36:44.248Z",
+  "domain_id": "care_adjacent",
+  "spoke_id": "spoke_kaigo",
+  "mirukarte_score": 1,
+  "structured_attrs": {
+    "data_source_type": "regulated_format",
+    "target_industry": "care-facility",
+    "revenue_model": "saas-subscription",
+    "value_layer": "both",
+    "regulation_level": "high-medical"
+  }
+}
