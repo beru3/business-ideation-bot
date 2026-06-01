@@ -222,7 +222,7 @@ for (const target of targets) {
         { role: 'user', content: userPrompt },
       ],
       temperature: 0.7,
-      max_tokens: 8000,
+      max_tokens: 16000,
     })
   );
 
