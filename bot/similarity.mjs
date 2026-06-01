@@ -21,6 +21,32 @@ export function calculateSimilarity(newAttrs, historicalAttrs) {
   return score;
 }
 
+// --- 仮説名の類似判定（日本語対応） ---
+// 旧実装は split(/\s+/) で空白区切りトークンを前提にしており、空白の無い
+// 日本語の仮説名が1トークンに潰れて重複検出が機能していなかった。
+// 文字バイグラムの Jaccard 係数に置き換えることで日本語でも機能する。
+export function charBigrams(s) {
+  const norm = (s || '').toLowerCase().replace(/[\s【】（）()・/／\-_,.、。]/g, '');
+  const grams = new Set();
+  for (let i = 0; i < norm.length - 1; i++) grams.add(norm.slice(i, i + 2));
+  if (norm.length === 1) grams.add(norm);
+  return grams;
+}
+
+export function nameSimilarity(a, b) {
+  const A = charBigrams(a);
+  const B = charBigrams(b);
+  if (A.size === 0 || B.size === 0) return 0;
+  let inter = 0;
+  for (const g of A) if (B.has(g)) inter++;
+  const union = A.size + B.size - inter;
+  return union === 0 ? 0 : inter / union;
+}
+
+export function isNameSimilar(a, b, threshold = 0.5) {
+  return nameSimilarity(a, b) >= threshold;
+}
+
 export function classifyIdea(newIdea, history, config) {
   const { duplicateThreshold, expansionThreshold } = config;
 
