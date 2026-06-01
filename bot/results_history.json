@@ -223,5 +223,25 @@
       "input": 3066,
       "output": 8000
     }
+  },
+  {
+    "date": "2026-06-01",
+    "theme": "クリニック予約・待合最適化",
+    "domainId": "core_medical",
+    "spokeId": "spoke_mirukarte",
+    "hash": "92d981cf698b3a8c",
+    "summary": "クリニックの予約枠管理と患者の来院タイミングをAIでリアルタイム最適化し、待ち時間ゼロと診察効率向上を両立するB2B SaaS / オンライン診療と対面診療の予約を統合管理し、患者の通院負荷を軽減するプラットフォーム。 / クリニックの待合室混雑状況をリアルタイムで可視化し、患者に最適な来院時刻を通知するサービス。",
+    "hypothesisNames": [
+      "AI予約最適化エンジン（B2B SaaS）",
+      "オンライン診療×予約連携プラットフォーム",
+      "待合室混雑可視化・案内サービス"
+    ],
+    "founderFitScore": 4,
+    "recommendedAction": "archive",
+    "archived": true,
+    "tokens": {
+      "input": 3067,
+      "output": 6849
+    }
   }
 ]
