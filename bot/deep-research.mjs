@@ -1,10 +1,14 @@
-// 特定プロダクトに対してStep 1-9のフルリサーチを実行し、Issueコメントとして投稿
+// 高適合度 Issue に対して Step 1-9 のフルリサーチを実行し、Issue コメントとして投稿
 //
-// 使い方: node bot/deep-research.mjs
+// 使い方: node bot/deep-research.mjs [--manual 5,6,7]
+//   引数なし: founder-fit >= 8 の issue を自動収集
+//   --manual: 指定した issue 番号のみ対象
 // 環境変数: DEEPSEEK_API_KEY, GH_TOKEN
 import OpenAI from 'openai';
 import { execSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, readdirSync, mkdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { retryWithBackoff } from './retry.mjs';
 
 const { DEEPSEEK_API_KEY } = process.env;
 if (!DEEPSEEK_API_KEY) {
@@ -19,25 +23,50 @@ const ai = new OpenAI({
 
 const REPO = 'beru3/business-ideation-bot';
 const gh = (args) => execSync('gh ' + args, { encoding: 'utf8' }).trim();
+const DEEP_RESEARCH_MARKER = '<!-- deep-research:v1 -->';
 
-// 対象プロダクト一覧
-const targets = [
-  {
-    issueNumber: 5,
-    topic: '飲食店AI原価管理アプリ',
-    description: 'LINE Botで仕入れ伝票をOCR読み取り、AIが需要予測・原価率管理・廃棄削減を自動化する飲食店向けSaaS。月額2,980円。ターゲットは従業員5人未満の個人飲食店（約35万店）。',
-  },
-  {
-    issueNumber: 6,
-    topic: '建設現場AI検査員',
-    description: 'スマホで撮った現場写真をLINE Botに送ると、AIが施工不良を検出し国交省基準と照合してPDFレポートを自動生成する建設業向けSaaS。月額19,800円。「セカンドオピニオン」として法的リスクを回避。ターゲットは30人規模の中堅工務店。',
-  },
-  {
-    issueNumber: 7,
-    topic: '校務AIレポート生成SaaS',
-    description: '成績データを入力すると学校ごとの文体を学習したAIが通知表の所見文を30秒で下書き生成するWebアプリ。月額9,800円/校。私立中高（約1,400校）から攻める。Few-shot learningで学校固有のトーンを再現。',
-  },
-];
+const dir = fileURLToPath(new URL('./', import.meta.url));
+
+// --- ターゲット収集 ---
+function collectTargetsFromHistory() {
+  const historyDir = dir + 'history/';
+  mkdirSync(historyDir, { recursive: true });
+  const files = readdirSync(historyDir).filter(f => f.endsWith('.json'));
+  const targets = [];
+  for (const f of files) {
+    try {
+      const item = JSON.parse(readFileSync(historyDir + f, 'utf8'));
+      if (item.founder_fit_score >= 8 && item.id) {
+        targets.push({
+          issueNumber: parseInt(item.id, 10),
+          topic: item.title,
+          description: `founder-fit ${item.founder_fit_score}/10 — domain: ${item.domain_id}`,
+        });
+      }
+    } catch { /* skip */ }
+  }
+  return targets;
+}
+
+function parseManualTargets(arg) {
+  return arg.split(',').map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n)).map(n => ({
+    issueNumber: n,
+    topic: `Issue #${n}`,
+    description: '手動指定',
+  }));
+}
+
+const manualIdx = process.argv.indexOf('--manual');
+const targets = manualIdx >= 0 && process.argv[manualIdx + 1]
+  ? parseManualTargets(process.argv[manualIdx + 1])
+  : collectTargetsFromHistory();
+
+if (targets.length === 0) {
+  console.log('対象 Issue なし（founder-fit >= 8 の Issue が見つかりませんでした）');
+  process.exit(0);
+}
+
+console.log(`対象: ${targets.length}件`);
 
 const systemPrompt = `あなたは新規事業の機会発掘の専門家です。指定されたプロダクトアイデアについて、以下のパイプラインで詳細分析を行ってください。
 
@@ -163,6 +192,18 @@ for (const target of targets) {
   console.log(`Issue #${target.issueNumber}: ${target.topic}`);
   console.log('='.repeat(60));
 
+  // 冪等化: 既存の深掘りコメントがあればスキップ
+  try {
+    const comments = gh(`api repos/${REPO}/issues/${target.issueNumber}/comments --jq '[.[].body]'`);
+    const bodies = JSON.parse(comments);
+    if (bodies.some(b => b.includes(DEEP_RESEARCH_MARKER))) {
+      console.log(`Issue #${target.issueNumber} は既に深掘り済み — スキップ`);
+      continue;
+    }
+  } catch (e) {
+    console.warn(`コメント確認失敗（続行）: ${e.message}`);
+  }
+
   const userPrompt = `今日は${today}です。
 
 【対象プロダクト】${target.topic}
@@ -173,21 +214,24 @@ for (const target of targets) {
 
   console.log('DeepSeek APIで調査実行中…');
 
-  const response = await ai.chat.completions.create({
-    model: 'deepseek-chat',
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: userPrompt },
-    ],
-    temperature: 0.7,
-    max_tokens: 16000,
-  });
+  const response = await retryWithBackoff(() =>
+    ai.chat.completions.create({
+      model: 'deepseek-chat',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt },
+      ],
+      temperature: 0.7,
+      max_tokens: 8000,
+    })
+  );
 
   const content = response.choices[0].message.content.trim();
   const usage = response.usage;
   console.log(`トークン: input=${usage?.prompt_tokens}, output=${usage?.completion_tokens}`);
 
   const comment = [
+    DEEP_RESEARCH_MARKER,
     `# Step 1-9 フルリサーチ: ${target.topic}`,
     '',
     `> 自動生成 (${today}) | DeepSeek Chat | tokens: in=${usage?.prompt_tokens} out=${usage?.completion_tokens}`,
