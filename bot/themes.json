@@ -3,7 +3,7 @@
   "domains": [
     {
       "id": "core_medical",
-      "weight": 50,
+      "weight": 34,
       "themes": [
         "慢性疾患管理（内科・循環器・糖尿病）",
         "歯科クリニック運営最適化",
@@ -21,7 +21,7 @@
     },
     {
       "id": "care_adjacent",
-      "weight": 30,
+      "weight": 16,
       "themes": [
         "介護事業所運営（給付費明細書ベース）",
         "ケアマネジャー業務支援",
@@ -35,7 +35,7 @@
     },
     {
       "id": "wild_card",
-      "weight": 20,
+      "weight": 50,
       "themes": [
         "教育・EdTech",
         "飲食・フードテック",

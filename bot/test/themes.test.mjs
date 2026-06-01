@@ -68,8 +68,8 @@ describe('selectThemeByWeight', () => {
       ratios[k] = v / trials;
     }
 
-    expect(ratios.core_medical).toBeCloseTo(0.50, 1);
-    expect(ratios.care_adjacent).toBeCloseTo(0.30, 1);
-    expect(ratios.wild_card).toBeCloseTo(0.20, 1);
+    expect(ratios.core_medical).toBeCloseTo(0.34, 1);
+    expect(ratios.care_adjacent).toBeCloseTo(0.16, 1);
+    expect(ratios.wild_card).toBeCloseTo(0.50, 1);
   });
 });
