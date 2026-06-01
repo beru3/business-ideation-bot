@@ -118,3 +118,32 @@ describe('classifyIdea', () => {
     expect(result.tag).toBe('novel');
   });
 });
+
+import { nameSimilarity, isNameSimilar, charBigrams } from '../similarity.mjs';
+
+describe('nameSimilarity (Japanese-safe, the #4 bug)', () => {
+  it('near-identical Japanese names score high (old tokenizer scored ~0)', () => {
+    const a = '医療機関向けAI-SNS運用代行SaaS';
+    const b = '医療機関向けAI-SNS運用代行サービス';
+    expect(nameSimilarity(a, b)).toBeGreaterThan(0.5);
+    expect(isNameSimilar(a, b)).toBe(true);
+  });
+
+  it('unrelated names score low', () => {
+    expect(isNameSimilar('飲食店AI原価管理アプリ', '建設現場AI検査員')).toBe(false);
+  });
+
+  it('identical names → 1.0', () => {
+    expect(nameSimilarity('校務AIレポート生成SaaS', '校務AIレポート生成SaaS')).toBeCloseTo(1.0);
+  });
+
+  it('handles spaceless single-token Japanese (no whitespace at all)', () => {
+    // 旧 split(/\s+/) では1トークンに潰れて overlap 判定不能だった
+    expect(charBigrams('在宅医療コーディネート').size).toBeGreaterThan(3);
+  });
+
+  it('empty / null safe', () => {
+    expect(nameSimilarity('', 'x')).toBe(0);
+    expect(nameSimilarity(null, null)).toBe(0);
+  });
+});

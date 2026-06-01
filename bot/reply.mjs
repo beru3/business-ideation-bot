@@ -10,6 +10,7 @@
 //   REPO (owner/repo)
 import OpenAI from 'openai';
 import { execSync } from 'node:child_process';
+import { retryWithBackoff } from './retry.mjs';
 
 const { DEEPSEEK_API_KEY, ISSUE_NUMBER, ISSUE_BODY, COMMENT_BODY, COMMENT_USER, REPO } = process.env;
 
@@ -72,12 +73,14 @@ console.log(`Issue #${ISSUE_NUMBER} のコメントに返信中…`);
 console.log(`質問者: ${COMMENT_USER}`);
 console.log(`質問: ${COMMENT_BODY.slice(0, 100)}…`);
 
-const response = await ai.chat.completions.create({
-  model: 'deepseek-chat',
-  messages,
-  temperature: 0.7,
-  max_tokens: 4000,
-});
+const response = await retryWithBackoff(() =>
+  ai.chat.completions.create({
+    model: 'deepseek-chat',
+    messages,
+    temperature: 0.7,
+    max_tokens: 4000,
+  })
+);
 
 const reply = response.choices[0].message.content.trim();
 const usage = response.usage;

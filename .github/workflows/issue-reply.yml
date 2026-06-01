@@ -13,7 +13,8 @@ jobs:
     # researchラベル付きIssueのみ & bot自身のコメントは無視
     if: |
       contains(github.event.issue.labels.*.name, 'research') &&
-      github.event.comment.user.login != 'github-actions[bot]'
+      github.event.comment.user.login != 'github-actions[bot]' &&
+      github.event.comment.user.login == github.repository_owner
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
