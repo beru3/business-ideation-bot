@@ -243,5 +243,24 @@
       "input": 3067,
       "output": 6849
     }
+  },
+  {
+    "date": "2026-06-02",
+    "theme": "フリーランス・クリエイター支援",
+    "domainId": "wild_card",
+    "spokeId": "unassigned",
+    "hash": "22b35a9303c47cd2",
+    "summary": "AIエージェントがフリーランスのスキルと案件を自動マッチングし、営業・交渉・契約まで代行するプラットフォーム。従来のマッチングサイトの「大量登録・低単価・自己営業必須」の課題をAIで解消する。 / 生成AIとAPI連携で、クリエイターの契約書作成・請求書発行・支払い督促を自動化。フリーランスの「面倒な事務作業」をゼロにする。",
+    "hypothesisNames": [
+      "AI特化型フリーランス案件マッチング",
+      "クリエイター向け契約・請求書AIアシスタント"
+    ],
+    "founderFitScore": 3,
+    "recommendedAction": "archive",
+    "archived": true,
+    "tokens": {
+      "input": 3062,
+      "output": 6871
+    }
   }
 ]
