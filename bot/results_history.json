@@ -262,5 +262,23 @@
       "input": 3062,
       "output": 6871
     }
+  },
+  {
+    "date": "2026-06-02",
+    "theme": "接骨院・整骨院の療養費レセプト",
+    "domainId": "core_medical",
+    "spokeId": "spoke_mirukarte",
+    "hash": "3ba652c4fa205824",
+    "summary": "AIによる療養費レセプトの自動生成と、保険者審査基準のリアルタイム判定を組み合わせたSaaS。接骨院の事務負荷を80%削減し、返戻率を半減する。 / 患者がスマホで施術内容を確認・同意し、そのまま療養費申請まで完結するアプリ。紙の施術同意書と申請書類を完全デジタル化する。",
+    "hypothesisNames": [
+      "AIレセプト自動生成・審査支援SaaS",
+      "療養費受付・患者管理モバイルアプリ"
+    ],
+    "founderFitScore": 7.5,
+    "issueUrl": "https://github.com/beru3/business-ideation-bot/issues/18",
+    "tokens": {
+      "input": 3075,
+      "output": 8028
+    }
   }
 ]
