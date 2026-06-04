@@ -57,8 +57,10 @@ def cmd_post_signals(dry_run=False):
     skipped = 0
 
     for hyp in hypotheses:
-        name = hyp.get("name", "無題")
-        score = hyp.get("founder_fit_score")
+        name = hyp.get("title", hyp.get("name", "無題"))
+        # founder_fit can be nested object or flat score
+        fit = hyp.get("founder_fit", {})
+        score = fit.get("total") if isinstance(fit, dict) else hyp.get("founder_fit_score")
         action = _get_action(score)
 
         if action == "archive":
@@ -69,26 +71,32 @@ def cmd_post_signals(dry_run=False):
         score_prefix = f"【適合度{score}】" if score is not None else ""
         title = f"{score_prefix}{name} ({today})"
 
+        # Build founder fit detail text
+        fit_detail = ""
+        if isinstance(fit, dict) and fit.get("rationale"):
+            fit_detail = (
+                f"| 軸 | スコア |\n|---|---|\n"
+                f"| 構築・運用 | {fit.get('build_ops', '-')}/2 |\n"
+                f"| 顧客獲得 | {fit.get('acquisition', '-')}/2 |\n"
+                f"| ドメイン | {fit.get('domain', '-')}/2 |\n"
+                f"| 資産独立 | {fit.get('asset_independence', '-')}/2 |\n"
+                f"| ユニエコ | {fit.get('unit_economics', '-')}/2 |\n"
+                f"| **合計** | **{fit.get('total', '-')}/10** |\n\n"
+                f"{fit.get('rationale', '')}"
+            )
+
         body_parts = [
             f"> シグナル発 | ソース: {hyp.get('signal_source', '---')} | 適合度: {score or '---'}/10 | {today}",
             "",
             "## 仮説サマリー",
             "",
-            hyp.get("summary", ""),
+            hyp.get("problem", hyp.get("summary", "")),
             "",
             "---",
             "",
             "## 検出シグナル",
             "",
-        ]
-
-        for sig in hyp.get("source_signals", []):
-            body_parts.append(
-                f"- **{sig.get('pain_point', '')}** ({sig.get('who', '')}) "
-                f"[{sig.get('source', '')}]({sig.get('url', '')})"
-            )
-
-        body_parts.extend([
+            hyp.get("signal_evidence", ""),
             "",
             "---",
             "",
@@ -96,32 +104,20 @@ def cmd_post_signals(dry_run=False):
             "",
             f"**ターゲット:** {hyp.get('target_who', '')}",
             "",
-            f"**課題:** {hyp.get('pain_point', '')}",
+            f"**課題:** {hyp.get('problem', hyp.get('pain_point', ''))}",
             "",
-            f"**ソリューション:** {hyp.get('solution_type', '')}",
-            "",
-            f"**既存解法との差別化:** {hyp.get('differentiation', '')}",
-            "",
-            f"**市場規模ヒント:** {hyp.get('market_hint', '')}",
+            f"**ソリューション:** {hyp.get('solution', hyp.get('solution_type', ''))}",
             "",
             "---",
             "",
             "## 本人適合度スコア",
             "",
-            hyp.get("founder_fit_detail", "_（採点なし）_"),
+            fit_detail or hyp.get("founder_fit_detail", "_（採点なし）_"),
             "",
             "---",
             "",
-            "## 最小反証実験",
-            "",
-            hyp.get("falsification_test", "_（未設計）_"),
-            "",
-            "---",
-            "",
-            f"_生成: Claude Code (signal) | "
-            f"signal_source: {hyp.get('signal_source', '')} | "
-            f"signal_urls: {[s.get('url', '') for s in hyp.get('source_signals', [])]}_",
-        ])
+            f"_生成: Claude Code (signal) | signal_source: {hyp.get('signal_source', '')}_",
+        ]
 
         issue_body = "\n".join(body_parts)
 
@@ -138,9 +134,9 @@ def cmd_post_signals(dry_run=False):
         db.table("hypotheses").insert({
             "name": name,
             "insight_ids": [],
-            "summary": hyp.get("summary", ""),
+            "summary": hyp.get("problem", hyp.get("summary", "")),
             "target_who": hyp.get("target_who", ""),
-            "solution_type": hyp.get("solution_type", ""),
+            "solution_type": hyp.get("solution", hyp.get("solution_type", "")),
             "confidence_score": score or 0.0,
             "status": action,
         }).execute()
