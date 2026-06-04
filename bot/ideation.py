@@ -28,6 +28,7 @@ SUPABASE_KEY = os.environ.get(
 )
 REPO = "beru3/business-ideation-bot"
 SIGNALS_HYPOTHESES_FILE = "bot/signals_hypotheses.json"
+SIGNALS_FILTERED_FILE = "bot/signals_filtered.json"
 VALIDATE_FILE = "bot/ideation_validate.json"
 
 
@@ -39,13 +40,22 @@ def get_db():
 # post-signals: シグナル発仮説をIssue投稿
 # ──────────────────────────────────────────────
 def cmd_post_signals(dry_run=False):
-    if not os.path.exists(SIGNALS_HYPOTHESES_FILE):
-        print(f"Error: {SIGNALS_HYPOTHESES_FILE} が見つかりません。")
-        print("先に `python bot/collect.py` → Claude Codeでシグナル分析・仮説生成 → ファイル保存 を行ってください。")
+    # フィルタ済みファイルがあればそちらを優先
+    if os.path.exists(SIGNALS_FILTERED_FILE):
+        source_file = SIGNALS_FILTERED_FILE
+        with open(source_file, encoding="utf-8") as f:
+            data = json.load(f)
+        hypotheses = data.get("passed", data) if isinstance(data, dict) else data
+        print(f"フィルタ済みファイルから読み込み: {len(hypotheses)}件")
+    elif os.path.exists(SIGNALS_HYPOTHESES_FILE):
+        source_file = SIGNALS_HYPOTHESES_FILE
+        with open(source_file, encoding="utf-8") as f:
+            hypotheses = json.load(f)
+        print(f"未フィルタファイルから読み込み: {len(hypotheses)}件")
+    else:
+        print(f"Error: 仮説ファイルが見つかりません。")
+        print("先に collect → search → hypothesize → filter を実行してください。")
         sys.exit(1)
-
-    with open(SIGNALS_HYPOTHESES_FILE, encoding="utf-8") as f:
-        hypotheses = json.load(f)
 
     if not isinstance(hypotheses, list):
         hypotheses = [hypotheses]
@@ -116,8 +126,27 @@ def cmd_post_signals(dry_run=False):
             "",
             "---",
             "",
-            f"_生成: Claude Code (signal) | signal_source: {hyp.get('signal_source', '')}_",
         ]
+
+        # ナレッジ裏付け情報があれば追加
+        filter_detail = hyp.get("filter_detail")
+        if filter_detail:
+            body_parts.extend([
+                "## ナレッジ裏付け",
+                "",
+                f"**判定:** {hyp.get('filter_verdict', '')} (確信度: {filter_detail.get('confidence', '')})",
+                "",
+                f"**理由:** {filter_detail.get('reasoning', '')}",
+                "",
+                f"**裏付けナレッジ (ID={filter_detail.get('best_match_id', '')}):** {filter_detail.get('best_match_reason', '')}",
+                "",
+                "---",
+                "",
+            ])
+
+        body_parts.append(
+            f"_生成: Claude Code (signal) | signal_source: {hyp.get('signal_source', '')}_"
+        )
 
         issue_body = "\n".join(body_parts)
 
