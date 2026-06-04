@@ -596,7 +596,7 @@ if (dryRun) {
 writeFileSync('/tmp/ideation_issue.md', issueBody);
 
 const labels = [
-  'research',
+  '一次生成',
   `spoke:${spokeId}`,
   `domain:${domainId}`,
   `tag:${classification.tag}`,

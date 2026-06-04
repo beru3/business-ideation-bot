@@ -1,2 +1,13 @@
 node_modules/
 .env
+.claude/
+.playwright-mcp/
+tmp/
+*.patch
+__pycache__/
+bot/signals_raw.json
+bot/signals_hypotheses.json
+bot/ideation_validate.json
+bot/ideation_analysis.json
+bot/ideation_hypotheses.json
+bot/ideation_refine.json
