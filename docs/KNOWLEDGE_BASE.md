@@ -1,8 +1,10 @@
-# Knowledge Base (Phase 1)
+# Knowledge Base
 
 ## 概要
 
 マーケティング侍の378件の記事コンテンツ（YouTube文字起こし + PDF/資料テキスト）から、構造化されたビジネスインサイトを抽出し、Supabaseに格納した知識ベース。
+
+**現在の役割**: パイプラインの入り口ではなく、市場検証ステップでの**補強材料**として使用。
 
 ## アーキテクチャ
 
@@ -20,15 +22,14 @@
 ┌─────────────────────────────────────────────────────┐
 │  Supabase (business-ideation)                       │
 │  ├─ knowledge_articles (378 rows)                   │
-│  ├─ knowledge_insights (~480 rows)                  │
-│  ├─ hypotheses (Phase 2で使用)                      │
-│  └─ test_campaigns (Phase 3で使用)                  │
+│  ├─ knowledge_insights (496 rows)                   │
+│  ├─ hypotheses                                      │
+│  └─ test_campaigns                                  │
 └──────────────────┬──────────────────────────────────┘
                    │
-        ┌──────────┴──────────┐
-        ▼                     ▼
-  Phase 2: ネタ量産       Phase 3: テストマーケ
-  (Claude Code)           (GitHub Actions + X API)
+                   ▼
+        市場検証ステップ (validate) で
+        仮説の裏付け・補強材料として参照
 ```
 
 ## Supabase
@@ -54,7 +55,7 @@
 | download_chars | INT | ダウンロードテキスト文字数 |
 
 ### knowledge_insights
-構造化インサイト。Claude Codeで抽出。
+構造化インサイト。Claude Codeで抽出。496件。
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -71,9 +72,9 @@
 | embedding | vector(1536) | 将来のセマンティック検索用 |
 
 ### hypotheses / test_campaigns
-Phase 2/3 で使用予定。スキーマは `supabase/migrations/20260603_init.sql` 参照。
+スキーマは `supabase/migrations/20260603_init.sql` 参照。
 
-## 業種分布 (Phase 1完了時点)
+## 業種分布
 
 | 業種 | 件数 |
 |------|------|
@@ -99,17 +100,3 @@ Phase 2/3 で使用予定。スキーマは `supabase/migrations/20260603_init.s
 5. **Notion**: DOM text extraction via Playwright
 6. **統合**: `tmp/articles_complete.json` (377/378件にコンテンツあり)
 7. **インサイト抽出**: Claude Codeエージェント並列処理 → Supabase投入
-
-## 今後の計画
-
-### Phase 2: ネタ量産エンジン
-- Claude Code スキル/スクリプトとして実装
-- knowledge_insights を横断的に分析し、事業仮説を生成
-- hypotheses テーブルに格納
-- 手動実行（Claude Code セッション内）
-
-### Phase 3: テストマーケティング自動化
-- barbara-saas-marketing の x-bot パターンを活用
-- 生成 → 承認 → SNS投稿 の自動パイプライン
-- GitHub Actions + X API
-- test_campaigns テーブルで結果追跡
