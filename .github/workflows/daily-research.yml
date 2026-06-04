@@ -19,8 +19,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  collect:
+  collect-search-hypothesize:
     runs-on: ubuntu-latest
+    env:
+      EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -29,16 +33,28 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install supabase
+        run: pip install supabase openai requests
 
-      - name: 信号収集（クエリ生成）
-        run: python bot/collect.py
+      - name: Install Playwright (fallback)
+        run: |
+          pip install playwright
+          python -m playwright install chromium --with-deps
+        if: ${{ !env.EXA_API_KEY }}
 
-      - name: 収集結果をコミット
+      - name: 信号収集（日次モード: 15-20クエリ）
+        run: python bot/collect.py --daily
+
+      - name: 検索実行
+        run: python bot/search.py
+
+      - name: 仮説生成（DeepSeek + 重複排除）
+        run: python bot/hypothesize.py
+
+      - name: 結果をコミット
         run: |
           git config user.name "ideation-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add bot/signals_raw.json
-          git diff --cached --quiet || git commit -m "chore: collect signals $(date -u +%Y-%m-%d)"
+          git add bot/signals_raw.json bot/signals_hypotheses.json
+          git diff --cached --quiet || git commit -m "chore: daily signals $(date -u +%Y-%m-%d)"
           git pull --rebase || true
           git push
