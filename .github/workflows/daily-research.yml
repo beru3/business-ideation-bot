@@ -50,11 +50,14 @@ jobs:
       - name: 仮説生成（DeepSeek + 重複排除）
         run: python bot/hypothesize.py
 
+      - name: ナレッジフィルタリング
+        run: python bot/filter.py
+
       - name: 結果をコミット
         run: |
           git config user.name "ideation-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add bot/signals_raw.json bot/signals_hypotheses.json
+          git add bot/signals_raw.json bot/signals_hypotheses.json bot/signals_filtered.json
           git diff --cached --quiet || git commit -m "chore: daily signals $(date -u +%Y-%m-%d)"
           git pull --rebase || true
           git push
