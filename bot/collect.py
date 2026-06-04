@@ -29,6 +29,7 @@ COLLECTORS = [
     "reddit",
     "job_postings",
     "regulation",
+    "jobtag",
 ]
 
 
