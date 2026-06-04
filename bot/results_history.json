@@ -280,5 +280,24 @@
       "input": 3075,
       "output": 8028
     }
+  },
+  {
+    "date": "2026-06-04",
+    "theme": "介護人材マッチング",
+    "domainId": "care_adjacent",
+    "spokeId": "spoke_kaigo",
+    "hash": "7c39c57dc01f1c0e",
+    "summary": "介護職員のシフト調整と副業マッチングをAIで自動化し、施設の慢性的な人手不足と職員の収入不足を同時に解決するSaaS /  / 介護職員のキャリア形成を支援するスキル診断・学習・転職支援の統合アプリで、離職率低減とキャリアアップを促進",
+    "hypothesisNames": [
+      "介護施設特化型AIスケジュール最適化SaaS",
+      "介護事業者向け外国人材受入プラットフォーム",
+      "介護職員向けスキルアップ＆キャリアパス可視化アプリ"
+    ],
+    "founderFitScore": 5,
+    "issueUrl": "https://github.com/beru3/business-ideation-bot/issues/20",
+    "tokens": {
+      "input": 3060,
+      "output": 8836
+    }
   }
 ]
