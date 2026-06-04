@@ -1,4 +1,4 @@
-name: Daily signal collection
+name: Weekly signal collection
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
   schedule:
-    - cron: '30 23 * * *'  # 毎日 23:30 UTC = JST 08:30
+    - cron: '30 23 * * 0'  # 毎週日曜 23:30 UTC = JST 月曜 08:30
 
 permissions:
   contents: write
@@ -53,11 +53,15 @@ jobs:
       - name: ナレッジフィルタリング
         run: python bot/filter.py
 
+      - name: Issue投稿（フィルタ通過分）
+        if: ${{ !inputs.dry_run }}
+        run: python bot/ideation.py post-signals
+
       - name: 結果をコミット
         run: |
           git config user.name "ideation-bot"
           git config user.email "bot@users.noreply.github.com"
           git add bot/signals_raw.json bot/signals_hypotheses.json bot/signals_filtered.json
-          git diff --cached --quiet || git commit -m "chore: daily signals $(date -u +%Y-%m-%d)"
+          git diff --cached --quiet || git commit -m "chore: weekly signals $(date -u +%Y-%m-%d)"
           git pull --rebase || true
           git push
