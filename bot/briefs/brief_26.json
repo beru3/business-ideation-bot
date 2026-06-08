@@ -1,0 +1,28 @@
+{
+  "target_persona": "Web集客に依存する中小企業経営者、SEO担当者。Google検索からのトラフィック減少を実感しているが、AI検索への対応方法が分からない。",
+  "pain_statement": "Google検索トラフィックが減少し続けている。ChatGPTやPerplexityで自社が言及されているか分からない。競合がAI検索で先に表示されている可能性に不安。",
+  "solution_hook": "あなたのビジネスがChatGPT・Gemini・Perplexityでどう表示されているかを可視化し、AI検索での露出を改善する日本初のSMB向けツール。",
+  "differentiator": "海外ツール(Otterly $29〜, Goodie $495)は英語中心。日本語でのAI検索結果モニタリングと、日本市場向けの最適化提案を月額数千円で提供。",
+  "cta_design": "無料でAI検索での自社表示状況を診断する",
+  "pricing_hint": "月額9,800円〜(50クエリモニタリング)。上位プラン29,800円(最適化提案付き)。",
+  "channels": [
+    "X/Twitter(SEO・マーケ層)",
+    "SEO系メディア寄稿",
+    "ウェビナー「AI検索時代のSEO」",
+    "Google検索広告(AIO対策)"
+  ],
+  "lp_angle": "『あなたの会社、ChatGPTに聞いたら出てきますか？』— 社名入力で即座にAI検索での言及状況を簡易チェックできるLP",
+  "x_hooks": [
+    "Googleトラフィック、去年と比べて減ってませんか？原因はAI検索への移行。37%の検索がもうChatGPTやPerplexityで始まっている。対策してますか？",
+    "SEO頑張っても、ChatGPTの回答に自社が出なければ意味がない時代が来た。AI検索での表示状況、把握してますか？無料診断できます。",
+    "AI検索経由のユーザーはGoogle経由の4.4倍コンバージョンする。でも日本語対応のAIO対策ツール、ほぼ存在しない。だから作った。"
+  ],
+  "knowledge_backed_tactics": [
+    "SEOコミュニティへの啓蒙コンテンツで認知獲得",
+    "無料診断でリード獲得→有料モニタリング継続へ",
+    "構造化データ・E-E-A-T強化・FAQ構造化の具体手法を無料コンテンツで発信"
+  ],
+  "issue_number": 26,
+  "issue_title": "AIO (AI Search Optimization Tool)",
+  "market_fit_score": 7
+}
