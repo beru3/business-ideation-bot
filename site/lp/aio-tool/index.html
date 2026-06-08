@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIOチェッカー｜月3,000円から始めるAI検索最適化ツール</title>
+  <meta name="description" content="ChatGPTやPerplexityで自社名が表示されない？月3,000円で始められるAI検索対策ツール。自社サイトを分析し、AI検索に引用されるための改善点と構造化データを自動生成。" />
+
+  <!-- OGP -->
+  <meta property="og:title" content="AIOチェッカー｜月3,000円から始めるAI検索最適化ツール" />
+  <meta property="og:description" content="SEOだけではもう足りない。AI検索であなたの会社、表示されていますか？月3,000円で始められるAI検索最適化ツール。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://example.com/lp/aio-tool/" />
+  <meta property="og:image" content="https://example.com/lp/aio-tool/ogp.png" />
+  <meta property="og:locale" content="ja_JP" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AIOチェッカー｜月3,000円から始めるAI検索最適化ツール" />
+  <meta name="twitter:description" content="SEOだけではもう足りない。AI検索であなたの会社、表示されていますか？" />
+  <meta name="twitter:image" content="https://example.com/lp/aio-tool/ogp.png" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    html { scroll-behavior: smooth; }
+    .gradient-hero {
+      background: linear-gradient(135deg, #312e81 0%, #4f46e5 50%, #6366f1 100%);
+    }
+    .gradient-cta {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 4px 24px rgba(99, 102, 241, 0.10), 0 1.5px 6px rgba(0,0,0,0.06);
+    }
+    .pulse-glow {
+      animation: pulse-glow 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+      50% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="font-sans text-gray-800 bg-white">
+
+  <!-- ========== 1. HERO / FIRST VIEW ========== -->
+  <header class="gradient-hero text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
+      <div class="absolute bottom-10 right-10 w-96 h-96 bg-indigo-300 rounded-full blur-3xl"></div>
+    </div>
+    <nav class="relative z-10 max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="text-xl font-bold tracking-tight">
+        <span class="text-indigo-200">AIO</span>チェッカー
+      </div>
+      <a href="#signup" class="hidden sm:inline-block text-sm border border-white/40 rounded-full px-5 py-2 hover:bg-white/10 transition">
+        無料で試す
+      </a>
+    </nav>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 pt-16 pb-24 sm:pt-24 sm:pb-32 text-center">
+      <p class="inline-block bg-white/15 backdrop-blur text-sm font-medium rounded-full px-4 py-1.5 mb-6">
+        AI検索時代の新常識
+      </p>
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6">
+        SEOだけでは、もう足りない。<br />
+        <span class="text-indigo-200">AI検索</span>であなたの会社、<br class="sm:hidden" />
+        表示されていますか？
+      </h1>
+      <p class="text-lg sm:text-xl text-indigo-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+        ChatGPT・Perplexity・Geminiが「答え」を返す時代。<br class="hidden sm:block" />
+        <strong class="text-white">月3,000円</strong>で始められるAI検索最適化ツールで、<br class="hidden sm:block" />
+        あなたのサイトをAIに"引用される側"へ。
+      </p>
+
+      <!-- CTA -->
+      <div id="signup" class="max-w-lg mx-auto">
+        <form action="#signup" class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="url"
+            placeholder="https://yoursite.com"
+            required
+            class="flex-1 rounded-xl px-5 py-4 text-gray-800 text-base placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-indigo-300/50"
+          />
+          <button
+            type="submit"
+            class="pulse-glow whitespace-nowrap bg-amber-400 hover:bg-amber-300 text-gray-900 font-bold rounded-xl px-7 py-4 text-base transition"
+          >
+            無料でチェック
+          </button>
+        </form>
+        <p class="text-indigo-200 text-sm mt-3">URLを入力するだけ・30秒で結果表示 / クレジットカード不要</p>
+      </div>
+    </div>
+
+    <!-- Wave divider -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+      <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+        <path d="M0 80L60 68C120 56 240 32 360 24C480 16 600 24 720 36C840 48 960 64 1080 64C1200 64 1320 48 1380 40L1440 32V80H0Z" fill="white"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ========== 2. PROBLEM SECTION ========== -->
+  <section class="py-20 sm:py-28 bg-white">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center mb-14 fade-in">
+        <p class="text-primary-600 font-bold text-sm tracking-widest mb-2">PROBLEM</p>
+        <h2 class="text-2xl sm:text-4xl font-black">こんなこと、ありませんか？</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Pain 1 -->
+        <div class="fade-in card-shadow rounded-2xl p-8 bg-white border border-gray-100 hover:border-primary-200 transition">
+          <div class="w-14 h-14 rounded-xl bg-red-50 flex items-center justify-center text-2xl mb-5">
+            <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+          <h3 class="font-bold text-lg mb-3">ChatGPTで自社名が<br />表示されない</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">
+            「○○といえば？」とAIに聞いても、競合ばかり表示される。Google検索では上位なのに、AI検索では存在しないも同然。
+          </p>
+        </div>
+
+        <!-- Pain 2 -->
+        <div class="fade-in card-shadow rounded-2xl p-8 bg-white border border-gray-100 hover:border-primary-200 transition" style="transition-delay:0.1s">
+          <div class="w-14 h-14 rounded-xl bg-amber-50 flex items-center justify-center text-2xl mb-5">
+            <svg class="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-bold text-lg mb-3">SEOの努力が<br />無駄になる不安</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">
+            何年もかけてSEO対策してきたのに、検索行動がAIへ移行したら今までの投資がゼロに？でも何から手をつければいいか分からない。
+          </p>
+        </div>
+
+        <!-- Pain 3 -->
+        <div class="fade-in card-shadow rounded-2xl p-8 bg-white border border-gray-100 hover:border-primary-200 transition" style="transition-delay:0.2s">
+          <div class="w-14 h-14 rounded-xl bg-indigo-50 flex items-center justify-center text-2xl mb-5">
+            <svg class="w-7 h-7 text-primary-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-bold text-lg mb-3">AIOツールは<br />月3万円以上で高すぎる</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">
+            AIO対策ツールを調べてみたら月3万〜5万円。大企業向けの価格で、うちの規模では導入できない...。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 3. SOLUTION SECTION ========== -->
+  <section class="py-20 sm:py-28 bg-gray-50">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center mb-14 fade-in">
+        <p class="text-primary-600 font-bold text-sm tracking-widest mb-2">SOLUTION</p>
+        <h2 class="text-2xl sm:text-4xl font-black">
+          <span class="text-primary-600">AIOチェッカー</span>なら、<br class="sm:hidden" />3ステップで対策完了
+        </h2>
+        <p class="text-gray-500 mt-4 max-w-xl mx-auto">
+          URLを入力するだけで、AI検索エンジンがあなたのサイトをどう認識しているかを分析。具体的な改善アクションまで自動提案します。
+        </p>
+      </div>
+
+      <div class="space-y-16">
+        <!-- Feature 1 -->
+        <div class="fade-in flex flex-col md:flex-row items-center gap-10">
+          <div class="md:w-1/2 order-2 md:order-1">
+            <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold rounded-full px-3 py-1 mb-4">STEP 1</span>
+            <h3 class="text-xl sm:text-2xl font-bold mb-3">AI検索での表示状況を<br />ワンクリック診断</h3>
+            <p class="text-gray-500 leading-relaxed">
+              ChatGPT、Perplexity、Geminiなど主要AI検索であなたのサイトがどのように引用・表示されているかを一括チェック。改善が必要なポイントをスコア付きでレポートします。
+            </p>
+          </div>
+          <div class="md:w-1/2 order-1 md:order-2">
+            <div class="bg-white rounded-2xl card-shadow p-4 aspect-video flex items-center justify-center border border-gray-100">
+              <div class="text-center text-gray-300">
+                <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                <p class="text-sm">診断レポート画面イメージ</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="fade-in flex flex-col md:flex-row items-center gap-10">
+          <div class="md:w-1/2">
+            <div class="bg-white rounded-2xl card-shadow p-4 aspect-video flex items-center justify-center border border-gray-100">
+              <div class="text-center text-gray-300">
+                <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                <p class="text-sm">改善提案リスト画面イメージ</p>
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2">
+            <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold rounded-full px-3 py-1 mb-4">STEP 2</span>
+            <h3 class="text-xl sm:text-2xl font-bold mb-3">具体的な改善アクションを<br />優先度付きで提案</h3>
+            <p class="text-gray-500 leading-relaxed">
+              「何を」「どのページで」「どう直せばいいか」を具体的にリストアップ。技術的な知識がなくても、チェックリスト形式で一つずつ対応できます。
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="fade-in flex flex-col md:flex-row items-center gap-10">
+          <div class="md:w-1/2 order-2 md:order-1">
+            <span class="inline-block bg-primary-100 text-primary-700 text-xs font-bold rounded-full px-3 py-1 mb-4">STEP 3</span>
+            <h3 class="text-xl sm:text-2xl font-bold mb-3">構造化データを<br />コピペで導入</h3>
+            <p class="text-gray-500 leading-relaxed">
+              AI検索エンジンに正しく情報を伝えるためのJSON-LD構造化データを自動生成。生成されたコードをサイトに貼り付けるだけで、AIからの引用率が向上します。
+            </p>
+          </div>
+          <div class="md:w-1/2 order-1 md:order-2">
+            <div class="bg-white rounded-2xl card-shadow p-4 aspect-video flex items-center justify-center border border-gray-100">
+              <div class="text-center text-gray-300">
+                <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <p class="text-sm">構造化データ生成画面イメージ</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 4. SOCIAL PROOF / STATS ========== -->
+  <section class="py-20 sm:py-28 bg-white">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center mb-14 fade-in">
+        <p class="text-primary-600 font-bold text-sm tracking-widest mb-2">WHY NOW</p>
+        <h2 class="text-2xl sm:text-4xl font-black">AI検索は、もう"未来"ではない</h2>
+        <p class="text-gray-500 mt-4 max-w-xl mx-auto">
+          消費者の検索行動は急速にAIへシフトしています。対策の遅れは、そのまま機会損失に直結します。
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <!-- Stat 1 -->
+        <div class="fade-in gradient-cta rounded-2xl p-8 text-white text-center">
+          <p class="text-5xl sm:text-6xl font-black mb-2">37<span class="text-3xl">%</span></p>
+          <p class="text-indigo-100 text-sm leading-relaxed">
+            の商品検索がAI検索から<br />スタートしている
+          </p>
+          <p class="text-indigo-200 text-xs mt-3">出典: 業界調査レポート 2025</p>
+        </div>
+
+        <!-- Stat 2 -->
+        <div class="fade-in gradient-cta rounded-2xl p-8 text-white text-center" style="transition-delay:0.1s">
+          <p class="text-5xl sm:text-6xl font-black mb-2">4.4<span class="text-3xl">倍</span></p>
+          <p class="text-indigo-100 text-sm leading-relaxed">
+            AI検索経由のCVR（コンバージョン率）は<br />従来検索の4.4倍
+          </p>
+          <p class="text-indigo-200 text-xs mt-3">出典: 業界調査レポート 2025</p>
+        </div>
+      </div>
+
+      <div class="fade-in text-center mt-12">
+        <p class="text-gray-500 text-base max-w-2xl mx-auto leading-relaxed">
+          AI検索に表示されるかどうかで、見込み顧客との接点が大きく変わる時代。<br />
+          <strong class="text-gray-800">早く始めた企業が、AI検索のポジションを先に確保できます。</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5. PRICING SECTION ========== -->
+  <section class="py-20 sm:py-28 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="text-center mb-14 fade-in">
+        <p class="text-primary-600 font-bold text-sm tracking-widest mb-2">PRICING</p>
+        <h2 class="text-2xl sm:text-4xl font-black">
+          中小企業でも始められる、<br class="sm:hidden" />適正価格
+        </h2>
+        <p class="text-gray-500 mt-4">
+          大手向けツールの<span class="line-through">月3万〜5万円</span>ではなく、<strong class="text-primary-600">月3,000円</strong>から。
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <!-- Free Plan -->
+        <div class="fade-in bg-white rounded-2xl card-shadow p-8 border-2 border-gray-100 flex flex-col">
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-1">フリープラン</h3>
+            <p class="text-gray-400 text-sm">まずは現状を知る</p>
+          </div>
+          <p class="text-4xl font-black text-gray-800 mb-1">
+            0<span class="text-lg font-medium text-gray-400">円/月</span>
+          </p>
+          <p class="text-gray-400 text-xs mb-8">クレジットカード不要</p>
+          <ul class="space-y-3 mb-8 flex-1">
+            <li class="flex items-start gap-2 text-sm text-gray-600">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              AI検索での表示状況チェック
+            </li>
+            <li class="flex items-start gap-2 text-sm text-gray-600">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              総合スコアレポート
+            </li>
+            <li class="flex items-start gap-2 text-sm text-gray-600">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              月1回の再チェック
+            </li>
+          </ul>
+          <a href="#signup" class="block text-center border-2 border-primary-600 text-primary-600 font-bold rounded-xl py-3.5 hover:bg-primary-50 transition">
+            無料でチェックする
+          </a>
+        </div>
+
+        <!-- Paid Plan -->
+        <div class="fade-in bg-white rounded-2xl card-shadow p-8 border-2 border-primary-500 relative flex flex-col" style="transition-delay:0.1s">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+            <span class="bg-primary-600 text-white text-xs font-bold rounded-full px-4 py-1.5">おすすめ</span>
+          </div>
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-1">スタンダードプラン</h3>
+            <p class="text-gray-400 text-sm">本格的にAIO対策を実行</p>
+          </div>
+          <p class="text-4xl font-black text-primary-600 mb-1">
+            3,000<span class="text-lg font-medium text-gray-400">円〜/月</span>
+          </p>
+          <p class="text-gray-400 text-xs mb-8">年払いでさらにお得</p>
+          <ul class="space-y-3 mb-8 flex-1">
+            <li class="flex items-start gap-2 text-sm text-gray-600">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              フリープランの全機能
+            </li>
+            <li class="flex items-start gap-2 text-sm text-gray-600">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <strong>ページ別の改善提案リスト</strong>
+            </li>
+            <li class="flex items-start gap-2 text-sm text-gray-600">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <strong>構造化データ（JSON-LD）自動生成</strong>
+            </li>
+            <li class="flex items-start gap-2 text-sm text-gray-600">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              週次レポート&スコア推移
+            </li>
+            <li class="flex items-start gap-2 text-sm text-gray-600">
+              <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              優先メールサポート
+            </li>
+          </ul>
+          <a href="#signup" class="block text-center bg-primary-600 text-white font-bold rounded-xl py-3.5 hover:bg-primary-700 transition">
+            まず無料でチェックする
+          </a>
+        </div>
+      </div>
+
+      <!-- Comparison -->
+      <div class="fade-in mt-12 text-center">
+        <p class="text-sm text-gray-400 mb-4">他社ツールとの比較</p>
+        <div class="inline-block bg-white rounded-xl card-shadow overflow-hidden text-sm">
+          <table class="text-left">
+            <thead>
+              <tr class="bg-gray-50">
+                <th class="px-6 py-3 font-medium text-gray-500">ツール</th>
+                <th class="px-6 py-3 font-medium text-gray-500">月額</th>
+                <th class="px-6 py-3 font-medium text-gray-500">対象</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-3 text-gray-400">AIOPulse</td>
+                <td class="px-6 py-3 text-gray-400">30,000円〜</td>
+                <td class="px-6 py-3 text-gray-400">中堅〜大企業</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-3 text-gray-400">ミエルカGEO</td>
+                <td class="px-6 py-3 text-gray-400">49,800円〜</td>
+                <td class="px-6 py-3 text-gray-400">中堅〜大企業</td>
+              </tr>
+              <tr class="bg-primary-50">
+                <td class="px-6 py-3 font-bold text-primary-700">AIOチェッカー</td>
+                <td class="px-6 py-3 font-bold text-primary-700">0〜5,000円</td>
+                <td class="px-6 py-3 font-bold text-primary-700">中小企業</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6. FOOTER CTA ========== -->
+  <section class="gradient-hero text-white py-20 sm:py-28 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-20 right-20 w-80 h-80 bg-white rounded-full blur-3xl"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto px-4 text-center">
+      <h2 class="text-2xl sm:text-4xl font-black mb-4">
+        まずは30秒で、<br class="sm:hidden" />自社の現状を知ることから
+      </h2>
+      <p class="text-indigo-100 mb-10 leading-relaxed">
+        AI検索であなたの会社がどう見えているか、無料で今すぐチェックできます。<br class="hidden sm:block" />
+        URLを入力するだけ。登録不要・クレジットカード不要です。
+      </p>
+      <div class="max-w-lg mx-auto">
+        <form action="#signup" class="flex flex-col sm:flex-row gap-3">
+          <input
+            type="url"
+            placeholder="https://yoursite.com"
+            required
+            class="flex-1 rounded-xl px-5 py-4 text-gray-800 text-base placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-indigo-300/50"
+          />
+          <button
+            type="submit"
+            class="pulse-glow whitespace-nowrap bg-amber-400 hover:bg-amber-300 text-gray-900 font-bold rounded-xl px-7 py-4 text-base transition"
+          >
+            無料でチェック
+          </button>
+        </form>
+        <p class="text-indigo-200 text-sm mt-3">URLを入力するだけ・30秒で結果表示</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-gray-900 text-gray-400 py-10">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="text-sm">
+        <span class="text-white font-bold">AIOチェッカー</span> &mdash; 中小企業のためのAI検索最適化ツール
+      </div>
+      <div class="flex gap-6 text-sm">
+        <a href="#" class="hover:text-white transition">利用規約</a>
+        <a href="#" class="hover:text-white transition">プライバシーポリシー</a>
+        <a href="#" class="hover:text-white transition">お問い合わせ</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== SCROLL ANIMATION ========== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var targets = document.querySelectorAll('.fade-in');
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        targets.forEach(function (el) { observer.observe(el); });
+      } else {
+        targets.forEach(function (el) { el.classList.add('visible'); });
+      }
+    });
+  </script>
+</body>
+</html>

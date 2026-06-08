@@ -154,12 +154,20 @@ def cmd_post(dry_run=False):
 
             # マーケブリーフ保存
             brief = res.get("marketing_brief", {})
-            brief["issue_number"] = issue_num
-            brief["issue_title"] = res.get("issue_title", "")
-            brief["market_fit_score"] = score
-            brief_path = os.path.join(BRIEFS_DIR, f"brief_{issue_num}.json")
-            with open(brief_path, "w", encoding="utf-8") as f:
-                json.dump(brief, f, ensure_ascii=False, indent=2)
+            if isinstance(brief, str):
+                # ファイルパスの場合は読み込む
+                if os.path.exists(brief):
+                    with open(brief, "r", encoding="utf-8") as bf:
+                        brief = json.load(bf)
+                else:
+                    brief = {}
+            if isinstance(brief, dict):
+                brief["issue_number"] = issue_num
+                brief["issue_title"] = res.get("issue_title", "")
+                brief["market_fit_score"] = score
+                brief_path = os.path.join(BRIEFS_DIR, f"brief_{issue_num}.json")
+                with open(brief_path, "w", encoding="utf-8") as f:
+                    json.dump(brief, f, ensure_ascii=False, indent=2)
             print(f"  PASS #{issue_num} (score={score}) → brief saved")
             posted += 1
 

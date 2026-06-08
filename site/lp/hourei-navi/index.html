@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ホウレイナビ — 2026年法改正一括対応ナビゲーター</title>
+  <meta name="description" content="業種・規模を入力するだけで、自社に該当する2026年の法改正28件以上を自動抽出。具体的な対応チェックリストを1分で生成します。" />
+
+  <!-- OGP -->
+  <meta property="og:title" content="ホウレイナビ — 2026年法改正一括対応ナビゲーター" />
+  <meta property="og:description" content="2026年の法改正28件、あなたの会社に関係するのはどれ？業種と従業員数を選ぶだけ・1分で診断完了。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hourei-navi.example.com/" />
+  <meta property="og:image" content="https://hourei-navi.example.com/ogp.png" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ホウレイナビ — 2026年法改正一括対応ナビゲーター" />
+  <meta name="twitter:description" content="2026年の法改正28件、あなたの会社に関係するのはどれ？1分診断で安心へ。" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              50: '#f0f4f8',
+              100: '#d9e2ec',
+              200: '#bcccdc',
+              300: '#9fb3c8',
+              400: '#829ab1',
+              500: '#627d98',
+              600: '#486581',
+              700: '#334e68',
+              800: '#243b53',
+              900: '#102a43',
+            },
+            teal: {
+              50: '#effcf6',
+              100: '#c6f7e2',
+              200: '#8eedc7',
+              300: '#65d6ad',
+              400: '#3ebd93',
+              500: '#27ab83',
+              600: '#199473',
+              700: '#147d64',
+              800: '#0c6b58',
+              900: '#014d40',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-white text-navy-900 font-sans antialiased">
+
+  <!-- ========== FIRST VIEW ========== -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-navy-900 via-navy-800 to-teal-800 text-white">
+    <!-- Nav -->
+    <nav class="max-w-6xl mx-auto flex items-center justify-between px-4 py-4 sm:px-6">
+      <span class="text-xl font-bold tracking-wide">ホウレイナビ</span>
+      <a href="#signup" class="hidden sm:inline-block rounded-full bg-teal-500 hover:bg-teal-400 transition px-5 py-2 text-sm font-semibold text-white">
+        無料で診断する
+      </a>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32 text-center">
+      <p class="inline-block rounded-full bg-white/10 backdrop-blur px-4 py-1.5 text-sm font-medium mb-6">
+        2026年 法改正リスク診断ツール
+      </p>
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+        2026年の法改正<span class="text-teal-300">28件</span>、<br class="hidden sm:block" />
+        あなたの会社に関係するのは<br class="hidden sm:block" />どれですか？
+      </h1>
+      <p class="max-w-2xl mx-auto text-lg sm:text-xl text-navy-200 mb-10">
+        業種と従業員数を選ぶだけ。<br class="sm:hidden" />
+        たった<strong class="text-white">1分</strong>で自社に該当する法改正と対応チェックリストを自動生成します。
+      </p>
+      <a href="#signup" class="inline-block rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold text-lg px-8 py-4 shadow-lg shadow-teal-500/30">
+        無料で法改正リスク診断を受ける
+      </a>
+      <p class="mt-4 text-sm text-navy-300">登録不要 / 1分で完了 / 完全無料</p>
+    </div>
+
+    <!-- Decorative bottom wave -->
+    <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0 80h1440V30C1200 70 960 0 720 30S240 90 0 30v50z" fill="white"/>
+    </svg>
+  </section>
+
+  <!-- ========== PROBLEM ========== -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24" id="problem">
+    <div class="text-center mb-12">
+      <p class="text-teal-600 font-semibold text-sm tracking-wider uppercase mb-2">Problem</p>
+      <h2 class="text-2xl sm:text-4xl font-bold">中小企業を取り巻く、<br class="sm:hidden" />3つの法改正リスク</h2>
+    </div>
+
+    <div class="grid gap-8 sm:grid-cols-3">
+      <!-- Pain 1 -->
+      <div class="bg-navy-50 rounded-2xl p-6 sm:p-8">
+        <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-2xl font-bold mb-4">!</div>
+        <h3 class="text-lg font-bold mb-2">法改正が多すぎる</h3>
+        <p class="text-navy-600 text-sm leading-relaxed">
+          インボイス経過措置終了、取引デジタルプラットフォーム消費者保護法、育児介護休業法改正…
+          2026年だけで<strong>28件以上</strong>の法改正が施行されます。すべてを把握するのは現実的ではありません。
+        </p>
+      </div>
+      <!-- Pain 2 -->
+      <div class="bg-navy-50 rounded-2xl p-6 sm:p-8">
+        <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl font-bold mb-4">?</div>
+        <h3 class="text-lg font-bold mb-2">自社に関係するか分からない</h3>
+        <p class="text-navy-600 text-sm leading-relaxed">
+          法改正の一覧を見ても、自社の業種・規模・取引形態に該当するかの判断が困難。
+          見落としによる罰則・損失リスクを抱えたまま放置している企業がほとんどです。
+        </p>
+      </div>
+      <!-- Pain 3 -->
+      <div class="bg-navy-50 rounded-2xl p-6 sm:p-8">
+        <div class="w-12 h-12 rounded-xl bg-navy-200 text-navy-700 flex items-center justify-center text-xl font-bold mb-4">&yen;</div>
+        <h3 class="text-lg font-bold mb-2">顧問弁護士は高すぎる</h3>
+        <p class="text-navy-600 text-sm leading-relaxed">
+          専門家に頼みたくても、顧問弁護士は月額<strong>3〜5万円</strong>以上。
+          従業員50名以下の中小企業では法務担当者もおらず、経営者が自力で対応しているのが現状です。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SOLUTION ========== -->
+  <section class="bg-gradient-to-b from-navy-50 to-white py-16 sm:py-24" id="solution">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <p class="text-teal-600 font-semibold text-sm tracking-wider uppercase mb-2">Solution</p>
+        <h2 class="text-2xl sm:text-4xl font-bold">ホウレイナビなら、<br class="sm:hidden" />3ステップで対応完了</h2>
+      </div>
+
+      <div class="grid gap-8 sm:grid-cols-3">
+        <!-- Step 1 -->
+        <div class="relative bg-white rounded-2xl shadow-lg shadow-navy-100/50 p-6 sm:p-8 border border-navy-100">
+          <span class="absolute -top-4 left-6 inline-flex items-center justify-center w-8 h-8 rounded-full bg-teal-500 text-white text-sm font-bold">1</span>
+          <h3 class="text-lg font-bold mb-2 mt-2">1分で診断</h3>
+          <p class="text-navy-600 text-sm leading-relaxed">
+            業種・従業員数・取引形態を選択するだけ。難しい法律用語は一切不要です。
+          </p>
+        </div>
+        <!-- Step 2 -->
+        <div class="relative bg-white rounded-2xl shadow-lg shadow-navy-100/50 p-6 sm:p-8 border border-navy-100">
+          <span class="absolute -top-4 left-6 inline-flex items-center justify-center w-8 h-8 rounded-full bg-teal-500 text-white text-sm font-bold">2</span>
+          <h3 class="text-lg font-bold mb-2 mt-2">チェックリスト生成</h3>
+          <p class="text-navy-600 text-sm leading-relaxed">
+            該当する法改正を自動抽出し、「何を」「いつまでに」「どう対応するか」を具体的なチェックリストで提示します。
+          </p>
+        </div>
+        <!-- Step 3 -->
+        <div class="relative bg-white rounded-2xl shadow-lg shadow-navy-100/50 p-6 sm:p-8 border border-navy-100">
+          <span class="absolute -top-4 left-6 inline-flex items-center justify-center w-8 h-8 rounded-full bg-teal-500 text-white text-sm font-bold">3</span>
+          <h3 class="text-lg font-bold mb-2 mt-2">進捗管理&アラート</h3>
+          <p class="text-navy-600 text-sm leading-relaxed">
+            対応状況をダッシュボードで一元管理。期限が近づくとアラートで通知し、対応漏れを防ぎます。
+          </p>
+        </div>
+      </div>
+
+      <!-- Differentiator -->
+      <div class="mt-16 bg-white rounded-2xl shadow-lg shadow-navy-100/50 border border-navy-100 overflow-hidden">
+        <div class="grid sm:grid-cols-3 text-center divide-y sm:divide-y-0 sm:divide-x divide-navy-100">
+          <div class="p-6 sm:p-8">
+            <p class="text-sm text-navy-500 mb-1">一般的な法改正ガイド</p>
+            <p class="font-bold text-navy-800">法改正カタログ型</p>
+            <p class="text-xs text-navy-400 mt-1">一覧から自分で選ぶ</p>
+          </div>
+          <div class="p-6 sm:p-8">
+            <p class="text-sm text-navy-500 mb-1">顧問弁護士</p>
+            <p class="font-bold text-navy-800">月額 3〜5万円</p>
+            <p class="text-xs text-navy-400 mt-1">個別相談・対応</p>
+          </div>
+          <div class="p-6 sm:p-8 bg-teal-50">
+            <p class="text-sm text-teal-700 font-semibold mb-1">ホウレイナビ</p>
+            <p class="font-bold text-teal-800">診断エンジン型</p>
+            <p class="text-xs text-teal-600 mt-1">プロファイル入力 → 自動抽出 → チェックリスト</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SOCIAL PROOF ========== -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24" id="proof">
+    <div class="text-center mb-12">
+      <p class="text-teal-600 font-semibold text-sm tracking-wider uppercase mb-2">Data</p>
+      <h2 class="text-2xl sm:text-4xl font-bold">数字が示す、対応の緊急性</h2>
+    </div>
+
+    <div class="grid gap-8 sm:grid-cols-2 max-w-3xl mx-auto">
+      <div class="text-center bg-navy-900 text-white rounded-2xl p-8 sm:p-10">
+        <p class="text-5xl sm:text-6xl font-extrabold text-teal-300 mb-2">87.7<span class="text-3xl">%</span></p>
+        <p class="text-navy-200 text-sm leading-relaxed">
+          中小企業のうち<br /><strong class="text-white">法務専門部署を持たない</strong>割合
+        </p>
+      </div>
+      <div class="text-center bg-navy-900 text-white rounded-2xl p-8 sm:p-10">
+        <p class="text-5xl sm:text-6xl font-extrabold text-teal-300 mb-2">28<span class="text-3xl">件+</span></p>
+        <p class="text-navy-200 text-sm leading-relaxed">
+          2026年に施行される<br /><strong class="text-white">主要な法改正の数</strong>
+        </p>
+      </div>
+    </div>
+
+    <p class="text-center text-navy-400 text-xs mt-6">
+      出典: 中小企業庁「中小企業白書」/ 各省庁公表の法改正スケジュールより集計
+    </p>
+  </section>
+
+  <!-- ========== PRICING ========== -->
+  <section class="bg-navy-50 py-16 sm:py-24" id="pricing">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <p class="text-teal-600 font-semibold text-sm tracking-wider uppercase mb-2">Pricing</p>
+        <h2 class="text-2xl sm:text-4xl font-bold">まずは無料診断から</h2>
+      </div>
+
+      <div class="grid gap-8 sm:grid-cols-2 max-w-3xl mx-auto">
+        <!-- Free -->
+        <div class="bg-white rounded-2xl border border-navy-200 p-8 flex flex-col">
+          <h3 class="text-lg font-bold mb-1">フリープラン</h3>
+          <p class="text-4xl font-extrabold mb-1">&yen;0</p>
+          <p class="text-navy-400 text-sm mb-6">ずっと無料</p>
+          <ul class="space-y-3 text-sm text-navy-700 mb-8 flex-1">
+            <li class="flex items-start gap-2">
+              <span class="text-teal-500 mt-0.5">&#10003;</span>法改正リスク診断
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-teal-500 mt-0.5">&#10003;</span>該当法令一覧の表示
+            </li>
+            <li class="flex items-start gap-2 text-navy-300">
+              <span class="mt-0.5">&mdash;</span>対応チェックリスト生成
+            </li>
+            <li class="flex items-start gap-2 text-navy-300">
+              <span class="mt-0.5">&mdash;</span>進捗管理ダッシュボード
+            </li>
+            <li class="flex items-start gap-2 text-navy-300">
+              <span class="mt-0.5">&mdash;</span>期限アラート通知
+            </li>
+          </ul>
+          <a href="#signup" class="block text-center rounded-full border-2 border-navy-800 text-navy-800 hover:bg-navy-800 hover:text-white transition font-semibold py-3">
+            無料で診断する
+          </a>
+        </div>
+
+        <!-- Pro -->
+        <div class="bg-white rounded-2xl border-2 border-teal-500 p-8 flex flex-col relative shadow-lg shadow-teal-100/50">
+          <span class="absolute -top-3.5 right-6 bg-teal-500 text-white text-xs font-bold px-3 py-1 rounded-full">おすすめ</span>
+          <h3 class="text-lg font-bold mb-1">プロプラン</h3>
+          <p class="text-4xl font-extrabold mb-1">&yen;3,000<span class="text-base font-normal text-navy-500">〜5,000/月</span></p>
+          <p class="text-navy-400 text-sm mb-6">顧問弁護士の<strong class="text-teal-700">1/10</strong>の費用</p>
+          <ul class="space-y-3 text-sm text-navy-700 mb-8 flex-1">
+            <li class="flex items-start gap-2">
+              <span class="text-teal-500 mt-0.5">&#10003;</span>法改正リスク診断
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-teal-500 mt-0.5">&#10003;</span>該当法令一覧の表示
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-teal-500 mt-0.5 font-bold">&#10003;</span><strong>対応チェックリスト生成</strong>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-teal-500 mt-0.5 font-bold">&#10003;</span><strong>進捗管理ダッシュボード</strong>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-teal-500 mt-0.5 font-bold">&#10003;</span><strong>期限アラート通知</strong>
+            </li>
+          </ul>
+          <a href="#signup" class="block text-center rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-semibold py-3 shadow-md shadow-teal-500/20">
+            無料診断から始める
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER CTA ========== -->
+  <section class="bg-gradient-to-br from-navy-900 via-navy-800 to-teal-800 text-white py-16 sm:py-24" id="signup">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <h2 class="text-2xl sm:text-4xl font-bold mb-4">
+        2026年の法改正、<br class="sm:hidden" />見落としていませんか？
+      </h2>
+      <p class="text-navy-200 text-lg mb-10">
+        業種と従業員数を選ぶだけ。1分で自社に該当する法改正が分かります。
+      </p>
+
+      <!-- Placeholder signup form -->
+      <form action="#signup" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+        <select class="flex-1 rounded-full px-5 py-3.5 text-navy-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" aria-label="業種を選択">
+          <option value="" disabled selected>業種を選択</option>
+          <option>IT・通信</option>
+          <option>製造業</option>
+          <option>小売・卸売</option>
+          <option>飲食・宿泊</option>
+          <option>建設・不動産</option>
+          <option>医療・福祉</option>
+          <option>士業・コンサル</option>
+          <option>その他サービス</option>
+        </select>
+        <select class="flex-1 rounded-full px-5 py-3.5 text-navy-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" aria-label="従業員数を選択">
+          <option value="" disabled selected>従業員数</option>
+          <option>1〜5名</option>
+          <option>6〜10名</option>
+          <option>11〜30名</option>
+          <option>31〜50名</option>
+        </select>
+        <button type="submit" class="rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold px-8 py-3.5 shadow-lg shadow-teal-500/30 whitespace-nowrap">
+          無料で診断する
+        </button>
+      </form>
+      <p class="mt-4 text-sm text-navy-300">登録不要 / メールアドレス不要 / 1分で完了</p>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-navy-900 text-navy-400 text-xs py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <span class="font-semibold text-white text-sm">ホウレイナビ</span>
+      <p>&copy; 2026 ホウレイナビ. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
