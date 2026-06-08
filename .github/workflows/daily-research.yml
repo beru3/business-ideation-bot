@@ -41,19 +41,19 @@ jobs:
           python -m playwright install chromium --with-deps
         if: ${{ !env.EXA_API_KEY }}
 
-      - name: 信号収集（日次モード: 15-20クエリ）
+      - name: "信号収集（日次モード: 15-20クエリ）"
         run: python bot/collect.py --daily
 
       - name: 検索実行
         run: python bot/search.py
 
-      - name: 仮説生成（DeepSeek + 重複排除）
+      - name: "仮説生成（DeepSeek + 重複排除）"
         run: python bot/hypothesize.py
 
       - name: ナレッジフィルタリング
         run: python bot/filter.py
 
-      - name: Issue投稿（フィルタ通過分）
+      - name: "Issue投稿（フィルタ通過分）"
         if: ${{ !inputs.dry_run }}
         run: python bot/ideation.py post-signals
 
