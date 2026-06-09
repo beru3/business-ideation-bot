@@ -4,5 +4,8 @@
   "replied": [],
   "quoted": [],
   "followedBack": [],
-  "unfollowed": []
+  "unfollowed": [],
+  "replyCandidateIds": [],
+  "quotedTweetIds": [],
+  "autoRepliedTweetIds": []
 }
