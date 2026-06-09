@@ -4,6 +4,7 @@
 // 環境変数: {PREFIX}_X_*, DEEPSEEK_API_KEY
 import OpenAI from 'openai';
 import { loadContext, readJSON, writeJSON } from './lib/context.mjs';
+import { join } from 'node:path';
 
 const ctx = loadContext();
 const { config, paths, slug } = ctx;
@@ -31,11 +32,53 @@ const accountLearnings = learnings.accounts?.[slug] || {};
 const generateInstructions = accountLearnings.generate_instructions || '';
 
 // 3. ブリーフ情報を読み込み
-import { join } from 'node:path';
 const repoRoot = join(ctx.root, '..');
 const brief = readJSON(join(repoRoot, config.briefPath), {});
 
-// 4. DeepSeekで投稿文を生成
+// 4. ナレッジインサイトから関連知見を抽出
+const knowledgePath = join(repoRoot, 'bot', 'validate_input.json');
+const knowledgeData = readJSON(knowledgePath, {});
+const allInsights = knowledgeData.knowledge_insights || [];
+
+function scoreInsight(insight) {
+  const searchFields = [
+    insight.target_who || '',
+    insight.target_industry || '',
+    insight.pain_point || '',
+    insight.automation_opportunity || '',
+    insight.market_hint || '',
+    ...(insight.tags || []),
+  ].join(' ').toLowerCase();
+
+  const keywords = [
+    ...(config.hashtags || []).map(h => h.replace('#', '')),
+    ...(config.persona || '').split(/[、。\s]+/),
+    ...(config.targetPersona || '').split(/[、。\s]+/),
+    ...(brief.pain_statement || '').split(/[、。\s]+/),
+  ].filter(k => k.length >= 2).map(k => k.toLowerCase());
+
+  let score = 0;
+  for (const kw of keywords) {
+    if (searchFields.includes(kw)) score++;
+  }
+  return score;
+}
+
+const scoredInsights = allInsights
+  .map(i => ({ ...i, _score: scoreInsight(i) }))
+  .filter(i => i._score > 0)
+  .sort((a, b) => b._score - a._score)
+  .slice(0, 10);
+
+const knowledgeBlock = scoredInsights.length > 0
+  ? scoredInsights.map(i =>
+    `- [ID:${i.id}] ペイン: ${i.pain_point || ''} → 機会: ${i.automation_opportunity || ''} (${(i.tags || []).join(', ')})`
+  ).join('\n')
+  : '';
+
+console.log(`[${slug}] ナレッジ: ${allInsights.length}件中${scoredInsights.length}件を関連知見として抽出`);
+
+// 6. DeepSeekで投稿文を生成
 const GENERATE_COUNT = config.generateCount || 3;
 const today = new Date().toISOString().slice(0, 10);
 
@@ -55,6 +98,15 @@ ${config.targetPersona || brief.target_persona || ''}
 - LP誘導投稿は${GENERATE_COUNT}件中1件程度。URL: ${config.lpUrl || ''}
 - リンク付き投稿は、リンクなしでも意味が通じる文章にする（リンクは自動でリプライに分離）。
 - 禁止: 政治、災害、攻撃的表現、他社サービス批判
+
+【マーケブリーフの訴求ポイント】
+- 痛み: ${brief.pain_statement || ''}
+- 差別化: ${brief.differentiator || ''}
+- CTA: ${brief.cta_design || ''}
+- 価格: ${brief.pricing_hint || ''}
+${(brief.knowledge_backed_tactics || []).length > 0 ? `- ナレッジ由来の戦術:\n${brief.knowledge_backed_tactics.map(t => `  - ${t}`).join('\n')}` : ''}
+
+${knowledgeBlock ? `【マーケティングナレッジ（投稿の訴求角度・表現に活かすこと）】\n${knowledgeBlock}` : ''}
 
 【過去の投稿・キュー内の投稿（重複しないこと）】
 ${existingTexts || '（なし）'}
@@ -84,7 +136,7 @@ const response = await ai.chat.completions.create({
 
 const content = response.choices[0].message.content.trim();
 
-// 5. JSONパース
+// 7. JSONパース
 let generated;
 try {
   const jsonStr = content.replace(/^```json?\s*\n?/m, '').replace(/\n?```\s*$/m, '');
@@ -100,7 +152,7 @@ if (!Array.isArray(generated) || generated.length === 0) {
   process.exit(1);
 }
 
-// 6. queue.json に追加
+// 8. queue.json に追加
 const dateTag = today.replace(/-/g, '');
 const newEntries = [];
 for (let i = 0; i < generated.length; i++) {
