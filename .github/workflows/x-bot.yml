@@ -1,0 +1,329 @@
+name: X-bot auto-posting & engagement
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to run'
+        type: choice
+        options: [generate, post, engage, auto-reply, follow-back, unfollow, metrics, learn, ad-recommend, check]
+        default: check
+      account:
+        description: 'Account slug (leave empty for all accounts)'
+        type: string
+        default: ''
+  schedule:
+    # JST = UTC + 9
+    # 06:00 JST (21:00 UTC prev day) — metrics
+    - cron: '0 21 * * *'
+    # 06:30 JST (21:30 UTC) — learn (Monday only, handled in job)
+    - cron: '30 21 * * 0'
+    # 06:45 JST (21:45 UTC) — ad-recommend (Monday only)
+    - cron: '45 21 * * 0'
+    # 07:00 JST (22:00 UTC) — generate
+    - cron: '0 22 * * *'
+    # 10:00 JST (01:00 UTC) — engage
+    - cron: '0 1 * * *'
+    # 12:00 JST (03:00 UTC) — post slot 1
+    - cron: '0 3 * * *'
+    # 14:00 JST (05:00 UTC) — engage auto-reply + follow-back
+    - cron: '0 5 * * *'
+    # 16:00 JST (07:00 UTC) — post slot 2
+    - cron: '0 7 * * *'
+    # 19:00 JST (10:00 UTC) — post slot 3
+    - cron: '0 10 * * *'
+    # 20:00 JST (11:00 UTC) — engage auto-reply + unfollow
+    - cron: '0 11 * * *'
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: x-bot
+  cancel-in-progress: false
+
+jobs:
+  discover-accounts:
+    runs-on: ubuntu-latest
+    outputs:
+      accounts: ${{ steps.list.outputs.accounts }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: List accounts with config.json
+        id: list
+        run: |
+          ACCOUNTS=$(ls -d x-bot/accounts/*/config.json 2>/dev/null | sed 's|x-bot/accounts/||;s|/config.json||' | jq -R -s 'split("\n") | map(select(length > 0))' -c)
+          echo "accounts=${ACCOUNTS:-[]}" >> "$GITHUB_OUTPUT"
+          echo "Found accounts: $ACCOUNTS"
+
+  run:
+    needs: discover-accounts
+    if: needs.discover-accounts.outputs.accounts != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        account: ${{ fromJson(needs.discover-accounts.outputs.accounts) }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci --prefix x-bot
+
+      - name: Determine action from schedule
+        id: action
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "action=${{ inputs.action }}" >> "$GITHUB_OUTPUT"
+            echo "Manual: ${{ inputs.action }}"
+          else
+            case "${{ github.event.schedule }}" in
+              "0 21 * * *")   echo "action=metrics" >> "$GITHUB_OUTPUT" ;;
+              "30 21 * * 0")  echo "action=learn" >> "$GITHUB_OUTPUT" ;;
+              "45 21 * * 0")  echo "action=ad-recommend" >> "$GITHUB_OUTPUT" ;;
+              "0 22 * * *")   echo "action=generate" >> "$GITHUB_OUTPUT" ;;
+              "0 1 * * *")    echo "action=engage" >> "$GITHUB_OUTPUT" ;;
+              "0 3 * * *")    echo "action=post-1" >> "$GITHUB_OUTPUT" ;;
+              "0 5 * * *")    echo "action=auto-reply-followback" >> "$GITHUB_OUTPUT" ;;
+              "0 7 * * *")    echo "action=post-2" >> "$GITHUB_OUTPUT" ;;
+              "0 10 * * *")   echo "action=post-3" >> "$GITHUB_OUTPUT" ;;
+              "0 11 * * *")   echo "action=auto-reply-unfollow" >> "$GITHUB_OUTPUT" ;;
+              *)              echo "action=skip" >> "$GITHUB_OUTPUT" ;;
+            esac
+          fi
+
+      # --- Metrics ---
+      - name: Metrics
+        if: steps.action.outputs.action == 'metrics'
+        run: node x-bot/metrics.mjs --account ${{ matrix.account }}
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Generate ---
+      - name: Generate
+        if: steps.action.outputs.action == 'generate'
+        run: node x-bot/generate.mjs --account ${{ matrix.account }}
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Post (3 slots with different thresholds) ---
+      - name: Post (slot 1 - main)
+        if: steps.action.outputs.action == 'post-1' || steps.action.outputs.action == 'post'
+        run: node x-bot/post.mjs --account ${{ matrix.account }} post 1
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post (slot 2)
+        if: steps.action.outputs.action == 'post-2'
+        run: node x-bot/post.mjs --account ${{ matrix.account }} post 2
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post (slot 3)
+        if: steps.action.outputs.action == 'post-3'
+        run: node x-bot/post.mjs --account ${{ matrix.account }} post 3
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Engage ---
+      - name: Engage
+        if: steps.action.outputs.action == 'engage'
+        run: node x-bot/engage.mjs --account ${{ matrix.account }}
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Auto-reply + Follow-back (afternoon) ---
+      - name: Auto-reply + Follow-back
+        if: steps.action.outputs.action == 'auto-reply-followback' || steps.action.outputs.action == 'auto-reply' || steps.action.outputs.action == 'follow-back'
+        run: |
+          node x-bot/engage.mjs --account ${{ matrix.account }} auto-reply
+          node x-bot/engage.mjs --account ${{ matrix.account }} follow-back
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Auto-reply + Unfollow (evening) ---
+      - name: Auto-reply + Unfollow
+        if: steps.action.outputs.action == 'auto-reply-unfollow' || steps.action.outputs.action == 'unfollow'
+        run: |
+          node x-bot/engage.mjs --account ${{ matrix.account }} auto-reply
+          node x-bot/engage.mjs --account ${{ matrix.account }} unfollow
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Check (auth test) ---
+      - name: Check auth
+        if: steps.action.outputs.action == 'check'
+        run: node x-bot/post.mjs --account ${{ matrix.account }} check
+        env:
+          AIO_X_API_KEY: ${{ secrets.AIO_X_API_KEY }}
+          AIO_X_API_KEY_SECRET: ${{ secrets.AIO_X_API_KEY_SECRET }}
+          AIO_X_ACCESS_TOKEN: ${{ secrets.AIO_X_ACCESS_TOKEN }}
+          AIO_X_ACCESS_TOKEN_SECRET: ${{ secrets.AIO_X_ACCESS_TOKEN_SECRET }}
+          COMPLA_X_API_KEY: ${{ secrets.COMPLA_X_API_KEY }}
+          COMPLA_X_API_KEY_SECRET: ${{ secrets.COMPLA_X_API_KEY_SECRET }}
+          COMPLA_X_ACCESS_TOKEN: ${{ secrets.COMPLA_X_ACCESS_TOKEN }}
+          COMPLA_X_ACCESS_TOKEN_SECRET: ${{ secrets.COMPLA_X_ACCESS_TOKEN_SECRET }}
+          HOUREI_X_API_KEY: ${{ secrets.HOUREI_X_API_KEY }}
+          HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
+          HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
+          HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+
+      # --- Commit updated data files ---
+      - name: Commit data files
+        run: |
+          git config user.name "x-bot"
+          git config user.email "noreply@anthropic.com"
+          git add x-bot/accounts/*/queue.json x-bot/accounts/*/posted.json x-bot/accounts/*/engage_history.json x-bot/accounts/*/metrics_history.json x-bot/shared/learnings.json 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: x-bot data update (${{ matrix.account }})"
+            git pull --rebase origin master
+            git push
+          fi
+
+  # --- Learn and Ad-recommend run once (not per-account) ---
+  learn:
+    needs: discover-accounts
+    if: >-
+      needs.discover-accounts.outputs.accounts != '[]'
+      && (github.event.schedule == '30 21 * * 0' || (github.event_name == 'workflow_dispatch' && inputs.action == 'learn'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci --prefix x-bot
+      - name: Run learn
+        run: node x-bot/learn.mjs
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      - name: Commit learnings
+        run: |
+          git config user.name "x-bot"
+          git config user.email "noreply@anthropic.com"
+          git add x-bot/shared/learnings.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: x-bot weekly learnings update"
+            git pull --rebase origin master
+            git push
+          fi
+
+  ad-recommend:
+    needs: [discover-accounts, learn]
+    if: >-
+      needs.discover-accounts.outputs.accounts != '[]'
+      && (github.event.schedule == '45 21 * * 0' || (github.event_name == 'workflow_dispatch' && inputs.action == 'ad-recommend'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci --prefix x-bot
+      - name: Run ad-recommend
+        run: node x-bot/ad-recommend.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
