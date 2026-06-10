@@ -1,0 +1,80 @@
+name: note-bot metrics & posting
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to run'
+        type: choice
+        options: [note-metrics, note-post]
+        default: note-metrics
+      account:
+        description: 'Account slug'
+        type: string
+        default: 'hourei-navi'
+  schedule:
+    # 週次メトリクス: 月曜 08:00 JST (23:00 UTC 日曜)
+    - cron: '0 23 * * 0'
+    # 記事投稿: 水曜 10:00 JST (01:00 UTC)  ※キューに記事がある場合のみ
+    - cron: '0 1 * * 3'
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: note-bot
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci --prefix x-bot
+      - name: Install Playwright Chromium
+        run: npx --prefix x-bot playwright install chromium --with-deps
+
+      - name: Determine action
+        id: action
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "action=${{ inputs.action }}" >> "$GITHUB_OUTPUT"
+            echo "account=${{ inputs.account }}" >> "$GITHUB_OUTPUT"
+          else
+            case "${{ github.event.schedule }}" in
+              "0 23 * * 0") echo "action=note-metrics" >> "$GITHUB_OUTPUT" ;;
+              "0 1 * * 3")  echo "action=note-post" >> "$GITHUB_OUTPUT" ;;
+              *)            echo "action=skip" >> "$GITHUB_OUTPUT" ;;
+            esac
+            echo "account=hourei-navi" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Note Metrics
+        if: steps.action.outputs.action == 'note-metrics'
+        run: node x-bot/note-metrics.mjs --account ${{ steps.action.outputs.account }}
+        env:
+          NOTE_EMAIL: ${{ secrets.NOTE_EMAIL }}
+          NOTE_PASSWORD: ${{ secrets.NOTE_PASSWORD }}
+
+      - name: Note Post
+        if: steps.action.outputs.action == 'note-post'
+        run: node x-bot/note-post.mjs --account ${{ steps.action.outputs.account }}
+        env:
+          NOTE_EMAIL: ${{ secrets.NOTE_EMAIL }}
+          NOTE_PASSWORD: ${{ secrets.NOTE_PASSWORD }}
+
+      - name: Commit data files
+        run: |
+          git config user.name "note-bot"
+          git config user.email "noreply@anthropic.com"
+          git add x-bot/accounts/*/note_metrics.json x-bot/accounts/*/note_queue.json x-bot/accounts/*/note_posted.json 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: note-bot data update (${{ steps.action.outputs.account }})"
+            git pull --rebase origin master
+            git push
+          fi

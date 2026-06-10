@@ -7,5 +7,7 @@
   "lpUrl": "https://beru3.github.io/business-ideation-bot/lp/hourei-navi/",
   "briefPath": "bot/briefs/brief_37.json",
   "generateCount": 3,
-  "issueNumber": 2
+  "issueNumber": 2,
+  "noteAccountId": "hourei_navi",
+  "noteUrl": "https://note.com/hourei_navi/n/ne50cf49441c0"
 }

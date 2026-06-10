@@ -8,10 +8,13 @@
     "engage": "node engage.mjs",
     "metrics": "node metrics.mjs",
     "learn": "node learn.mjs",
-    "ad-recommend": "node ad-recommend.mjs"
+    "ad-recommend": "node ad-recommend.mjs",
+    "note-metrics": "node note-metrics.mjs",
+    "note-post": "node note-post.mjs"
   },
   "dependencies": {
     "openai": "^6.39.0",
+    "playwright": "^1.52.0",
     "twitter-api-v2": "^1.29.0"
   }
 }
