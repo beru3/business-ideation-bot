@@ -10,7 +10,8 @@
     "learn": "node learn.mjs",
     "ad-recommend": "node ad-recommend.mjs",
     "note-metrics": "node note-metrics.mjs",
-    "note-post": "node note-post.mjs"
+    "note-post": "node note-post.mjs",
+    "note-learn": "node note-learn.mjs"
   },
   "dependencies": {
     "openai": "^6.39.0",
