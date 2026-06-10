@@ -47,8 +47,14 @@ const learnings = readJSON(learningsPath, { updated_at: null, accounts: {} });
 for (const slug of accounts) {
   const metricsPath = join(ROOT, 'accounts', slug, 'note_metrics.json');
   const postedPath = join(ROOT, 'accounts', slug, 'note_posted.json');
+  const configPath = join(ROOT, 'accounts', slug, 'config.json');
+  const config = readJSON(configPath, {});
   const metrics = readJSON(metricsPath, []);
   const posted = readJSON(postedPath, []);
+
+  // ブリーフからターゲット・コンセプト情報を取得
+  const briefPath = config.briefPath ? join(PROJECT_ROOT, config.briefPath) : null;
+  const brief = briefPath ? readJSON(briefPath, {}) : {};
 
   if (metrics.length < 2) {
     console.log(`[${slug}] noteメトリクスが2週分未満。分析にはもう1週間待ってください。`);
@@ -81,8 +87,7 @@ for (const slug of accounts) {
   // PV成長率でソート
   const sorted = [...articleGrowth].sort((a, b) => b.weeklyPvGrowth - a.weeklyPvGrowth);
 
-  // ナレッジからトップ記事に関連するインサイトを抽出
-  const topArticleTitle = sorted[0]?.title || '';
+  // --- ナレッジインサイトの抽出（ターゲット・課題ベースでスコアリング） ---
   let knowledgeSection = '';
   if (knowledgeInsights.length > 0) {
     // 記事に紐付いたナレッジIDを収集
@@ -91,8 +96,28 @@ for (const slug of accounts) {
       .filter(k => usedIds.has(String(k.id)) || usedIds.has(`ID#${k.id}`))
       .slice(0, 10);
 
-    // SEO/コンテンツ関連のナレッジも上位5件抽出
-    const seoInsights = knowledgeInsights
+    // ターゲット・課題キーワードでスコアリング
+    const targetKeywords = [
+      config.persona || '', config.targetPersona || '',
+      brief.target_persona || '', brief.pain_statement || '',
+      brief.solution_hook || '', brief.differentiator || '',
+      ...(config.hashtags || []),
+    ].join(' ').toLowerCase().split(/[\s、。,./]+/).filter(w => w.length >= 2);
+
+    const scoredInsights = knowledgeInsights.map(k => {
+      const text = `${k.title || ''} ${k.insight || ''} ${k.tags || ''}`.toLowerCase();
+      const score = targetKeywords.reduce((s, kw) => s + (text.includes(kw) ? 1 : 0), 0);
+      return { ...k, relevanceScore: score };
+    });
+
+    // ターゲット関連上位5件
+    const targetInsights = scoredInsights
+      .filter(k => k.relevanceScore > 0)
+      .sort((a, b) => b.relevanceScore - a.relevanceScore)
+      .slice(0, 5);
+
+    // SEO/コンテンツ関連上位5件
+    const seoInsights = scoredInsights
       .filter(k => {
         const text = `${k.title || ''} ${k.insight || ''} ${k.tags || ''}`.toLowerCase();
         return text.includes('seo') || text.includes('タイトル') || text.includes('コンテンツ')
@@ -100,17 +125,27 @@ for (const slug of accounts) {
       })
       .slice(0, 5);
 
-    if (usedInsights.length > 0 || seoInsights.length > 0) {
-      knowledgeSection = `\n## 適用済みナレッジインサイト（マーケティング侍由来）\n`;
-      if (usedInsights.length > 0) {
-        knowledgeSection += `### 記事に適用済み\n${usedInsights.map(k => `- ID#${k.id}: ${k.insight || k.title || ''}`).join('\n')}\n`;
-      }
-      knowledgeSection += `### SEO/コンテンツ関連ナレッジ（参考）\n${seoInsights.map(k => `- ID#${k.id}: ${k.insight || k.title || ''}`).join('\n')}\n`;
-      knowledgeSection += `\nこれらのナレッジのうち、PV上位記事に効いていると推定されるIDを effective_knowledge_ids に含めてください。\n`;
+    knowledgeSection = `\n## マーケティングナレッジ（マーケティング侍378記事由来・${knowledgeInsights.length}件）\n`;
+    if (usedInsights.length > 0) {
+      knowledgeSection += `### 記事に適用済み\n${usedInsights.map(k => `- ID#${k.id}: ${k.insight || k.title || ''}`).join('\n')}\n`;
     }
+    if (targetInsights.length > 0) {
+      knowledgeSection += `### ターゲット関連（スコア順）\n${targetInsights.map(k => `- ID#${k.id} [関連度${k.relevanceScore}]: ${k.insight || k.title || ''}`).join('\n')}\n`;
+    }
+    if (seoInsights.length > 0) {
+      knowledgeSection += `### SEO/コンテンツ戦術\n${seoInsights.map(k => `- ID#${k.id}: ${k.insight || k.title || ''}`).join('\n')}\n`;
+    }
+    knowledgeSection += `\n上記ナレッジのうち、PV上位記事に効いていると推定されるIDを effective_knowledge_ids に、次の記事に適用すべきIDを recommended_knowledge_ids に含めてください。\n`;
   }
 
-  const analysisPrompt = `以下はnoteアカウントの記事パフォーマンスです（週次比較）。
+  // --- コンテキストを config.json + brief から動的構築 ---
+  const target = brief.target_persona || config.targetPersona || config.persona || '（未設定）';
+  const pain = brief.pain_statement || '（未設定）';
+  const solution = brief.solution_hook || '（未設定）';
+  const differentiator = brief.differentiator || '（未設定）';
+  const channels = (brief.channels || []).join('、') || '（未設定）';
+
+  const analysisPrompt = `以下はnoteアカウント「${config.account || slug}」の記事パフォーマンスです（週次比較）。
 
 ## 全体サマリー
 - 総PV: ${latest.total_pv}（前週比: +${latest.total_pv - prev.total_pv}）
@@ -124,9 +159,12 @@ ${sorted.map(a => {
   }).join('\n')}
 ${knowledgeSection}
 ## コンテキスト
-- ターゲット: 法務部がない中小企業の経営者・管理部門
+- ターゲット: ${target}
+- 課題: ${pain}
+- ソリューション: ${solution}
+- 差別化: ${differentiator}
+- チャネル: ${channels}
 - 目的: SEO流入 → LP → リード獲得
-- 競合: freee法対応ガイド、大手法務メディア
 
 以下のJSON形式で分析結果を出力してください:
 {
@@ -138,6 +176,7 @@ ${knowledgeSection}
   "title_pattern": "効いているタイトルの共通パターン",
   "content_instructions": "次回の記事執筆時に従うべき具体的な指示。200文字以内。",
   "effective_knowledge_ids": ["PV上位記事に効いていると推定されるナレッジID（例: ID#1311）"],
+  "recommended_knowledge_ids": ["次の記事に適用すべきナレッジID（まだ試していない or 効果が見込めるもの）"],
   "ineffective_patterns": "効いていない記事の共通パターン（避けるべき）"
 }`;
 
