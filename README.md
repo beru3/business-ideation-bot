@@ -2,63 +2,59 @@
 
 リアルタイムの市場信号から事業仮説を生成し、ナレッジで補強・市場検証を経てテストマーケに進めるパイプライン。
 
-## パイプライン
+外部API（Exa, DeepSeek等）は使わず、Claude Code のスキルで完結する（ランニングコスト ¥0）。
+
+## パイプライン v2
 
 ```
-信号収集（7ソース）
+/weekly-pipeline （Claude Code スキル、週次実行）
+        │
+信号収集（WebSearch x 8ソース）
   X/Twitter, Google Trends, Product Hunt,
-  アプリレビュー, Reddit, 求人, 法改正
+  アプリレビュー, Reddit, 求人, 法改正, 学習由来
         │
         ▼
-    仮説生成 + 適合度採点（0-10）
-        │
-        ├─ 基準以下 → 却下
+    トリアージ → 深掘りリサーチ
         │
         ▼
-    Issue投稿 [シグナル発]
+    仮説生成 + ナレッジ照合（マーケ侍496件 / Supabase）
         │
         ▼
-    市場検証（競合調査 + 需要裏取り + 収益モデル）
-    + ナレッジ補強（マーケ侍496件と照合）
-        │
-        ├─ 基準以下 → 却下
+    市場検証（競合調査 + 需要裏取り）
+    スコアリング: 4軸10点（7+ pass / 4-6 hold / 3以下 reject）
         │
         ▼
-    Issue投稿 [検証済]
+    Issue投稿 [シグナル発] → [検証済] / [保留] / クローズ
         │
         ▼
-    テストマーケ（未設計）
+    /test-marketing （pass仮説のLP・X投稿・note記事生成）
 ```
 
 ## 使い方
 
-### 1. 信号収集
-
-```bash
-python bot/collect.py              # 全ソース（50クエリ）
-python bot/collect.py twitter      # 特定ソースのみ
-python bot/collect.py --list       # ソース一覧
+```
+/weekly-pipeline    # 信号収集→仮説生成→市場検証→Issue投稿まで一気通貫
+/test-marketing     # 検証済仮説のテストマーケ素材生成
 ```
 
-GitHub Actions で毎日 JST 8:30 に自動実行。
-
-### 2. 仮説生成・投稿
-
-Claude Code で `bot/signals_raw.json` を読み、Exa web search で各クエリを実行。
-結果を分析して仮説を `bot/signals_hypotheses.json` に保存。
+### 補助スクリプト
 
 ```bash
-python bot/ideation.py post-signals       # Issue投稿（ラベル: シグナル発）
-python bot/ideation.py post-signals --dry # dry run
+python bot/validate.py fetch   # ナレッジ496件を bot/validate_input.json に取得
+python bot/validate.py post    # bot/validate_output.json の検証結果をIssueに反映
 ```
 
-### 3. 市場検証
+## ディレクトリ構成
 
-```bash
-python bot/ideation.py validate           # 検証対象Issue + ナレッジ取得
-python bot/ideation.py validate-post      # 検証済みIssue投稿（ラベル: 検証済）
-python bot/ideation.py validate-post --dry
-```
+| パス | 内容 |
+|---|---|
+| `bot/validate.py` | ナレッジ取得 + Issue反映スクリプト |
+| `bot/VALIDATE_PROMPT.md` | 市場検証の評価基準 |
+| `bot/briefs/` | pass仮説のマーケブリーフ |
+| `bot/articles/` `bot/x-posts/` `bot/knowledge_context/` | テストマーケ素材 |
+| `x-bot/` | X / note の自動運用Bot（GitHub Actions） |
+| `site/lp/` | LP（GitHub Pages 配信） |
+| `supabase/` | ナレッジDBマイグレーション |
 
 ## ラベル体系
 
@@ -66,24 +62,16 @@ python bot/ideation.py validate-post --dry
 |--------|------|
 | `シグナル発` | リアルタイム信号から生成された仮説 |
 | `検証済` | 競合調査・需要裏取りを通過した仮説 |
+| `保留` | スコア4-6で再検証待ちの仮説 |
 
 ## セットアップ
 
-### GitHub Secrets
-
-| Secret | 内容 |
-|---|---|
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key（任意） |
-
-### ローカル実行
-
 ```bash
 pip install supabase
-python bot/collect.py
+export SUPABASE_SERVICE_ROLE_KEY=...   # validate.py fetch に必要
 ```
 
-## アーカイブ済み
+## 廃止済み
 
-以下は旧パイプラインのコードで、現在は使用していません：
-- `bot/research.mjs` — DeepSeek による失敗スタートアップ事例からの仮説生成（旧入り口①）
-- `bot/ideation_analysis.json`, `bot/ideation_hypotheses.json` — 静的ナレッジからの独立生成（旧入り口②）
+v1パイプライン（GitHub Actions + Exa API + DeepSeek API）は 2026-06 に削除済み。
+履歴は git log を参照（`bot/collect.py`, `bot/research.mjs` 等）。

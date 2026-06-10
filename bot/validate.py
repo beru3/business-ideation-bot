@@ -26,10 +26,7 @@ from datetime import datetime, timezone
 from supabase import create_client
 
 SUPABASE_URL = "https://fkyapyaiqigqdfdyjyop.supabase.co"
-SUPABASE_KEY = os.environ.get(
-    "SUPABASE_SERVICE_ROLE_KEY",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZreWFweWFpcWlncWRmZHlqeW9wIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDQ2ODU1OCwiZXhwIjoyMDk2MDQ0NTU4fQ.hoy8AVtQePHU5TcQHxhBxT736yvtWSNItzpwAdtm5cg",
-)
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 REPO = "beru3/business-ideation-bot"
 
 INPUT_FILE = "bot/validate_input.json"
@@ -38,6 +35,9 @@ BRIEFS_DIR = "bot/briefs"
 
 
 def get_db():
+    if not SUPABASE_KEY:
+        print("Error: 環境変数 SUPABASE_SERVICE_ROLE_KEY が未設定です。")
+        sys.exit(1)
     return create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
@@ -129,19 +129,28 @@ def cmd_post(dry_run=False):
     held = 0
 
     for res in results:
-        issue_num = res["issue_number"]
+        issue_num = res.get("issue_number")
         score = res["market_fit_score"]
         verdict = res["verdict"]  # "pass" | "hold" | "reject"
 
         comment = _build_comment(res)
 
         if dry_run:
-            print(f"\n  [DRY] #{issue_num} → {verdict} (score={score})")
+            label = f"#{issue_num}" if issue_num is not None else "(新規Issue)"
+            print(f"\n  [DRY] {label} → {verdict} (score={score})")
             print(f"  Comment: {comment[:200]}...")
             if verdict == "pass":
                 brief = res.get("marketing_brief", {})
                 print(f"  Brief: {json.dumps(brief, ensure_ascii=False)[:200]}...")
             continue
+
+        # issue_number が無い仮説は新規Issueを作成（ラベル: シグナル発）
+        if issue_num is None:
+            issue_num = _create_issue(res)
+            if issue_num is None:
+                print(f"  SKIP: Issue作成失敗 ({res.get('issue_title', '(タイトルなし)')[:50]})")
+                continue
+            print(f"  NEW  #{issue_num} created: {res.get('issue_title', '')[:50]}")
 
         # コメント投稿
         _gh(f'gh issue comment {issue_num} --repo {REPO} --body-file -', input_text=comment)
@@ -191,6 +200,28 @@ def cmd_post(dry_run=False):
 # ──────────────────────────────────────────────
 # helpers
 # ──────────────────────────────────────────────
+def _create_issue(res):
+    """新規仮説のIssueを作成し、Issue番号を返す。失敗時は None。"""
+    title = (res.get("issue_title") or "").strip()
+    if not title:
+        return None
+    # shell=True 経由のためタイトル中の二重引用符は除去
+    safe_title = title.replace('"', "'")
+    body = res.get("issue_body") or "（本文は市場検証コメントを参照）"
+
+    result = _gh(
+        f'gh issue create --repo {REPO} --title "{safe_title}" '
+        f'--label "シグナル発" --body-file -',
+        input_text=body,
+    )
+    if result.returncode != 0:
+        return None
+    # stdout 末尾の Issue URL（.../issues/42）から番号を抽出
+    url = result.stdout.strip().splitlines()[-1] if result.stdout.strip() else ""
+    tail = url.rstrip("/").rsplit("/", 1)[-1]
+    return int(tail) if tail.isdigit() else None
+
+
 def _build_comment(res):
     """検証結果からIssueコメントを組み立てる"""
     score = res["market_fit_score"]
