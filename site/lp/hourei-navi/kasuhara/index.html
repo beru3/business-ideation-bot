@@ -41,6 +41,28 @@
   <style>
     html { scroll-behavior: smooth; }
   </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-10812594141"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-10812594141');
+  </script>
+  <!-- Conversion: CTA (Google Forms) click. target=_blank なのでリダイレクト不要、クリック時に発火のみ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('a[href*="docs.google.com/forms"]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          gtag('event', 'conversion', {
+            'send_to': 'AW-10812594141/tz74CMC39bwcEN2v7KMo',
+            'value': 1.0,
+            'currency': 'JPY'
+          });
+        });
+      });
+    });
+  </script>
 </head>
 <body class="bg-white text-navy-900 font-sans antialiased">
 
