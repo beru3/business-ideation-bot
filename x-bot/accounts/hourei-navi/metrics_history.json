@@ -93,5 +93,58 @@
         "quotes": 0
       }
     ]
+  },
+  {
+    "date": "2026-06-11",
+    "followerCount": 0,
+    "totalImpressions": 0,
+    "totalLikes": 0,
+    "totalRetweets": 0,
+    "metrics": [
+      {
+        "id": "hourei-01-problem",
+        "tweetId": "2064244559232823748",
+        "text": "2026年の法改正、28件以上あるの知ってますか？\n\nインボイス経過措置終了、取",
+        "type": "problem",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "hourei-02-solution",
+        "tweetId": "2064295203805044946",
+        "text": "法改正28件、全部読む必要はありません。\n\n業種・規模・取引形態で「自社に関係あ",
+        "type": "solution",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "hourei-03-stats",
+        "tweetId": "2064327208999825505",
+        "text": "中小企業の87.7%に法務部門がない。\n\nでも法改正の対応義務は大企業と同じ。\n",
+        "type": "stats",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "hourei-04-cta",
+        "tweetId": "2064606266161611118",
+        "text": "顧問弁護士に月3万円払って「うちに関係ある法改正教えて」って聞くの、もったいなく",
+        "type": "cta",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      }
+    ]
   }
 ]
