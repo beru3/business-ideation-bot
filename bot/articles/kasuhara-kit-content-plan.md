@@ -38,5 +38,5 @@
 
 | 記事 | note URL | 公開日 |
 |---|---|---|
-| ピラー | （未投稿） | - |
-| クラスター1（社労士向け） | （未投稿） | - |
+| ピラー | https://note.com/hourei_navi/n/n863b8a997c2f | 2026-06-11 |
+| クラスター1（社労士向け） | https://note.com/hourei_navi/n/nacffbc992168 | 2026-06-11 |
