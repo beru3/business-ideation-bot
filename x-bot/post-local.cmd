@@ -8,3 +8,5 @@ node x-bot\post.mjs --account hourei-navi post 1
 if errorlevel 1 exit /b 1
 git add x-bot\accounts\hourei-navi\posted.json x-bot\accounts\hourei-navi\queue.json
 git diff --staged --quiet || (git commit -m "chore: x-bot posted ledger update (local post)" && git push origin master)
+rem 投稿結果を Issue #42 に記録（失敗しても投稿自体には影響なし）
+node x-bot\log-post.mjs hourei-navi 42
