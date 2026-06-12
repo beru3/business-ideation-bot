@@ -24,17 +24,14 @@ on:
     - cron: '0 22 * * *'
     # 10:00 JST (01:00 UTC) — engage
     - cron: '0 1 * * *'
-    # 投稿スロットは無効化（2026-06-12〜）: X APIがGitHub ActionsのデータセンターIPからの
-    # 書き込みを403でブロックするため、投稿はローカルPCのタスクスケジューラで実行
-    # （x-bot/post-local.cmd 参照）
     # 12:00 JST (03:00 UTC) — post slot 1
-    # - cron: '0 3 * * *'
+    - cron: '0 3 * * *'
     # 14:00 JST (05:00 UTC) — engage auto-reply + follow-back
     - cron: '0 5 * * *'
     # 16:00 JST (07:00 UTC) — post slot 2
-    # - cron: '0 7 * * *'
+    - cron: '0 7 * * *'
     # 19:00 JST (10:00 UTC) — post slot 3
-    # - cron: '0 10 * * *'
+    - cron: '0 10 * * *'
     # 20:00 JST (11:00 UTC) — engage auto-reply + unfollow
     - cron: '0 11 * * *'
 
@@ -190,6 +187,13 @@ jobs:
           HOUREI_X_API_KEY_SECRET: ${{ secrets.HOUREI_X_API_KEY_SECRET }}
           HOUREI_X_ACCESS_TOKEN: ${{ secrets.HOUREI_X_ACCESS_TOKEN }}
           HOUREI_X_ACCESS_TOKEN_SECRET: ${{ secrets.HOUREI_X_ACCESS_TOKEN_SECRET }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Post log to Issue ---
+      - name: Log post to Issue
+        if: startsWith(steps.action.outputs.action, 'post')
+        run: node x-bot/log-post.mjs ${{ matrix.account }} 42
+        env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # --- Engage ---

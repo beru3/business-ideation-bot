@@ -152,12 +152,28 @@ if (!Array.isArray(generated) || generated.length === 0) {
   process.exit(1);
 }
 
-// 8. queue.json に追加
+// 8. queue.json に追加（X加重文字数バリデーション付き）
+// Xの上限は加重280: 日本語等=2, 英数=1, URL=23。超過すると403で投稿失敗しキューが詰まる
+function weightedLength(text) {
+  const t = text.replace(/https?:\/\/\S+/g, 'U'.repeat(23));
+  let n = 0;
+  for (const ch of t) {
+    n += ch.codePointAt(0) <= 0x10ff ? 1 : 2;
+  }
+  return n;
+}
+const WEIGHTED_LIMIT = 280;
+
 const dateTag = today.replace(/-/g, '');
 const newEntries = [];
 for (let i = 0; i < generated.length; i++) {
   const text = generated[i].text?.trim();
   if (!text) continue;
+  const len = weightedLength(text);
+  if (len > WEIGHTED_LIMIT) {
+    console.warn(`  スキップ: 文字数超過 (加重${len}/${WEIGHTED_LIMIT}) ${text.slice(0, 40)}…`);
+    continue;
+  }
   const entry = {
     id: `auto-${dateTag}-${i + 1}`,
     text,
