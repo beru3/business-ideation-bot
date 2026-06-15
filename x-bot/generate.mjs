@@ -19,12 +19,27 @@ const ai = new OpenAI({
   apiKey: process.env.DEEPSEEK_API_KEY,
 });
 
-// 1. 過去の投稿を取得（重複防止）
+// 1. 過去の投稿を取得（重複防止 — 角度サマリー方式）
 const posted = readJSON(paths.posted, []);
 const queue = readJSON(paths.queue, []);
 const recentTexts = posted.slice(-20).map(p => p.text);
 const queueTexts = queue.map(q => q.text);
 const existingTexts = [...recentTexts, ...queueTexts].map(t => `- ${t}`).join('\n');
+
+// 使用済みの「角度」を抽出してDeepSeekに明示的に禁止する
+const allExisting = [...posted.slice(-20), ...queue];
+const usedAngles = [...new Set(allExisting.map(p => {
+  const t = p.text || '';
+  if (t.includes('87.7%') || t.includes('28件') || t.includes('9件')) return '数字: 87.7%/28件/9件';
+  if (t.includes('従業員5人')) return '角度: 従業員5人でも対象';
+  if (t.includes('あと4ヶ月') || t.includes('あと数ヶ月')) return '角度: 施行まであとXヶ月';
+  if (t.includes('研修の証跡、もう残して')) return '角度: 証跡もう残してますか';
+  if (t.includes('まだ大丈夫')) return '角度: まだ大丈夫と思ってませんか';
+  return null;
+}).filter(Boolean))];
+const usedAnglesBlock = usedAngles.length > 0
+  ? `\n【使い過ぎている角度（これらは絶対に使わないこと）】\n${usedAngles.map(a => `- ${a}`).join('\n')}`
+  : '';
 
 // 2. learnings.json からフィードバック指示を取得
 const learnings = readJSON(paths.learnings, {});
@@ -110,6 +125,13 @@ ${knowledgeBlock ? `【マーケティングナレッジ（投稿の訴求角度
 
 【過去の投稿・キュー内の投稿（重複しないこと）】
 ${existingTexts || '（なし）'}
+${usedAnglesBlock}
+
+【重複防止の厳守ルール】
+- 上記の投稿と同じ数字・同じ切り口・同じ冒頭フレーズの投稿は絶対に生成しない。
+- 「使い過ぎている角度」に該当する表現は一切使わない。
+- 毎回必ず新しい切り口（具体的な業種シーン、法律の条文、実務のあるある、時事ニュース等）を使うこと。
+- 同じ統計データの繰り返しは禁止。別の数字・別のソースを使う。
 
 ${generateInstructions ? `【フィードバックからの指示（重要: 必ず従うこと）】\n${generateInstructions}` : ''}`;
 
