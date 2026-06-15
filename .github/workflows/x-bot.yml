@@ -192,7 +192,7 @@ jobs:
       # --- Post log to Issue ---
       - name: Log post to Issue
         if: startsWith(steps.action.outputs.action, 'post')
-        run: node x-bot/log-post.mjs ${{ matrix.account }} 42
+        run: node x-bot/log-post.mjs ${{ matrix.account }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -8,10 +8,36 @@
     "#中小企業",
     "#カスハラ"
   ],
-  "lpUrl": "https://beru3.github.io/business-ideation-bot/lp/hourei-navi/",
+  "lpUrl": "https://beru3.github.io/business-ideation-bot/lp/hourei-navi/kasuhara/",
   "briefPath": "bot/briefs/brief_37.json",
   "generateCount": 3,
-  "issueNumber": 2,
+  "maxQueueSize": 15,
+  "issueNumber": 39,
   "noteAccountId": "hourei_navi",
-  "noteUrl": "https://note.com/hourei_navi/n/ne50cf49441c0"
+  "noteUrl": "https://note.com/hourei_navi/n/ne50cf49441c0",
+  "engageKeywords": [
+    "カスハラ 義務化",
+    "カスハラ対策 中小企業",
+    "カスハラ 研修",
+    "法改正 2026 対応",
+    "カスタマーハラスメント 対策",
+    "社労士 カスハラ"
+  ],
+  "followProfileKeywords": [
+    "中小企業",
+    "社労士",
+    "人事",
+    "総務",
+    "労務",
+    "法改正",
+    "コンプライアンス",
+    "カスハラ",
+    "経営者"
+  ],
+  "followLimit": 5,
+  "likeLimit": 10,
+  "replyLimit": 3,
+  "quoteLimit": 1,
+  "autoReplyLimit": 5,
+  "unfollowAfterDays": 14
 }

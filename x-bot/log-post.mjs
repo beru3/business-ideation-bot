@@ -4,10 +4,22 @@
 import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 
-const [slug, issue] = process.argv.slice(2);
-if (!slug || !issue) {
-  console.error('usage: node log-post.mjs <account-slug> <issue-number>');
+const [slug, issueArg] = process.argv.slice(2);
+if (!slug) {
+  console.error('usage: node log-post.mjs <account-slug> [issue-number]');
   process.exit(1);
+}
+// Issue番号: 引数 > config.json > なければスキップ
+let issue = issueArg;
+if (!issue) {
+  try {
+    const cfg = JSON.parse(readFileSync(`x-bot/accounts/${slug}/config.json`, 'utf8'));
+    issue = cfg.issueNumber;
+  } catch {}
+}
+if (!issue) {
+  console.log(`[${slug}] Issue番号未設定 → ログ記録をスキップ`);
+  process.exit(0);
 }
 
 const posted = JSON.parse(readFileSync(`x-bot/accounts/${slug}/posted.json`, 'utf8'));

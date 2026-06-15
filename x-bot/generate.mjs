@@ -93,8 +93,22 @@ const knowledgeBlock = scoredInsights.length > 0
 
 console.log(`[${slug}] ナレッジ: ${allInsights.length}件中${scoredInsights.length}件を関連知見として抽出`);
 
-// 6. DeepSeekで投稿文を生成
+// 6. キューキャップ: 溢れていたら生成をスキップ
+const MAX_QUEUE = config.maxQueueSize || 15;
+if (queue.length >= MAX_QUEUE) {
+  console.log(`[${slug}] キュー ${queue.length}件 ≥ 上限 ${MAX_QUEUE}件 → 生成スキップ`);
+  process.exit(0);
+}
+
+// 7. 投稿タイプを動的に選択（最近使っていないタイプを優先）
+const ALL_TYPES = ['問題提起', '解決策ヒント', '数字・統計', 'LP誘導', '時事ネタ', '業種別シーン'];
+const recentTypes = [...posted.slice(-10), ...queue].map(p => p.type).filter(Boolean);
+const typeCounts = {};
+for (const t of recentTypes) typeCounts[t] = (typeCounts[t] || 0) + 1;
+const sortedTypes = ALL_TYPES.slice().sort((a, b) => (typeCounts[a] || 0) - (typeCounts[b] || 0));
 const GENERATE_COUNT = config.generateCount || 3;
+const selectedTypes = sortedTypes.slice(0, GENERATE_COUNT);
+
 const today = new Date().toISOString().slice(0, 10);
 
 const systemPrompt = `あなたはXアカウント「${config.account}」の投稿文を作成するライターです。
@@ -135,13 +149,15 @@ ${usedAnglesBlock}
 
 ${generateInstructions ? `【フィードバックからの指示（重要: 必ず従うこと）】\n${generateInstructions}` : ''}`;
 
+const typeExamples = selectedTypes.map((t, i) => `  { "text": "投稿文${i + 1}", "type": "${t}" }`).join(',\n');
 const userPrompt = `今日は${today}です。新しい投稿文を${GENERATE_COUNT}件作成してください。
+
+今回は以下のタイプで書いてください（最近使っていないタイプを優先選定しました）:
+${selectedTypes.map((t, i) => `${i + 1}. ${t}`).join('\n')}
 
 以下のJSON形式で出力してください。他の文章は不要です。
 [
-  { "text": "投稿文1", "type": "問題提起" },
-  { "text": "投稿文2", "type": "数字・統計" },
-  { "text": "投稿文3", "type": "LP誘導" }
+${typeExamples}
 ]`;
 
 console.log(`[${slug}] DeepSeek APIで${GENERATE_COUNT}件の投稿文を生成中…`);
@@ -174,7 +190,23 @@ if (!Array.isArray(generated) || generated.length === 0) {
   process.exit(1);
 }
 
-// 8. queue.json に追加（X加重文字数バリデーション付き）
+// 8. 類似度チェック: 既存投稿と似すぎる生成物を弾く
+function bigrams(text) {
+  const clean = text.replace(/https?:\/\/\S+/g, '').replace(/[#＃@＠\s]/g, '');
+  const set = new Set();
+  for (let i = 0; i < clean.length - 1; i++) set.add(clean.slice(i, i + 2));
+  return set;
+}
+function similarity(a, b) {
+  const sa = bigrams(a);
+  const sb = bigrams(b);
+  let overlap = 0;
+  for (const g of sa) if (sb.has(g)) overlap++;
+  return overlap / Math.max(sa.size, sb.size, 1);
+}
+const existingTextList = [...recentTexts, ...queueTexts];
+
+// 9. queue.json に追加（X加重文字数バリデーション付き）
 // Xの上限は加重280: 日本語等=2, 英数=1, URL=23。超過すると403で投稿失敗しキューが詰まる
 function weightedLength(text) {
   const t = text.replace(/https?:\/\/\S+/g, 'U'.repeat(23));
@@ -194,6 +226,12 @@ for (let i = 0; i < generated.length; i++) {
   const len = weightedLength(text);
   if (len > WEIGHTED_LIMIT) {
     console.warn(`  スキップ: 文字数超過 (加重${len}/${WEIGHTED_LIMIT}) ${text.slice(0, 40)}…`);
+    continue;
+  }
+  // 類似度チェック: 既存と60%以上似ていたら弾く
+  const maxSim = Math.max(0, ...existingTextList.map(e => similarity(text, e)));
+  if (maxSim > 0.6) {
+    console.warn(`  スキップ: 類似度 ${(maxSim * 100).toFixed(0)}% — ${text.slice(0, 40)}…`);
     continue;
   }
   const entry = {
