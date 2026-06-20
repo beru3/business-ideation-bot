@@ -1604,5 +1604,234 @@
         "quotes": 0
       }
     ]
+  },
+  {
+    "date": "2026-06-20",
+    "followerCount": 3,
+    "totalImpressions": 18,
+    "totalLikes": 0,
+    "totalRetweets": 0,
+    "metrics": [
+      {
+        "id": "hourei-01-problem",
+        "tweetId": "2064244559232823748",
+        "text": "2026年の法改正、28件以上あるの知ってますか？\n\nインボイス経過措置終了、取",
+        "type": "problem",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "hourei-02-solution",
+        "tweetId": "2064295203805044946",
+        "text": "法改正28件、全部読む必要はありません。\n\n業種・規模・取引形態で「自社に関係あ",
+        "type": "solution",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "hourei-03-stats",
+        "tweetId": "2064327208999825505",
+        "text": "中小企業の87.7%に法務部門がない。\n\nでも法改正の対応義務は大企業と同じ。\n",
+        "type": "stats",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "hourei-04-cta",
+        "tweetId": "2064606266161611118",
+        "text": "顧問弁護士に月3万円払って「うちに関係ある法改正教えて」って聞くの、もったいなく",
+        "type": "cta",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "hourei-05-thread",
+        "tweetId": "2065307629300203725",
+        "text": "2026年の法改正は28件超。インボイス経過措置終了、取適法、カスハラ防止義務化",
+        "type": "thread",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "auto-20260609-1",
+        "tweetId": "2065390037815243090",
+        "text": "「従業員5人でも罰則対象になるの？」\n\nはい、なります。2026年、取引先から要",
+        "type": "問題提起",
+        "impressions": 0,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "auto-20260609-2",
+        "tweetId": "2065427474091999541",
+        "text": "【衝撃】法改正28件のうち、中小企業に関係するのは平均9件。\n\nでも、その9件の",
+        "type": "数字・統計",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "auto-20260609-3",
+        "tweetId": "2065690153348112547",
+        "text": "2026年の法改正、もう6月です。\n\nインボイス経過措置終了まであと4ヶ月。取適",
+        "type": "LP誘導",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "auto-20260610-1",
+        "tweetId": "2065737301880414411",
+        "text": "「ウチは小さいから大丈夫」と思ってませんか？\n\n2026年、従業員5人の会社にも",
+        "type": "問題提起",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "auto-20260610-2",
+        "tweetId": "2065765769305022627",
+        "text": "2026年の法改正28件。\n中小企業に関係するのは平均9件。\n\nでも、そのうち対",
+        "type": "数字・統計",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "auto-20260610-3",
+        "tweetId": "2066058614721089640",
+        "text": "6月半ば。法改正の対応、まだ手をつけてないなら今すぐ。\n\n業種と従業員数だけ選べ",
+        "type": "LP誘導",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-01-problem",
+        "tweetId": "2066105571376345103",
+        "text": "カスハラ義務化、規程を作って満足していませんか。\n\n労基署対応で問われるのは\n・",
+        "type": "problem",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-02-solution",
+        "tweetId": "2066129825094365202",
+        "text": "カスハラ対応で一番むずかしいのは、規程づくりではなく「その後」。\n\n・新人が入っ",
+        "type": "solution",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-03-stats",
+        "tweetId": "2066450937325994138",
+        "text": "2026年10月、カスハラ対策が全事業主に義務化されます。\n\n求められるのは5本",
+        "type": "stats",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-04-lp",
+        "tweetId": "2066511506129527080",
+        "text": "カスハラ義務化、自社がどこまで対応できているか確認できるチェックリスト（PDF）",
+        "type": "lp",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 1,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-05-sharoushi",
+        "tweetId": "2066549429004599493",
+        "text": "社労士の先生方へ。\n\n顧問先のカスハラ対応、「規程を渡して終わり」になっていませ",
+        "type": "lp",
+        "impressions": 1,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 1,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-06-mhlw",
+        "tweetId": "2066783579892228573",
+        "text": "厚労省「あかるい職場応援団」にカスハラ対策の無料マニュアルがあるのを知っています",
+        "type": "問題提起",
+        "impressions": 2,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-07-shoseki",
+        "tweetId": "2066804350756827366",
+        "text": "カスハラ研修をやった「証拠」、どう残してますか？\n\n・参加者名簿のExcel →",
+        "type": "解決策ヒント",
+        "impressions": 2,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-08-jirei",
+        "tweetId": "2066857085661262261",
+        "text": "カスハラ事案が起きたとき、対応記録をどこに残していますか。\n\n・店長の個人メモ ",
+        "type": "問題提起",
+        "impressions": 2,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      },
+      {
+        "id": "kasuhara-09-cost",
+        "tweetId": "2066902801683550505",
+        "text": "カスハラ1件あたりの対応コスト、試算したことありますか。\n\n・現場対応に2時間\n",
+        "type": "数字・統計",
+        "impressions": 2,
+        "likes": 0,
+        "retweets": 0,
+        "replies": 0,
+        "quotes": 0
+      }
+    ]
   }
 ]
