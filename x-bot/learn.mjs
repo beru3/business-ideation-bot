@@ -5,7 +5,8 @@
 import OpenAI from 'openai';
 import { listAccounts, readJSON, writeJSON } from './lib/context.mjs';
 import { readFileSync } from 'node:fs';
-import { join, fileURLToPath } from 'node:path';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = join(fileURLToPath(import.meta.url), '..');
 

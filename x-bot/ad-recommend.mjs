@@ -4,7 +4,8 @@
 // 環境変数: GH_TOKEN
 import { listAccounts, readJSON } from './lib/context.mjs';
 import { execSync } from 'node:child_process';
-import { join, fileURLToPath } from 'node:path';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = join(fileURLToPath(import.meta.url), '..');
 const gh = (args) => execSync('gh ' + args, { encoding: 'utf8' });

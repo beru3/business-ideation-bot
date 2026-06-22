@@ -6,7 +6,8 @@
 // 出力: x-bot/shared/learnings.json (note_articles セクション)
 import OpenAI from 'openai';
 import { listAccounts, readJSON, writeJSON } from './lib/context.mjs';
-import { join, fileURLToPath } from 'node:path';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { readFileSync, existsSync } from 'node:fs';
 
 const ROOT = join(fileURLToPath(import.meta.url), '..');
