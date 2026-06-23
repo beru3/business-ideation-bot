@@ -71,7 +71,7 @@
             'value': 1.0,
             'currency': 'JPY'
           });
-          form.innerHTML = '<p class="text-teal-400 font-bold text-lg py-4">✓ 送信完了！チェックリストをメールでお届けします</p>';
+          form.innerHTML = '<div class="py-4 text-center"><p class="text-teal-400 font-bold text-lg mb-3">✓ 送信完了！</p><a href="checklist.pdf" target="_blank" rel="noopener" class="inline-block rounded-full bg-white text-navy-900 font-bold px-8 py-3 hover:bg-teal-100 transition">チェックリストPDFをダウンロード</a></div>';
         } else {
           btn.disabled = false;
           btn.textContent = 'チェックリストを無料でもらう';

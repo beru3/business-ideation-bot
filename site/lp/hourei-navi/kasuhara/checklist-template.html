@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<style>
+  @page { size: A4; margin: 20mm 18mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', sans-serif; color: #1a2a3a; font-size: 11pt; line-height: 1.6; }
+  .header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 3px solid #27ab83; }
+  .header h1 { font-size: 18pt; color: #102a43; margin-bottom: 4px; }
+  .header p { font-size: 10pt; color: #627d98; }
+  .badge { display: inline-block; background: #e12d39; color: #fff; font-size: 9pt; font-weight: bold; padding: 2px 10px; border-radius: 4px; margin-bottom: 8px; }
+  .section { margin-bottom: 20px; page-break-inside: avoid; }
+  .section-header { background: #102a43; color: #fff; padding: 8px 14px; border-radius: 6px 6px 0 0; display: flex; align-items: center; gap: 10px; }
+  .section-header .num { background: #27ab83; color: #fff; width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12pt; font-weight: bold; flex-shrink: 0; }
+  .section-header h2 { font-size: 12pt; }
+  .section-body { border: 1.5px solid #d9e2ec; border-top: none; border-radius: 0 0 6px 6px; padding: 12px 14px; }
+  .check-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px dotted #d9e2ec; }
+  .check-item:last-child { border-bottom: none; }
+  .checkbox { width: 16px; height: 16px; border: 2px solid #829ab1; border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+  .check-label { font-size: 10.5pt; }
+  .check-label .hint { display: block; font-size: 9pt; color: #627d98; margin-top: 1px; }
+  .note { background: #effcf6; border-left: 4px solid #27ab83; padding: 8px 12px; font-size: 9.5pt; color: #0c6b58; margin-top: 6px; border-radius: 0 4px 4px 0; }
+  .footer { margin-top: 28px; padding-top: 14px; border-top: 2px solid #d9e2ec; text-align: center; font-size: 9pt; color: #829ab1; }
+  .footer a { color: #27ab83; text-decoration: none; }
+  .summary { background: #f0f4f8; border-radius: 8px; padding: 14px; margin-bottom: 20px; }
+  .summary h3 { font-size: 11pt; color: #334e68; margin-bottom: 6px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .summary-item { text-align: center; }
+  .summary-item .label { font-size: 9pt; color: #627d98; }
+  .summary-item .value { font-size: 14pt; font-weight: bold; color: #102a43; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">2026年10月1日施行</div>
+  <h1>カスハラ対策義務化 5本柱チェックリスト</h1>
+  <p>改正労働施策総合推進法に基づく事業主の措置義務 ─ 自社の対応状況を確認してください</p>
+</div>
+
+<div class="summary">
+  <h3>自社の対応状況サマリー</h3>
+  <div class="summary-grid">
+    <div class="summary-item"><div class="label">チェック項目</div><div class="value">25項目</div></div>
+    <div class="summary-item"><div class="label">対応済み</div><div class="value" style="color:#27ab83;">＿ / 25</div></div>
+    <div class="summary-item"><div class="label">記入日</div><div class="value" style="font-size:11pt;">＿＿年＿＿月＿＿日</div></div>
+  </div>
+</div>
+
+<!-- 第1柱 -->
+<div class="section">
+  <div class="section-header"><span class="num">1</span><h2>方針の明確化・周知</h2></div>
+  <div class="section-body">
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">カスタマーハラスメントに対する企業方針を文書化している<span class="hint">例：「当社はカスハラ行為を容認しない」旨の方針書</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">方針を全従業員に周知している（掲示・配布・イントラなど）<span class="hint">周知日と方法を記録に残しているか</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">取引先・顧客にも方針を明示している（店頭掲示・契約書・HPなど）</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">カスハラの定義・該当行為の例を具体的に示している<span class="hint">厚労省指針の例示を参考に自社業態に合わせているか</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">方針の策定・改定日を記録として保管している</div></div>
+  </div>
+</div>
+
+<!-- 第2柱 -->
+<div class="section">
+  <div class="section-header"><span class="num">2</span><h2>相談体制の整備</h2></div>
+  <div class="section-body">
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">カスハラ相談窓口（担当者・連絡先）を設置している<span class="hint">パワハラ窓口と兼任でも可。窓口の存在を周知しているか</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">相談者のプライバシー保護の仕組みがある</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">相談したことによる不利益取り扱いの禁止を明文化している</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">相談対応の記録フォーマットがある<span class="hint">日時・相談者・内容・対応結果を記録できるか</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">外部相談窓口（EAP等）との連携体制がある、または検討済み</div></div>
+  </div>
+</div>
+
+<!-- 第3柱 -->
+<div class="section">
+  <div class="section-header"><span class="num">3</span><h2>対応マニュアルの策定</h2></div>
+  <div class="section-body">
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">カスハラ発生時の対応手順書（マニュアル）を作成している<span class="hint">初期対応→エスカレーション→記録→フォローの流れ</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">対応の判断基準（対応中止・出入り禁止等）を明確にしている</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">警察・弁護士への連絡基準と連絡先を記載している</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">マニュアルを現場で閲覧・参照できる状態にしている</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">自社の業態に合った事例（電話・対面・メール等）を含めている</div></div>
+  </div>
+</div>
+
+<!-- 第4柱 -->
+<div class="section">
+  <div class="section-header"><span class="num">4</span><h2>研修の実施</h2></div>
+  <div class="section-body">
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">全従業員を対象としたカスハラ対応研修を実施している<span class="hint">年1回以上。受講率と実施日を記録しているか</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">管理職向けに、部下からの相談対応の研修を実施している</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">新入社員・中途入社者に入社時研修を実施している</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">研修の受講者名簿・受講日を証跡として保管している<span class="hint">労基署対応で最も確認される項目</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">研修内容を定期的に見直す仕組みがある</div></div>
+    <div class="note">研修の「実施記録」は労基署対応で最も確認される証跡です。参加者名簿のExcelだけでなく、受講日・内容・理解度テスト結果まで残すのが理想です。</div>
+  </div>
+</div>
+
+<!-- 第5柱 -->
+<div class="section">
+  <div class="section-header"><span class="num">5</span><h2>事後対応（被害者ケア・再発防止）</h2></div>
+  <div class="section-body">
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">カスハラ事案の記録台帳（発生日時・内容・対応・結果）がある<span class="hint">事案台帳は「対応義務を果たした証明」になる</span></div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">被害を受けた従業員へのメンタルヘルスケア体制がある</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">事案ごとに再発防止策を検討・記録している</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">重大事案について経営層への報告ルートがある</div></div>
+    <div class="check-item"><div class="checkbox"></div><div class="check-label">配置転換など被害者保護の措置を検討できる体制がある</div></div>
+    <div class="note">事案台帳は「規程がある」ことと同じくらい重要です。規程はあるのに運用記録がゼロ、という状態が労基署対応で最もリスクが高くなります。</div>
+  </div>
+</div>
+
+<div class="footer">
+  <p><strong>ホウレイナビ カスハラ対応キット</strong> — 研修証跡・事案台帳・指針改定の自動追従を1つのワークスペースで</p>
+  <p style="margin-top:4px;"><a href="https://beru3.github.io/business-ideation-bot/lp/hourei-navi/kasuhara/">https://beru3.github.io/business-ideation-bot/lp/hourei-navi/kasuhara/</a></p>
+  <p style="margin-top:8px;">© 2026 ホウレイナビ</p>
+</div>
+
+</body>
+</html>
