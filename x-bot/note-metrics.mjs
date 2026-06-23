@@ -32,21 +32,17 @@ try {
   await page.goto('https://note.com/login');
   await page.waitForTimeout(2000);
 
-  // ログインフォームが表示されるか、既にログイン済みかチェック
-  const loginBtn = page.locator('a:has-text("ログイン"), button:has-text("ログイン")');
-  if (await loginBtn.count() > 0) {
-    await page.getByPlaceholder('mail@example.com').fill(email);
-    await page.locator('#password').fill(password);
-    await page.getByRole('button', { name: 'ログイン' }).click();
-    await page.waitForTimeout(3000);
-  }
+  // ログインフォーム入力
+  const emailField = page.getByRole('textbox', { name: 'mail@example.com or note ID' });
+  await emailField.waitFor({ timeout: 10000 });
+  await emailField.fill(email);
+  await page.getByRole('textbox', { name: 'パスワード' }).fill(password);
+  await page.getByRole('button', { name: 'ログイン' }).click();
+  await page.waitForURL('https://note.com/**', { timeout: 15000 }).catch(() => {});
+  await page.waitForTimeout(2000);
 
   // 2. ダッシュボードAPIからPVデータ取得
   console.log(`[${slug}] ダッシュボードからメトリクス取得中...`);
-
-  // Cookie付きでAPIを直接呼ぶ
-  const cookies = await context.cookies();
-  const cookieHeader = cookies.map(c => `${c.name}=${c.value}`).join('; ');
 
   // 全期間のPVデータ
   const response = await page.evaluate(async () => {
@@ -58,6 +54,11 @@ try {
   const totalPv = response?.data?.total_pv || 0;
   const totalLike = response?.data?.total_like || 0;
   const totalComment = response?.data?.total_comment || 0;
+
+  if (noteStats.length === 0) {
+    console.warn(`[${slug}] WARNING: API returned 0 articles — login may have failed`);
+    console.warn(`[${slug}] Response keys: ${JSON.stringify(Object.keys(response?.data || {}))}`);
+  }
 
   // 3. 記事ごとのメトリクスを整形
   const today = new Date().toISOString().slice(0, 10);

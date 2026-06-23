@@ -8,11 +8,68 @@
     "articles": []
   },
   {
-    "measured_at": "2026-06-22",
+    "measured_at": "2026-06-23",
     "slug": "hourei-navi",
-    "total_pv": 0,
-    "total_likes": 0,
+    "total_pv": 54,
+    "total_likes": 10,
     "total_comments": 0,
-    "articles": []
+    "articles": [
+      {
+        "noteId": "ne50cf49441c0",
+        "title": "2026年の法改正28件、あなたの会社に関係するのはどれ？1分で分かる診断ツール",
+        "url": "https://note.com/hourei_navi/n/ne50cf49441c0",
+        "pv": 14,
+        "likes": 2,
+        "comments": 0
+      },
+      {
+        "noteId": "nb89e786e7f38",
+        "title": "法務部がない中小企業のコンプライアンス対応ガイド【2026年版】",
+        "url": "https://note.com/hourei_navi/n/nb89e786e7f38",
+        "pv": 8,
+        "likes": 2,
+        "comments": 0
+      },
+      {
+        "noteId": "nf86729a9bf2a",
+        "title": "カスハラ防止義務化、中小企業が10月までにやること",
+        "url": "https://note.com/hourei_navi/n/nf86729a9bf2a",
+        "pv": 8,
+        "likes": 1,
+        "comments": 0
+      },
+      {
+        "noteId": "nf025a69c934a",
+        "title": "2026年法改正チェックリスト【業種別・無料配布】",
+        "url": "https://note.com/hourei_navi/n/nf025a69c934a",
+        "pv": 7,
+        "likes": 5,
+        "comments": 0
+      },
+      {
+        "noteId": "n908a5a400563",
+        "title": "法改正対応、何から始める？法務部なし企業の3ステップ",
+        "url": "https://note.com/hourei_navi/n/n908a5a400563",
+        "pv": 6,
+        "likes": 0,
+        "comments": 0
+      },
+      {
+        "noteId": "nacffbc992168",
+        "title": "顧問先のカスハラ対応、「規程を渡して終わり」になっていませんか",
+        "url": "https://note.com/hourei_navi/n/nacffbc992168",
+        "pv": 6,
+        "likes": 0,
+        "comments": 0
+      },
+      {
+        "noteId": "n863b8a997c2f",
+        "title": "カスハラ義務化、中小は何をすれば？5本柱と「証跡」の残し方",
+        "url": "https://note.com/hourei_navi/n/n863b8a997c2f",
+        "pv": 5,
+        "likes": 0,
+        "comments": 0
+      }
+    ]
   }
 ]
