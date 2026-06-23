@@ -49,19 +49,41 @@
     gtag('js', new Date());
     gtag('config', 'AW-10812594141');
   </script>
-  <!-- Conversion: CTA (Google Forms) click. target=_blank なのでリダイレクト不要、クリック時に発火のみ -->
+  <!-- Conversion: fires on inline form submission -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('a[href*="docs.google.com/forms"]').forEach(function (a) {
-        a.addEventListener('click', function () {
+    function handleFormSubmit(form) {
+      var email = form.querySelector('input[name="email"]').value;
+      if (!email) return false;
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          source: form.querySelector('input[name="source"]')?.value || 'lp'
+        })
+      }).then(function(res) {
+        if (res.ok) {
           gtag('event', 'conversion', {
             'send_to': 'AW-10812594141/tz74CMC39bwcEN2v7KMo',
             'value': 1.0,
             'currency': 'JPY'
           });
-        });
+          form.innerHTML = '<p class="text-teal-400 font-bold text-lg py-4">✓ 送信完了！チェックリストをメールでお届けします</p>';
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'チェックリストを無料でもらう';
+          alert('送信に失敗しました。もう一度お試しください。');
+        }
+      }).catch(function() {
+        btn.disabled = false;
+        btn.textContent = 'チェックリストを無料でもらう';
+        alert('通信エラーが発生しました。もう一度お試しください。');
       });
-    });
+      return false;
+    }
   </script>
 </head>
 <body class="bg-white text-navy-900 font-sans antialiased">
@@ -70,7 +92,7 @@
   <section class="relative overflow-hidden bg-gradient-to-br from-navy-900 via-navy-800 to-teal-800 text-white">
     <nav class="max-w-6xl mx-auto flex items-center justify-between px-4 py-4 sm:px-6">
       <a href="../" class="text-xl font-bold tracking-wide">ホウレイナビ <span class="text-teal-300 text-sm font-semibold">カスハラ対応キット</span></a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQcxsyeka1JsSLvXSErQdA2TfR-wKAWjgIEhPPAUEQcfgEgw/viewform" target="_blank" rel="noopener" class="hidden sm:inline-block rounded-full bg-teal-500 hover:bg-teal-400 transition px-5 py-2 text-sm font-semibold text-white">
+      <a href="#signup" class="hidden sm:inline-block rounded-full bg-teal-500 hover:bg-teal-400 transition px-5 py-2 text-sm font-semibold text-white">
         5本柱チェックリストをもらう
       </a>
     </nav>
@@ -91,10 +113,14 @@
       </p>
       <!-- knowledge: ID#1237 — Z動線: FV直下に第1CTA。単一CTAで迷わせない -->
       <div class="flex flex-col items-center justify-center gap-4">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQcxsyeka1JsSLvXSErQdA2TfR-wKAWjgIEhPPAUEQcfgEgw/viewform" target="_blank" rel="noopener" class="inline-block rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold text-lg sm:text-xl px-10 py-5 shadow-lg shadow-teal-500/30 animate-pulse hover:animate-none">
-          義務化5本柱チェックリストを無料でもらう
-        </a>
-        <p class="text-sm text-navy-300">メールアドレスだけ・30秒で完了 → チェックリスト（PDF）をすぐお届け</p>
+        <form action="https://formspree.io/f/maqgyrjr" onsubmit="return handleFormSubmit(this)" class="flex flex-col sm:flex-row items-center gap-3 w-full max-w-lg">
+          <input type="hidden" name="source" value="fv" />
+          <input type="email" name="email" required placeholder="メールアドレス" class="w-full sm:flex-1 px-5 py-4 rounded-full text-navy-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400" />
+          <button type="submit" class="w-full sm:w-auto whitespace-nowrap rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold text-base sm:text-lg px-8 py-4 shadow-lg shadow-teal-500/30">
+            チェックリストを無料でもらう
+          </button>
+        </form>
+        <p class="text-sm text-navy-300">メールアドレスだけ・10秒で完了 → チェックリスト（PDF）をすぐお届け</p>
         <a href="#sharoushi" class="text-sm text-navy-400 underline underline-offset-4 hover:text-white transition">社労士の方はこちら</a>
       </div>
     </div>
@@ -215,9 +241,13 @@
           <li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5">&#10003;</span>基本料＋顧問先ワークスペース単位の従量制（<strong>1社あたり月980円</strong>）</li>
           <li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5">&#10003;</span>顧問報酬への上乗せ設計も自由。先行事務所を限定募集中</li>
         </ul>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQcxsyeka1JsSLvXSErQdA2TfR-wKAWjgIEhPPAUEQcfgEgw/viewform" target="_blank" rel="noopener" class="mt-6 block text-center rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-semibold py-3 shadow-md shadow-teal-500/20">
-          先行事務所として資料をもらう
-        </a>
+        <form action="https://formspree.io/f/maqgyrjr" onsubmit="return handleFormSubmit(this)" class="mt-6 flex flex-col gap-2">
+          <input type="hidden" name="source" value="sharoushi" />
+          <input type="email" name="email" required placeholder="メールアドレス" class="w-full px-4 py-3 rounded-full text-navy-900 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+          <button type="submit" class="w-full rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-semibold py-3 shadow-md shadow-teal-500/20">
+            先行事務所として資料をもらう
+          </button>
+        </form>
       </div>
     </div>
   </section>
@@ -277,7 +307,7 @@
           <li class="flex items-start gap-2 text-navy-300"><span class="mt-0.5">&mdash;</span>指針・条例の自動追従</li>
           <li class="flex items-start gap-2 text-navy-300"><span class="mt-0.5">&mdash;</span>月次事例配信</li>
         </ul>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQcxsyeka1JsSLvXSErQdA2TfR-wKAWjgIEhPPAUEQcfgEgw/viewform" target="_blank" rel="noopener" class="block text-center rounded-full border-2 border-navy-800 text-navy-800 hover:bg-navy-800 hover:text-white transition font-semibold py-3">
+        <a href="#signup" class="block text-center rounded-full border-2 border-navy-800 text-navy-800 hover:bg-navy-800 hover:text-white transition font-semibold py-3">
           チェックリストを無料でもらう
         </a>
       </div>
@@ -294,7 +324,7 @@
           <li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5 font-bold">&#10003;</span><strong>従業員入替時の自動再受講通知</strong></li>
           <li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5">&#10003;</span>指針・条例改定の自動追従／月次事例配信</li>
         </ul>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQcxsyeka1JsSLvXSErQdA2TfR-wKAWjgIEhPPAUEQcfgEgw/viewform" target="_blank" rel="noopener" class="block text-center rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-semibold py-3 shadow-md shadow-teal-500/20">
+        <a href="#signup" class="block text-center rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-semibold py-3 shadow-md shadow-teal-500/20">
           チェックリストを無料でもらう
         </a>
       </div>
@@ -310,7 +340,7 @@
           <li class="flex items-start gap-2"><span class="text-teal-300 mt-0.5">&#10003;</span>スタンダードの全機能を顧問先ごとに</li>
           <li class="flex items-start gap-2"><span class="text-teal-300 mt-0.5">&#10003;</span>先行事務所 限定募集</li>
         </ul>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQcxsyeka1JsSLvXSErQdA2TfR-wKAWjgIEhPPAUEQcfgEgw/viewform" target="_blank" rel="noopener" class="block text-center rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-semibold py-3">
+        <a href="#signup" class="block text-center rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-semibold py-3">
           先行事務所に応募する
         </a>
       </div>
@@ -333,11 +363,14 @@
         義務化で求められる5本柱（方針周知・相談体制・マニュアル・研修・事後対応）の<br class="hidden sm:block" />
         <strong class="text-white">対応チェックリスト（PDF）</strong>を無料でお送りします。足りない項目がひと目でわかります。
       </p>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdQcxsyeka1JsSLvXSErQdA2TfR-wKAWjgIEhPPAUEQcfgEgw/viewform" target="_blank" rel="noopener"
-         class="inline-block rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold text-lg px-10 py-4 shadow-lg shadow-teal-500/30">
-        義務化5本柱チェックリストを無料でもらう
-      </a>
-      <p class="mt-4 text-sm text-navy-300">メールアドレスだけ・30秒で完了 → すぐお届け</p>
+      <form action="https://formspree.io/f/maqgyrjr" onsubmit="return handleFormSubmit(this)" class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-lg mx-auto">
+        <input type="hidden" name="source" value="footer" />
+        <input type="email" name="email" required placeholder="メールアドレス" class="w-full sm:flex-1 px-5 py-4 rounded-full text-navy-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400" />
+        <button type="submit" class="w-full sm:w-auto whitespace-nowrap rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold text-base sm:text-lg px-8 py-4 shadow-lg shadow-teal-500/30">
+          チェックリストを無料でもらう
+        </button>
+      </form>
+      <p class="mt-4 text-sm text-navy-300">メールアドレスだけ・10秒で完了 → すぐお届け</p>
     </div>
   </section>
 
