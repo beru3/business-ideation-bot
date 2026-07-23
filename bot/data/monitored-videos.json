@@ -1,0 +1,8 @@
+{
+  "_comment": "youtubeコレクタの監視対象動画。LLMセッションが週次で追加削除する。cronは読むだけ。",
+  "_entry_example": {
+    "video_id": "dQw4w9WgXcQ",
+    "note": "監視理由のメモ (任意)"
+  },
+  "videos": []
+}

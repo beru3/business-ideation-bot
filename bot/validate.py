@@ -32,6 +32,7 @@ REPO = "beru3/business-ideation-bot"
 INPUT_FILE = "bot/validate_input.json"
 OUTPUT_FILE = "bot/validate_output.json"
 BRIEFS_DIR = "bot/briefs"
+MAX_NEW_ISSUES_PER_POST = 5  # 1回のpostで新規作成するIssueの上限
 
 
 def get_db():
@@ -127,6 +128,7 @@ def cmd_post(dry_run=False):
     posted = 0
     closed = 0
     held = 0
+    new_issues = 0
 
     for res in results:
         issue_num = res.get("issue_number")
@@ -146,10 +148,15 @@ def cmd_post(dry_run=False):
 
         # issue_number が無い仮説は新規Issueを作成（ラベル: シグナル発）
         if issue_num is None:
+            if new_issues >= MAX_NEW_ISSUES_PER_POST:
+                print(f"  WARN: 新規Issue作成の上限 {MAX_NEW_ISSUES_PER_POST}件/回 を超過するためスキップ "
+                      f"({res.get('issue_title', '(タイトルなし)')[:50]})")
+                continue
             issue_num = _create_issue(res)
             if issue_num is None:
                 print(f"  SKIP: Issue作成失敗 ({res.get('issue_title', '(タイトルなし)')[:50]})")
                 continue
+            new_issues += 1
             print(f"  NEW  #{issue_num} created: {res.get('issue_title', '')[:50]}")
 
         # コメント投稿

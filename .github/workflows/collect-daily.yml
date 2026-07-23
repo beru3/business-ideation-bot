@@ -1,0 +1,67 @@
+name: Collect signals (daily)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # JST 06:17 (UTC 21:17 前日)。cron分は0分を避ける (Actions混雑対策)
+    - cron: '17 21 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-signals
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install google-play-scraper
+
+      # 1ソースの失敗が他を巻き込まないよう continue-on-error で分離し、
+      # コミット後に outcome を集計して失敗を報告する
+      - name: Collect prtimes
+        id: prtimes
+        continue-on-error: true
+        run: python bot/collectors/prtimes.py
+
+      - name: Collect gplay
+        id: gplay
+        continue-on-error: true
+        run: python bot/collectors/gplay.py
+
+      # YOUTUBE_API_KEY 未設定時はコレクタ側が exit 0 でスキップする
+      - name: Collect youtube
+        id: youtube
+        continue-on-error: true
+        run: python bot/collectors/youtube.py
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+
+      - name: Commit signal data
+        run: |
+          git config user.name "signal-bot"
+          git config user.email "noreply@anthropic.com"
+          git add bot/data/signals/
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: daily signal collection [skip ci]"
+            git pull --rebase origin master
+            git push
+          fi
+
+      - name: Report collector failures
+        if: steps.prtimes.outcome == 'failure' || steps.gplay.outcome == 'failure' || steps.youtube.outcome == 'failure'
+        run: |
+          echo "Failed collectors:"
+          echo "  prtimes: ${{ steps.prtimes.outcome }}"
+          echo "  gplay:   ${{ steps.gplay.outcome }}"
+          echo "  youtube: ${{ steps.youtube.outcome }}"
+          exit 1

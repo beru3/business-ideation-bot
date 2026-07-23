@@ -1,0 +1,23 @@
+name: Keepalive
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 毎月1日 20:39 UTC (JST 2日 05:39)。60日無コミットによるcron自動停止の対策
+    - cron: '39 20 1 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Empty commit
+        run: |
+          git config user.name "signal-bot"
+          git config user.email "noreply@anthropic.com"
+          git commit --allow-empty -m "chore: keepalive (prevent scheduled workflow suspension) [skip ci]"
+          git push

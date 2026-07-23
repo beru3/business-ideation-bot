@@ -1,0 +1,10 @@
+{
+  "_comment": "gplayコレクタの監視対象アプリ。LLMセッションが週次で追加削除する。cronは読むだけ。",
+  "_entry_example": {
+    "app_id": "com.example.app",
+    "lang": "ja",
+    "country": "jp",
+    "note": "監視理由のメモ (任意)"
+  },
+  "apps": []
+}
