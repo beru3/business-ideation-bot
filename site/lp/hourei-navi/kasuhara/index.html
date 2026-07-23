@@ -60,10 +60,9 @@
       fetch(form.action, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email,
-          source: form.querySelector('input[name="source"]')?.value || 'lp'
-        })
+        body: JSON.stringify(Object.fromEntries(
+          Array.from(form.querySelectorAll('input[name]')).map(function(el) { return [el.name, el.value]; })
+        ))
       }).then(function(res) {
         if (res.ok) {
           gtag('event', 'conversion', {
@@ -92,8 +91,8 @@
   <section class="relative overflow-hidden bg-gradient-to-br from-navy-900 via-navy-800 to-teal-800 text-white">
     <nav class="max-w-6xl mx-auto flex items-center justify-between px-4 py-4 sm:px-6">
       <a href="../" class="text-xl font-bold tracking-wide">ホウレイナビ <span class="text-teal-300 text-sm font-semibold">カスハラ対応キット</span></a>
-      <a href="#signup" class="hidden sm:inline-block rounded-full bg-teal-500 hover:bg-teal-400 transition px-5 py-2 text-sm font-semibold text-white">
-        5本柱チェックリストをもらう
+      <a href="#shindan" class="hidden sm:inline-block rounded-full bg-teal-500 hover:bg-teal-400 transition px-5 py-2 text-sm font-semibold text-white">
+        3分で無料診断
       </a>
     </nav>
 
@@ -101,26 +100,22 @@
       <p class="inline-block rounded-full bg-red-500/20 backdrop-blur px-4 py-1.5 text-sm font-bold mb-6 border border-red-400/30">
         <span class="text-red-300">施行まであと約4ヶ月</span> — 2026年10月1日 カスハラ対策義務化
       </p>
-      <!-- knowledge: ID#1311 — 損失回避の恐怖訴求。「規程はあるのに証跡ゼロ」という見落としリスクをFVで突く -->
+      <!-- v2 (2026-07-23 postmortem反映): 検索意図=「義務化で何をすればいいか知りたい」準備ゼロ層を正面で受け止める。旧FV「規程を作って終わりにしていませんか」は規程作成済み層限定の訴求で98.6%離脱の主因 -->
       <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-        規程を作って、<br class="hidden sm:block" />
-        終わりにしていませんか。<br class="hidden sm:block" />
-        問われるのは<span class="text-teal-300">「運用の証跡」</span>です
+        2026年10月1日、<br class="hidden sm:block" />
+        カスハラ対策が<span class="text-teal-300">全事業主に義務化</span>。<br class="hidden sm:block" />
+        貴社の準備はできていますか？
       </h1>
       <p class="max-w-2xl mx-auto text-lg sm:text-xl text-navy-200 mb-10">
-        労基署対応で確認されるのは、<strong class="text-white">研修をやった記録</strong>と<strong class="text-white">事案に対応した記録</strong>。<br class="hidden sm:block" />
-        研修受講証跡・カスハラ事案台帳・指針改定の自動追従を、1つのワークスペースで。
+        求められる対応は<strong class="text-white">5本柱</strong>（方針周知・相談体制・マニュアル・研修・事後対応）。<br class="hidden sm:block" />
+        10問のチェックで、<strong class="text-white">貴社の未対応項目がその場でわかります</strong>。
       </p>
-      <!-- knowledge: ID#1237 — Z動線: FV直下に第1CTA。単一CTAで迷わせない -->
+      <!-- knowledge: ID#1219 — 診断型CTA: メール入力の前に診断で価値を先渡しする。CTAの心理障壁を下げる -->
       <div class="flex flex-col items-center justify-center gap-4">
-        <form action="https://formspree.io/f/maqgyrjr" onsubmit="return handleFormSubmit(this)" class="flex flex-col sm:flex-row items-center gap-3 w-full max-w-lg">
-          <input type="hidden" name="source" value="fv" />
-          <input type="email" name="email" required placeholder="メールアドレス" class="w-full sm:flex-1 px-5 py-4 rounded-full text-navy-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400" />
-          <button type="submit" class="w-full sm:w-auto whitespace-nowrap rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold text-base sm:text-lg px-8 py-4 shadow-lg shadow-teal-500/30">
-            チェックリストを無料でもらう
-          </button>
-        </form>
-        <p class="text-sm text-navy-300">メールアドレスだけ・10秒で完了 → チェックリスト（PDF）をすぐお届け</p>
+        <a href="#shindan" class="inline-block rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold text-lg sm:text-xl px-10 py-5 shadow-lg shadow-teal-500/30">
+          3分で無料診断する（登録不要）
+        </a>
+        <p class="text-sm text-navy-300">メールアドレス不要で、いますぐ結果がわかります</p>
         <a href="#sharoushi" class="text-sm text-navy-400 underline underline-offset-4 hover:text-white transition">社労士の方はこちら</a>
       </div>
     </div>
@@ -128,6 +123,98 @@
     <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
       <path d="M0 80h1440V30C1200 70 960 0 720 30S240 90 0 30v50z" fill="white"/>
     </svg>
+  </section>
+
+  <!-- ========== SHINDAN (3分診断 / v2で新設) ========== -->
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24" id="shindan">
+    <div class="text-center mb-10">
+      <p class="text-teal-600 font-semibold text-sm tracking-wider uppercase mb-2">Check</p>
+      <h2 class="text-2xl sm:text-4xl font-bold">カスハラ義務化 対応診断</h2>
+      <p class="text-navy-600 mt-4">義務化5本柱の重要10項目。「できている」ものにチェックを入れてください。<br class="hidden sm:block" /><span class="text-navy-400 text-sm">（完全版チェックリスト25項目からの抜粋です）</span></p>
+    </div>
+
+    <div id="shindan-questions" class="space-y-6">
+      <div class="bg-navy-50 rounded-2xl p-6">
+        <p class="font-bold text-sm text-teal-700 mb-3">柱1: 方針の明確化・周知</p>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="カスハラに対する会社の基本方針の文書化" /><span>カスハラに対する会社の基本方針を<strong>文書</strong>で定めている</span></label>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="方針の従業員への周知" /><span>その方針を従業員全員に<strong>周知</strong>している（掲示・配布・朝礼など）</span></label>
+      </div>
+      <div class="bg-navy-50 rounded-2xl p-6">
+        <p class="font-bold text-sm text-teal-700 mb-3">柱2: 相談体制</p>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="相談窓口と担当者の設置" /><span>カスハラの<strong>相談窓口と担当者</strong>を決めている</span></label>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="相談後の対応フロー" /><span>相談を受けた後の<strong>対応フロー</strong>（誰が・どう動くか）が決まっている</span></label>
+      </div>
+      <div class="bg-navy-50 rounded-2xl p-6">
+        <p class="font-bold text-sm text-teal-700 mb-3">柱3: 対応マニュアル</p>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="不当要求の線引きの文書化" /><span>顧客対応の<strong>線引き</strong>（どこからが不当要求か）を文書化している</span></label>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="悪質事案の対応手順" /><span>悪質な事案での<strong>対応手順</strong>（複数名対応・警察連携など）を決めている</span></label>
+      </div>
+      <div class="bg-navy-50 rounded-2xl p-6">
+        <p class="font-bold text-sm text-teal-700 mb-3">柱4: 研修</p>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="研修の実施" /><span>従業員向けのカスハラ<strong>研修を実施</strong>した（または日程が決まっている）</span></label>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="研修受講の記録" /><span><strong>誰がいつ受講したかの記録</strong>を残している</span></label>
+      </div>
+      <div class="bg-navy-50 rounded-2xl p-6">
+        <p class="font-bold text-sm text-teal-700 mb-3">柱5: 事後対応</p>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="事案の記録様式" /><span>事案発生時の<strong>記録様式</strong>（日時・経緯・対応）を決めている</span></label>
+        <label class="flex items-start gap-3 py-2 cursor-pointer"><input type="checkbox" class="shindan-q mt-1 w-5 h-5 accent-teal-500" data-label="被害従業員のケア手順" /><span>被害を受けた従業員の<strong>ケアの手順</strong>（面談・配置転換など）がある</span></label>
+      </div>
+    </div>
+
+    <div class="text-center mt-8">
+      <button id="shindan-submit" class="rounded-full bg-navy-900 hover:bg-navy-700 transition text-white font-bold text-lg px-10 py-4">
+        診断結果を見る
+      </button>
+    </div>
+
+    <div id="shindan-result" class="hidden mt-10 bg-gradient-to-br from-navy-900 to-teal-800 text-white rounded-2xl p-8">
+      <p class="text-center text-sm text-navy-300 mb-2">診断結果</p>
+      <p id="shindan-score" class="text-center text-3xl font-extrabold mb-4"></p>
+      <p id="shindan-message" class="text-center text-navy-100 mb-6"></p>
+      <ul id="shindan-missing" class="max-w-md mx-auto space-y-2 text-sm text-navy-100 mb-8"></ul>
+      <div class="border-t border-white/20 pt-8">
+        <p class="text-center font-bold text-lg mb-2">未対応項目の<span class="text-teal-300">対応手順つき</span>完全チェックリスト（全25項目）を無料でお送りします</p>
+        <form action="https://formspree.io/f/maqgyrjr" onsubmit="return handleFormSubmit(this)" class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-lg mx-auto mt-6">
+          <input type="hidden" name="source" value="shindan" />
+          <input type="hidden" name="score" value="" id="shindan-score-field" />
+          <input type="email" name="email" required placeholder="メールアドレス" class="w-full sm:flex-1 px-5 py-4 rounded-full text-navy-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400" />
+          <button type="submit" class="w-full sm:w-auto whitespace-nowrap rounded-full bg-teal-500 hover:bg-teal-400 active:bg-teal-600 transition text-white font-bold px-8 py-4 shadow-lg shadow-teal-500/30">
+            チェックリストを受け取る
+          </button>
+        </form>
+        <p class="text-center text-xs text-navy-300 mt-3">メールはチェックリストの送付とサービスのご案内のみに使用します</p>
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        var started = false;
+        var qs = document.querySelectorAll('.shindan-q');
+        qs.forEach(function(q) {
+          q.addEventListener('change', function() {
+            if (!started) { started = true; gtag('event', 'shindan_start'); }
+          });
+        });
+        document.getElementById('shindan-submit').addEventListener('click', function() {
+          var missing = [];
+          qs.forEach(function(q) { if (!q.checked) missing.push(q.dataset.label); });
+          var done = qs.length - missing.length;
+          document.getElementById('shindan-score').textContent = '対応済み ' + done + ' / ' + qs.length + ' 項目';
+          var msg;
+          if (missing.length === 0) msg = '素晴らしい対応状況です。次の課題は「維持」——従業員の入替や指針改定への追従です。';
+          else if (missing.length <= 3) msg = 'あと一歩です。未対応の項目から着手すれば施行に間に合います。';
+          else if (missing.length <= 7) msg = '要注意です。施行まで計画的な整備が必要な水準です。';
+          else msg = '危険水域です。まず「方針の文書化」と「相談窓口の設置」から始めてください。';
+          document.getElementById('shindan-message').textContent = msg;
+          var ul = document.getElementById('shindan-missing');
+          ul.innerHTML = missing.map(function(m) { return '<li class="flex items-start gap-2"><span class="text-red-300">&#10007;</span>' + m + '</li>'; }).join('');
+          document.getElementById('shindan-score-field').value = done + '/' + qs.length;
+          document.getElementById('shindan-result').classList.remove('hidden');
+          document.getElementById('shindan-result').scrollIntoView({ behavior: 'smooth' });
+          gtag('event', 'shindan_complete', { 'value': missing.length });
+        });
+      })();
+    </script>
   </section>
 
   <!-- knowledge: ID#1326 — VOC転用: 見出しに社労士・経営者の生の言葉（pain_statement原文）をそのまま使う -->
@@ -347,7 +434,8 @@
     </div>
 
     <p class="text-center text-navy-400 text-xs mt-8">
-      ※ 価格は開発中の想定です。東京都のカスハラ対策奨励金の対象可否は最新年度の要綱をご確認ください。
+      ※ 本サービスは現在開発中です。先行登録いただいた方には、正式リリース時に優待価格をご案内します。<br />
+      ※ 東京都のカスハラ対策奨励金の対象可否は最新年度の要綱をご確認ください。
     </p>
   </section>
 
@@ -376,9 +464,15 @@
 
   <!-- ========== FOOTER ========== -->
   <footer class="bg-navy-900 text-navy-400 text-xs py-8">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <a href="../" class="font-semibold text-white text-sm">ホウレイナビ</a>
-      <p>&copy; 2026 ホウレイナビ. All rights reserved.</p>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+        <a href="../" class="font-semibold text-white text-sm">ホウレイナビ</a>
+        <p>&copy; 2026 ホウレイナビ. All rights reserved.</p>
+      </div>
+      <div class="text-center sm:text-left border-t border-navy-800 pt-4 leading-relaxed">
+        <p>運営: バーバラ企画（個人事業） / お問い合わせ: eggs.sodai@gmail.com</p>
+        <p>取得したメールアドレスは、チェックリストの送付および本サービスのご案内のみに使用し、第三者に提供しません。配信はいつでも停止できます。</p>
+      </div>
     </div>
   </footer>
 
