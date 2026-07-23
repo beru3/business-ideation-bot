@@ -1,10 +1,24 @@
 {
-  "_comment": "gplayコレクタの監視対象アプリ。LLMセッションが週次で追加削除する。cronは読むだけ。",
+  "_comment": "gplayコレクタの監視対象アプリ。LLMセッションが週次で追加削除する。cronは読むだけ。初期選定2026-07-23（explored-map回避カテゴリ除外・全件実在/レビュー数確認済み・1カテゴリ最大3本）。",
   "_entry_example": {
     "app_id": "com.example.app",
     "lang": "ja",
     "country": "jp",
     "note": "監視理由のメモ (任意)"
   },
-  "apps": []
+  "apps": [
+    { "app_id": "com.navitime.local.navitimetruck", "lang": "ja", "country": "jp", "note": "トラックカーナビ by NAVITIME | 運送 | レビュー15,400件超。規制ルート・車格対応の不満定点" },
+    { "app_id": "ryuichi.cbcloud.keitownfc", "lang": "ja", "country": "jp", "note": "ピックゴーパートナー | 軽貨物ギグ供給側 | 案件・報酬・稼働管理の不満" },
+    { "app_id": "com.demaecan.DemaecanDriver", "lang": "ja", "country": "jp", "note": "出前館 配達員 | 配達ギグ供給側 | 報酬・稼働オペレーションの不満" },
+    { "app_id": "jp.co.taimee", "lang": "ja", "country": "jp", "note": "タイミー | スキマバイト供給側 | レビュー45,300件。就労・シフト・報酬の未充足" },
+    { "app_id": "jp.sukedachi.android", "lang": "ja", "country": "jp", "note": "助太刀 | 建設職人マッチング | ★3.6で低評価が厚い。受発注・現場周辺業務" },
+    { "app_id": "com.miraikoji.miraikoji2", "lang": "ja", "country": "jp", "note": "ミライ工事写真 | 建設・工事写真台帳 | 電子小黒板・台帳ニッチの現場不満" },
+    { "app_id": "jp.agri_note.android", "lang": "ja", "country": "jp", "note": "アグリノート | 農業・営農管理 | 圃場管理・作業記録の未充足" },
+    { "app_id": "com.ito.agrihub.app", "lang": "ja", "country": "jp", "note": "アグリハブ | 農業・農薬管理（規制対応） | 農薬使用記録ニッチ" },
+    { "app_id": "jp.co.embrace.MedicalCareStation", "lang": "ja", "country": "jp", "note": "MCS | 医療・介護多職種連携 | openカテゴリ（カンファ記録）の隣接定点" },
+    { "app_id": "curama.shop", "lang": "ja", "country": "jp", "note": "くらしのマーケット店舗管理 | 現場サービス業供給側 | 零細事業者の受注・運営不満" },
+    { "app_id": "com.moneyforward.android.app", "lang": "ja", "country": "jp", "note": "マネーフォワード ME | 消費者・家計簿 | サブスク課金実績最大。乗換ニーズ・価格不満" },
+    { "app_id": "tokyo.anglers.app", "lang": "ja", "country": "jp", "note": "アングラーズ | 消費者・釣り | 有料プラン実績のある趣味バーティカル" },
+    { "app_id": "com.asai24.golf", "lang": "ja", "country": "jp", "note": "GN+ゴルフスコア管理 | 消費者・ゴルフ | 課金型の計測・記録系" }
+  ]
 }

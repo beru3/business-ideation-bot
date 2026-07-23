@@ -1,8 +1,23 @@
 {
-  "_comment": "youtubeコレクタの監視対象動画。LLMセッションが週次で追加削除する。cronは読むだけ。",
+  "_comment": "youtubeコレクタの監視対象動画。LLMセッションが週次で追加削除する。cronは読むだけ。初期選定2026-07-23（oEmbedで全件実在確認済み・10カテゴリに分散）。",
   "_entry_example": {
     "video_id": "dQw4w9WgXcQ",
     "note": "監視理由のメモ (任意)"
   },
-  "videos": []
+  "videos": [
+    { "video_id": "_o-WSV2Shs0", "note": "職人の確定申告（塗り替え道場） | 一人親方の税務バックオフィス" },
+    { "video_id": "hfknsXZgf78", "note": "工事写真撮影のコツ7選 | 建設・工事写真の需要側信号" },
+    { "video_id": "YK58ArhwE8I", "note": "軽貨物運送の始め方 | 開業手続きの実務の詰まり" },
+    { "video_id": "ZzrQJzOrGVg", "note": "軽貨物事業の経営実態 | 収支・案件管理の未充足" },
+    { "video_id": "n7u_DXfBzXc", "note": "介護記録の書き方（新人向け・2025-11公開） | openカテゴリ隣接" },
+    { "video_id": "lUASQ1HLFO8", "note": "介護記録SOAP解説 | 記録負担の不満コメント" },
+    { "video_id": "THaZp_pqTfk", "note": "産廃マニフェストの書き方（紙） | 紙運用の非効率・電子化ニーズ" },
+    { "video_id": "upKLhuvprhs", "note": "産廃マニフェスト入門 | 排出事業者側の実務の詰まり" },
+    { "video_id": "bk0huuFtcgo", "note": "請求書の作り方（弥生ch） | 個人事業主のツール選び・インボイス" },
+    { "video_id": "_7d-mDn0Bcc", "note": "Excel在庫管理表の作り方（2026-02公開） | 「こういうアプリない？」型の典型ソース" },
+    { "video_id": "TAMQ1-aZ3tY", "note": "農家の青色申告・会計ソフト3選 | 農業簿記特有の未充足" },
+    { "video_id": "WFCDb9JM_sw", "note": "警備員の仕事解説 | 未スイープ業界（警備）の信号" },
+    { "video_id": "xA06Lx3swH4", "note": "新人が覚えたい敬語一覧 | openカテゴリ（敬語校正）隣接" },
+    { "video_id": "DOPxJPYpOcI", "note": "はじめてのお葬式・喪主のやること | 葬祭バーティカル" }
+  ]
 }
