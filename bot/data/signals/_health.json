@@ -10,5 +10,9 @@
   "youtube": {
     "last_success_at": "2026-07-24T00:43:40.556971+00:00",
     "rows_collected": 0
+  },
+  "laws": {
+    "last_success_at": "2026-07-24T00:56:23.296105+00:00",
+    "rows_collected": 102
   }
 }
