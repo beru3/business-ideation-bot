@@ -2,41 +2,588 @@
   "version": 1,
   "_comment": "探索済みカテゴリの判定台帳。正本はこのファイル（pipeline-learnings.mdの散文リストは廃止済み）。マッチング規則: 祖先ノードのavoidは子ノードに継承。子ノード側に明示エントリ(recheck/open)があれば優先。category_path+keywordsはLLMがセマンティックに照合する参考データであり厳密キーではない。verdict: avoid=掘らない / recheck=recheck_dateに①存続性のみ再確認 / open=探索可",
   "entries": [
-    { "category_path": ["法改正対応", "通知・診断・テンプレート層"], "keywords": ["法改正", "通知", "診断", "チェックリスト"], "verdict": "avoid", "verdict_date": "2026-06-23", "evidence": "freee/SmartHR/官公庁が無料提供。新規仮説は全てホウレイナビ(#37)の守備範囲に収束（4回連続確認）。勝てるのは運用証跡レイヤーのみ", "related_issue": 37 },
-    { "category_path": ["法改正対応", "運用証跡レイヤー"], "keywords": ["受講証跡", "事案台帳", "運用記録"], "verdict": "open", "verdict_date": "2026-06-23", "evidence": "唯一のpass実績パターン（#37/#39）。施行3-4ヶ月前の窓で評価する", "related_issue": 39 },
-    { "category_path": ["SaaSバックオフィス"], "keywords": ["勤怠", "経費精算", "給与計算", "労務"], "verdict": "avoid", "verdict_date": "2026-06-23", "evidence": "freee/MF/SmartHR寡占。勤怠119製品・経費46製品・給与33製品の飽和を確認（3回連続）" },
-    { "category_path": ["ストレスチェック"], "keywords": ["ストレスチェック", "50人未満"], "verdict": "avoid", "verdict_date": "2026-06-10", "evidence": "無料競合飽和（ストレスチェッカー500名まで無料、厚労省無料プログラム、月55円/人）" },
-    { "category_path": ["AIO・GEO"], "keywords": ["AI検索最適化", "GEO", "llms.txt"], "verdict": "avoid", "verdict_date": "2026-06-11", "evidence": "ミエルカGEO無料診断+SEO会社10-22社参入。再浮上条件: 診断でなく実装成果物で課金", "related_issue": 26 },
-    { "category_path": ["セールスイネーブルメント"], "keywords": ["営業トーク", "商談解析"], "verdict": "avoid", "verdict_date": "2026-06-04", "evidence": "MiiTel/amptalk/ACES Meetでコモディティ化", "related_issue": 23 },
-    { "category_path": ["電子帳簿保存法対応"], "keywords": ["電帳法", "請求書保管"], "verdict": "avoid", "verdict_date": "2026-06-04", "evidence": "invox・バクラクが支配" },
-    { "category_path": ["介護", "音声記録"], "keywords": ["介護記録", "音声入力"], "verdict": "avoid", "verdict_date": "2026-06-04", "evidence": "ハナスト・NAGARAが先行", "related_issue": 38 },
-    { "category_path": ["建設業", "小規模向けDX"], "keywords": ["工務店", "現場管理"], "verdict": "avoid", "verdict_date": "2026-06-04", "evidence": "サクミル・KANNAが既存" },
-    { "category_path": ["建設業", "一人親方", "安全衛生証跡"], "keywords": ["安衛法2027", "一人親方", "証跡"], "verdict": "recheck", "verdict_date": "2026-07-03", "evidence": "hold(5)。施行3-4ヶ月前ルールで2027年Q1に再評価", "recheck_date": "2027-01-15", "related_issue": 48 },
-    { "category_path": ["汎用チャットボット"], "keywords": ["チャットボット", "FAQ"], "verdict": "avoid", "verdict_date": "2026-06-04", "evidence": "差別化困難、大手独占" },
-    { "category_path": ["大企業向けHR Tech"], "keywords": ["タレントマネジメント"], "verdict": "avoid", "verdict_date": "2026-06-04", "evidence": "Workday/SAP等が支配" },
-    { "category_path": ["汎用DX推進ツール"], "keywords": ["DX支援"], "verdict": "avoid", "verdict_date": "2026-06-04", "evidence": "ターゲット曖昧" },
-    { "category_path": ["SaaS比較・レビューサイト"], "keywords": ["比較サイト"], "verdict": "avoid", "verdict_date": "2026-06-04", "evidence": "マネタイズ困難" },
-    { "category_path": ["個人開発者向けツール"], "keywords": ["需要検証", "インディーハッカー"], "verdict": "avoid", "verdict_date": "2026-07-03", "evidence": "英語圏でAIツール乱立、日本市場1-5万人で過小。Heatseeker.ai等が先行", "related_issue": 47 },
-    { "category_path": ["記録管理", "点検・HACCP・日報・研修・資格"], "keywords": ["点検記録", "HACCP", "作業日報", "研修管理", "資格管理"], "verdict": "avoid", "verdict_date": "2026-07-03", "evidence": "各カテゴリ15-48製品の飽和（CHECKROID/i-Reporter/SmartHR等）" },
-    { "category_path": ["SCS評価制度対応"], "keywords": ["サプライチェーンセキュリティ", "星3"], "verdict": "avoid", "verdict_date": "2026-07-03", "evidence": "MF Adminaが無料チェックリスト83項目提供+政府お助け隊", "related_issue": 49 },
-    { "category_path": ["AI導入支援・顧問"], "keywords": ["AI研修", "AI導入コンサル"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "30+社参入済み。ChatGPT/Claude自体が最大の競合で月額課金が成立しない", "related_issue": 52 },
-    { "category_path": ["採用コンテンツAI"], "keywords": ["求人票生成", "採用サイト"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "ごんた(無料)/Airワーク(0円)/engage(0円)で完全飽和" },
-    { "category_path": ["補助金申請AI"], "keywords": ["補助金", "申請支援"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "hojokin.ai/補助金OS等4+ツール先行" },
-    { "category_path": ["不動産", "物件AI"], "keywords": ["物件提案", "追客AI"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "SalesDock/ルームAI等6+ツール先行" },
-    { "category_path": ["SNSマーケ代行・AI"], "keywords": ["SNS運用", "投稿生成"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "15+AIツール+22+代行会社。月5万の低価格帯あり。AI進化でセルフとの差が時限的", "related_issue": 51 },
-    { "category_path": ["来店型ビジネス", "予約管理"], "keywords": ["美容", "飲食", "塾", "予約"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "美容飲食26+製品・塾27+製品の飽和" },
-    { "category_path": ["賃貸管理"], "keywords": ["賃貸", "物件管理"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "25+製品。低価格帯もSimple Up(月5,478円)が既存" },
-    { "category_path": ["EC一元管理"], "keywords": ["受注管理", "多店舗"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "14+製品。ネクストエンジン/クロスモール安定" },
-    { "category_path": ["AI電話・IVR"], "keywords": ["電話自動応対", "IVR"], "verdict": "avoid", "verdict_date": "2026-07-06", "evidence": "IVRy 30,000社+、48製品で完全飽和" },
-    { "category_path": ["モバイル文字起こし"], "keywords": ["文字起こしアプリ", "ボイスメモ"], "verdict": "avoid", "verdict_date": "2026-07-22", "evidence": "Notta/CLOVA Note/Whisper系無料+ローカル無料勢（MS Store）で過密", "evidence_url": "https://applion.jp/iphone/app/1482592304/review/" },
-    { "category_path": ["学習", "AI単語帳・SRS"], "keywords": ["単語帳", "暗記", "間隔反復"], "verdict": "recheck", "verdict_date": "2026-07-22", "evidence": "Poki/カシャ単/Quizlet AIが中核機能を実装済みで差し戻し。日本語圏でのPokiの伸びを四半期観察", "evidence_url": "https://apps.apple.com/jp/app/id6450241875", "recheck_date": "2026-10-22" },
-    { "category_path": ["PDF処理", "ブラウザ内完結"], "keywords": ["PDF", "ローカル処理"], "verdict": "avoid", "verdict_date": "2026-07-22", "evidence": "JP Toolsが282ツール無料展開。参入障壁が低く空白が即埋まる構造", "evidence_url": "https://jptools.jp/" },
-    { "category_path": ["帳票OCR", "零細向けFAX注文書"], "keywords": ["FAX", "AI-OCR", "受発注"], "verdict": "avoid", "verdict_date": "2026-07-22", "evidence": "SmartReadセルフサーブ月3万〜。相場低下+Gemini標準搭載+AI導入補助金で価格壁消失", "evidence_url": "https://boxil.jp/mag/a8318/" },
-    { "category_path": ["議事録", "ローカル文字起こしWindows"], "keywords": ["議事録", "話者分離", "ローカル"], "verdict": "avoid", "verdict_date": "2026-07-22", "evidence": "MS Storeに完全オフライン無料アプリ既存。WhisperX(OSS)で話者分離も無料", "evidence_url": "https://apps.microsoft.com/detail/9nc258ch3tmp" },
-    { "category_path": ["ライティング校正", "日本語敬語・ビジネス特化"], "keywords": ["敬語", "校正", "ビジネス文書"], "verdict": "open", "verdict_date": "2026-07-22", "evidence": "Gemini in Chromeの圧力下だが敬語特化帯は争奪中。ゲート3予備2/3で生存。Issue化保留中（事業ノート2026-07-23決定）。着手時は①再確認から", "evidence_url": "https://aipicks.jp/mag/ai-proofreading-tools-guide-2026" },
-    { "category_path": ["医療・介護", "会議・カンファ記録構造化"], "keywords": ["カンファレンス", "議事録", "介護記録"], "verdict": "open", "verdict_date": "2026-07-22", "evidence": "議事録Winからの再定義案。未審査。Issue化保留中（事業ノート2026-07-23決定）。②優先扱いはスキル前提撤去により消滅、①③のみで判定" },
-    { "category_path": ["法改正対応", "育成就労制度"], "keywords": ["育成就労", "技能実習", "2027"], "verdict": "recheck", "verdict_date": "2026-07-06", "evidence": "hold(5)。2027-04施行の3-4ヶ月前に再評価", "recheck_date": "2026-12-01", "related_issue": 53 },
-    { "category_path": ["法改正対応", "両立支援"], "keywords": ["治療と仕事", "両立支援"], "verdict": "recheck", "verdict_date": "2026-07-22", "evidence": "hold(5)。施行済み(2026-04)+努力義務で弱い。#39がGoならホウレイナビ第2弾として再浮上", "recheck_date": "2026-09-01", "related_issue": 54 },
-    { "category_path": ["kintone移行"], "keywords": ["kintone", "値上げ", "ノーコード"], "verdict": "recheck", "verdict_date": "2026-06-10", "evidence": "2026-11強制切替の時限イベント。移行スポット型は収益成立性1止まり。ストック型に変換できる場合のみ", "recheck_date": "2026-09-15", "related_issue": 40 }
+    {
+      "category_path": [
+        "法改正対応",
+        "通知・診断・テンプレート層"
+      ],
+      "keywords": [
+        "法改正",
+        "通知",
+        "診断",
+        "チェックリスト"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-23",
+      "evidence": "freee/SmartHR/官公庁が無料提供。新規仮説は全てホウレイナビ(#37)の守備範囲に収束（4回連続確認）。勝てるのは運用証跡レイヤーのみ",
+      "related_issue": 37
+    },
+    {
+      "category_path": [
+        "法改正対応",
+        "運用証跡レイヤー"
+      ],
+      "keywords": [
+        "受講証跡",
+        "事案台帳",
+        "運用記録"
+      ],
+      "verdict": "open",
+      "verdict_date": "2026-06-23",
+      "evidence": "唯一のpass実績パターン（#37/#39）。施行3-4ヶ月前の窓で評価する",
+      "related_issue": 39
+    },
+    {
+      "category_path": [
+        "SaaSバックオフィス"
+      ],
+      "keywords": [
+        "勤怠",
+        "経費精算",
+        "給与計算",
+        "労務"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-23",
+      "evidence": "freee/MF/SmartHR寡占。勤怠119製品・経費46製品・給与33製品の飽和を確認（3回連続）"
+    },
+    {
+      "category_path": [
+        "ストレスチェック"
+      ],
+      "keywords": [
+        "ストレスチェック",
+        "50人未満"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-10",
+      "evidence": "無料競合飽和（ストレスチェッカー500名まで無料、厚労省無料プログラム、月55円/人）"
+    },
+    {
+      "category_path": [
+        "AIO・GEO"
+      ],
+      "keywords": [
+        "AI検索最適化",
+        "GEO",
+        "llms.txt"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-11",
+      "evidence": "ミエルカGEO無料診断+SEO会社10-22社参入。再浮上条件: 診断でなく実装成果物で課金",
+      "related_issue": 26
+    },
+    {
+      "category_path": [
+        "セールスイネーブルメント"
+      ],
+      "keywords": [
+        "営業トーク",
+        "商談解析"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-04",
+      "evidence": "MiiTel/amptalk/ACES Meetでコモディティ化",
+      "related_issue": 23
+    },
+    {
+      "category_path": [
+        "電子帳簿保存法対応"
+      ],
+      "keywords": [
+        "電帳法",
+        "請求書保管"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-04",
+      "evidence": "invox・バクラクが支配"
+    },
+    {
+      "category_path": [
+        "介護",
+        "音声記録"
+      ],
+      "keywords": [
+        "介護記録",
+        "音声入力"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-04",
+      "evidence": "ハナスト・NAGARAが先行",
+      "related_issue": 38
+    },
+    {
+      "category_path": [
+        "建設業",
+        "小規模向けDX"
+      ],
+      "keywords": [
+        "工務店",
+        "現場管理"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-04",
+      "evidence": "サクミル・KANNAが既存"
+    },
+    {
+      "category_path": [
+        "建設業",
+        "一人親方",
+        "安全衛生証跡"
+      ],
+      "keywords": [
+        "安衛法2027",
+        "一人親方",
+        "証跡"
+      ],
+      "verdict": "recheck",
+      "verdict_date": "2026-07-03",
+      "evidence": "hold(5)。施行3-4ヶ月前ルールで2027年Q1に再評価",
+      "recheck_date": "2027-01-15",
+      "related_issue": 48
+    },
+    {
+      "category_path": [
+        "汎用チャットボット"
+      ],
+      "keywords": [
+        "チャットボット",
+        "FAQ"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-04",
+      "evidence": "差別化困難、大手独占"
+    },
+    {
+      "category_path": [
+        "大企業向けHR Tech"
+      ],
+      "keywords": [
+        "タレントマネジメント"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-04",
+      "evidence": "Workday/SAP等が支配"
+    },
+    {
+      "category_path": [
+        "汎用DX推進ツール"
+      ],
+      "keywords": [
+        "DX支援"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-04",
+      "evidence": "ターゲット曖昧"
+    },
+    {
+      "category_path": [
+        "SaaS比較・レビューサイト"
+      ],
+      "keywords": [
+        "比較サイト"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-06-04",
+      "evidence": "マネタイズ困難"
+    },
+    {
+      "category_path": [
+        "個人開発者向けツール"
+      ],
+      "keywords": [
+        "需要検証",
+        "インディーハッカー"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-03",
+      "evidence": "英語圏でAIツール乱立、日本市場1-5万人で過小。Heatseeker.ai等が先行",
+      "related_issue": 47
+    },
+    {
+      "category_path": [
+        "記録管理",
+        "点検・HACCP・日報・研修・資格"
+      ],
+      "keywords": [
+        "点検記録",
+        "HACCP",
+        "作業日報",
+        "研修管理",
+        "資格管理"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-03",
+      "evidence": "各カテゴリ15-48製品の飽和（CHECKROID/i-Reporter/SmartHR等）"
+    },
+    {
+      "category_path": [
+        "SCS評価制度対応"
+      ],
+      "keywords": [
+        "サプライチェーンセキュリティ",
+        "星3"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-03",
+      "evidence": "MF Adminaが無料チェックリスト83項目提供+政府お助け隊",
+      "related_issue": 49
+    },
+    {
+      "category_path": [
+        "AI導入支援・顧問"
+      ],
+      "keywords": [
+        "AI研修",
+        "AI導入コンサル"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "30+社参入済み。ChatGPT/Claude自体が最大の競合で月額課金が成立しない",
+      "related_issue": 52
+    },
+    {
+      "category_path": [
+        "採用コンテンツAI"
+      ],
+      "keywords": [
+        "求人票生成",
+        "採用サイト"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "ごんた(無料)/Airワーク(0円)/engage(0円)で完全飽和"
+    },
+    {
+      "category_path": [
+        "補助金申請AI"
+      ],
+      "keywords": [
+        "補助金",
+        "申請支援"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "hojokin.ai/補助金OS等4+ツール先行"
+    },
+    {
+      "category_path": [
+        "不動産",
+        "物件AI"
+      ],
+      "keywords": [
+        "物件提案",
+        "追客AI"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "SalesDock/ルームAI等6+ツール先行"
+    },
+    {
+      "category_path": [
+        "SNSマーケ代行・AI"
+      ],
+      "keywords": [
+        "SNS運用",
+        "投稿生成"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "15+AIツール+22+代行会社。月5万の低価格帯あり。AI進化でセルフとの差が時限的",
+      "related_issue": 51
+    },
+    {
+      "category_path": [
+        "来店型ビジネス",
+        "予約管理"
+      ],
+      "keywords": [
+        "美容",
+        "飲食",
+        "塾",
+        "予約"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "美容飲食26+製品・塾27+製品の飽和"
+    },
+    {
+      "category_path": [
+        "賃貸管理"
+      ],
+      "keywords": [
+        "賃貸",
+        "物件管理"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "25+製品。低価格帯もSimple Up(月5,478円)が既存"
+    },
+    {
+      "category_path": [
+        "EC一元管理"
+      ],
+      "keywords": [
+        "受注管理",
+        "多店舗"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "14+製品。ネクストエンジン/クロスモール安定"
+    },
+    {
+      "category_path": [
+        "AI電話・IVR"
+      ],
+      "keywords": [
+        "電話自動応対",
+        "IVR"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-06",
+      "evidence": "IVRy 30,000社+、48製品で完全飽和"
+    },
+    {
+      "category_path": [
+        "モバイル文字起こし"
+      ],
+      "keywords": [
+        "文字起こしアプリ",
+        "ボイスメモ"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-22",
+      "evidence": "Notta/CLOVA Note/Whisper系無料+ローカル無料勢（MS Store）で過密",
+      "evidence_url": "https://applion.jp/iphone/app/1482592304/review/"
+    },
+    {
+      "category_path": [
+        "学習",
+        "AI単語帳・SRS"
+      ],
+      "keywords": [
+        "単語帳",
+        "暗記",
+        "間隔反復"
+      ],
+      "verdict": "recheck",
+      "verdict_date": "2026-07-22",
+      "evidence": "Poki/カシャ単/Quizlet AIが中核機能を実装済みで差し戻し。日本語圏でのPokiの伸びを四半期観察",
+      "evidence_url": "https://apps.apple.com/jp/app/id6450241875",
+      "recheck_date": "2026-10-22"
+    },
+    {
+      "category_path": [
+        "PDF処理",
+        "ブラウザ内完結"
+      ],
+      "keywords": [
+        "PDF",
+        "ローカル処理"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-22",
+      "evidence": "JP Toolsが282ツール無料展開。参入障壁が低く空白が即埋まる構造",
+      "evidence_url": "https://jptools.jp/"
+    },
+    {
+      "category_path": [
+        "帳票OCR",
+        "零細向けFAX注文書"
+      ],
+      "keywords": [
+        "FAX",
+        "AI-OCR",
+        "受発注"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-22",
+      "evidence": "SmartReadセルフサーブ月3万〜。相場低下+Gemini標準搭載+AI導入補助金で価格壁消失",
+      "evidence_url": "https://boxil.jp/mag/a8318/"
+    },
+    {
+      "category_path": [
+        "議事録",
+        "ローカル文字起こしWindows"
+      ],
+      "keywords": [
+        "議事録",
+        "話者分離",
+        "ローカル"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-22",
+      "evidence": "MS Storeに完全オフライン無料アプリ既存。WhisperX(OSS)で話者分離も無料",
+      "evidence_url": "https://apps.microsoft.com/detail/9nc258ch3tmp"
+    },
+    {
+      "category_path": [
+        "ライティング校正",
+        "日本語敬語・ビジネス特化"
+      ],
+      "keywords": [
+        "敬語",
+        "校正",
+        "ビジネス文書"
+      ],
+      "verdict": "open",
+      "verdict_date": "2026-07-22",
+      "evidence": "Gemini in Chromeの圧力下だが敬語特化帯は争奪中。ゲート3予備2/3で生存。Issue化保留中（事業ノート2026-07-23決定）。着手時は①再確認から",
+      "evidence_url": "https://aipicks.jp/mag/ai-proofreading-tools-guide-2026"
+    },
+    {
+      "category_path": [
+        "医療・介護",
+        "会議・カンファ記録構造化"
+      ],
+      "keywords": [
+        "カンファレンス",
+        "議事録",
+        "介護記録"
+      ],
+      "verdict": "open",
+      "verdict_date": "2026-07-22",
+      "evidence": "議事録Winからの再定義案。未審査。Issue化保留中（事業ノート2026-07-23決定）。②優先扱いはスキル前提撤去により消滅、①③のみで判定"
+    },
+    {
+      "category_path": [
+        "法改正対応",
+        "育成就労制度"
+      ],
+      "keywords": [
+        "育成就労",
+        "技能実習",
+        "2027"
+      ],
+      "verdict": "recheck",
+      "verdict_date": "2026-07-06",
+      "evidence": "hold(5)。2027-04施行の3-4ヶ月前に再評価",
+      "recheck_date": "2026-12-01",
+      "related_issue": 53
+    },
+    {
+      "category_path": [
+        "法改正対応",
+        "両立支援"
+      ],
+      "keywords": [
+        "治療と仕事",
+        "両立支援"
+      ],
+      "verdict": "recheck",
+      "verdict_date": "2026-07-22",
+      "evidence": "hold(5)。施行済み(2026-04)+努力義務で弱い。#39がGoならホウレイナビ第2弾として再浮上",
+      "recheck_date": "2026-09-01",
+      "related_issue": 54
+    },
+    {
+      "category_path": [
+        "kintone移行"
+      ],
+      "keywords": [
+        "kintone",
+        "値上げ",
+        "ノーコード"
+      ],
+      "verdict": "recheck",
+      "verdict_date": "2026-06-10",
+      "evidence": "2026-11強制切替の時限イベント。移行スポット型は収益成立性1止まり。ストック型に変換できる場合のみ",
+      "recheck_date": "2026-09-15",
+      "related_issue": 40
+    },
+    {
+      "category_path": [
+        "法改正対応",
+        "公益通報",
+        "運用証跡"
+      ],
+      "keywords": [
+        "公益通報",
+        "内部通報",
+        "従事者指定",
+        "調査台帳"
+      ],
+      "verdict": "open",
+      "verdict_date": "2026-07-24",
+      "evidence": "改正法2026-12-01施行(刑事罰導入)。受付レイヤーは13社+年9,600円激安で飽和、運用証跡レイヤーで#55 pass(9)",
+      "evidence_url": "https://keiyaku-watch.jp/media/hourei/koekitsuhosyahogohou-2026/",
+      "related_issue": 55
+    },
+    {
+      "category_path": [
+        "内部通報",
+        "受付窓口・代行"
+      ],
+      "keywords": [
+        "通報窓口",
+        "匿名受付",
+        "ホットライン代行"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-24",
+      "evidence": "13社以上+コンプラチェッカー年9,600円で価格破壊済み。受付レイヤーには参入しない",
+      "evidence_url": "https://www.aspicjapan.org/asu/article/23244"
+    },
+    {
+      "category_path": [
+        "ギグワーク",
+        "供給側ツール",
+        "収支・手数料可視化"
+      ],
+      "keywords": [
+        "軽貨物",
+        "配達員",
+        "手数料",
+        "実質時給"
+      ],
+      "verdict": "open",
+      "verdict_date": "2026-07-24",
+      "evidence": "Gridwise日本未上陸・Taxnapは申告特化のみ。5アプリ横断の手数料不満25件+。#56 pass(7・境界)",
+      "related_issue": 56
+    },
+    {
+      "category_path": [
+        "農業",
+        "作業記録"
+      ],
+      "keywords": [
+        "営農管理",
+        "圃場",
+        "作業日誌"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-24",
+      "evidence": "アプリ23選+畑らく日記(無料・音声入力)が受け皿。オフライン記録単体では①×",
+      "evidence_url": "https://agri.mynavi.jp/2022_09_29_203394/"
+    },
+    {
+      "category_path": [
+        "通知フィルタ・ミュート単体アプリ"
+      ],
+      "keywords": [
+        "通知オフ",
+        "フィルタ",
+        "ミュート"
+      ],
+      "verdict": "avoid",
+      "verdict_date": "2026-07-24",
+      "evidence": "BuzzKill等の汎用既存+対象アプリのAPI無し。プラットフォーム側の構造不満は#56の補完ツール側で吸う"
+    },
+    {
+      "category_path": [
+        "法改正対応",
+        "事業再生円滑化法"
+      ],
+      "keywords": [
+        "私的整理",
+        "事業再生",
+        "債務調整"
+      ],
+      "verdict": "recheck",
+      "verdict_date": "2026-07-24",
+      "evidence": "#57 hold(5)。施行規則が出揃う2026-10に再評価。事業1(M&A)側への情報価値あり",
+      "recheck_date": "2026-10-15",
+      "related_issue": 57
+    }
   ]
 }
