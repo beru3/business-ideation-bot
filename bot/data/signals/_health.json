@@ -1,10 +1,14 @@
 {
   "gplay": {
-    "last_success_at": "2026-07-23T22:14:45.592401+00:00",
-    "rows_collected": 5
+    "last_success_at": "2026-07-24T00:43:37.956678+00:00",
+    "rows_collected": 3
   },
   "prtimes": {
-    "last_success_at": "2026-07-23T22:14:42.640975+00:00",
+    "last_success_at": "2026-07-24T00:43:32.930990+00:00",
+    "rows_collected": 0
+  },
+  "youtube": {
+    "last_success_at": "2026-07-24T00:43:40.556971+00:00",
     "rows_collected": 0
   }
 }
