@@ -1,23 +1,105 @@
 {
-  "_comment": "youtubeコレクタの監視対象動画。LLMセッションが週次で追加削除する。cronは読むだけ。初期選定2026-07-23（oEmbedで全件実在確認済み・10カテゴリに分散）。",
+  "_comment": "youtubeコレクタの監視対象動画。LLMセッションが週次で追加削除する。cronは読むだけ。初期選定2026-07-23（バーティカル特化14本）+ 2026-07-24追加（コメント母数対策で人気動画10本・全てコメント欄有効確認済み）。",
   "_entry_example": {
     "video_id": "dQw4w9WgXcQ",
     "note": "監視理由のメモ (任意)"
   },
   "videos": [
-    { "video_id": "_o-WSV2Shs0", "note": "職人の確定申告（塗り替え道場） | 一人親方の税務バックオフィス" },
-    { "video_id": "hfknsXZgf78", "note": "工事写真撮影のコツ7選 | 建設・工事写真の需要側信号" },
-    { "video_id": "YK58ArhwE8I", "note": "軽貨物運送の始め方 | 開業手続きの実務の詰まり" },
-    { "video_id": "ZzrQJzOrGVg", "note": "軽貨物事業の経営実態 | 収支・案件管理の未充足" },
-    { "video_id": "n7u_DXfBzXc", "note": "介護記録の書き方（新人向け・2025-11公開） | openカテゴリ隣接" },
-    { "video_id": "lUASQ1HLFO8", "note": "介護記録SOAP解説 | 記録負担の不満コメント" },
-    { "video_id": "THaZp_pqTfk", "note": "産廃マニフェストの書き方（紙） | 紙運用の非効率・電子化ニーズ" },
-    { "video_id": "upKLhuvprhs", "note": "産廃マニフェスト入門 | 排出事業者側の実務の詰まり" },
-    { "video_id": "bk0huuFtcgo", "note": "請求書の作り方（弥生ch） | 個人事業主のツール選び・インボイス" },
-    { "video_id": "_7d-mDn0Bcc", "note": "Excel在庫管理表の作り方（2026-02公開） | 「こういうアプリない？」型の典型ソース" },
-    { "video_id": "TAMQ1-aZ3tY", "note": "農家の青色申告・会計ソフト3選 | 農業簿記特有の未充足" },
-    { "video_id": "WFCDb9JM_sw", "note": "警備員の仕事解説 | 未スイープ業界（警備）の信号" },
-    { "video_id": "xA06Lx3swH4", "note": "新人が覚えたい敬語一覧 | openカテゴリ（敬語校正）隣接" },
-    { "video_id": "DOPxJPYpOcI", "note": "はじめてのお葬式・喪主のやること | 葬祭バーティカル" }
+    {
+      "video_id": "_o-WSV2Shs0",
+      "note": "職人の確定申告（塗り替え道場） | 一人親方の税務バックオフィス"
+    },
+    {
+      "video_id": "hfknsXZgf78",
+      "note": "工事写真撮影のコツ7選 | 建設・工事写真の需要側信号"
+    },
+    {
+      "video_id": "YK58ArhwE8I",
+      "note": "軽貨物運送の始め方 | 開業手続きの実務の詰まり"
+    },
+    {
+      "video_id": "ZzrQJzOrGVg",
+      "note": "軽貨物事業の経営実態 | 収支・案件管理の未充足"
+    },
+    {
+      "video_id": "n7u_DXfBzXc",
+      "note": "介護記録の書き方（新人向け・2025-11公開） | openカテゴリ隣接"
+    },
+    {
+      "video_id": "lUASQ1HLFO8",
+      "note": "介護記録SOAP解説 | 記録負担の不満コメント"
+    },
+    {
+      "video_id": "THaZp_pqTfk",
+      "note": "産廃マニフェストの書き方（紙） | 紙運用の非効率・電子化ニーズ"
+    },
+    {
+      "video_id": "upKLhuvprhs",
+      "note": "産廃マニフェスト入門 | 排出事業者側の実務の詰まり"
+    },
+    {
+      "video_id": "bk0huuFtcgo",
+      "note": "請求書の作り方（弥生ch） | 個人事業主のツール選び・インボイス"
+    },
+    {
+      "video_id": "_7d-mDn0Bcc",
+      "note": "Excel在庫管理表の作り方（2026-02公開） | 「こういうアプリない？」型の典型ソース"
+    },
+    {
+      "video_id": "TAMQ1-aZ3tY",
+      "note": "農家の青色申告・会計ソフト3選 | 農業簿記特有の未充足"
+    },
+    {
+      "video_id": "WFCDb9JM_sw",
+      "note": "警備員の仕事解説 | 未スイープ業界（警備）の信号"
+    },
+    {
+      "video_id": "xA06Lx3swH4",
+      "note": "新人が覚えたい敬語一覧 | openカテゴリ（敬語校正）隣接"
+    },
+    {
+      "video_id": "DOPxJPYpOcI",
+      "note": "はじめてのお葬式・喪主のやること | 葬祭バーティカル"
+    },
+    {
+      "video_id": "ro1WiklvAKc",
+      "note": "確定申告のやり方 完全解説（大河内薫・66万回）| 個人事業主の税務質問コメント"
+    },
+    {
+      "video_id": "sxEUiAE6GH4",
+      "note": "個人事業主の節税対策（スガワラくん・174万回）| 税務2本目"
+    },
+    {
+      "video_id": "HEhDNoklIT0",
+      "note": "Excel使い方 完全版（金子晃之・556万回）| 業務効率化の実務コメント"
+    },
+    {
+      "video_id": "pODaMs6XYb0",
+      "note": "Excelショートカット34選（金子晃之・59万回）| Excel2本目"
+    },
+    {
+      "video_id": "_M1cv_JFqnM",
+      "note": "せどりで年収100万UP（両学長・167万回）| 副業実践者の質問"
+    },
+    {
+      "video_id": "hQWyEacqfyU",
+      "note": "おすすめしない副業5選（両学長・30万回）| 副業相談コメント"
+    },
+    {
+      "video_id": "l1I-0JhFeW4",
+      "note": "介護の移乗技術（ケアきょう・195万回）| 現場介護職の実務コメント"
+    },
+    {
+      "video_id": "UgEOrD3yErA",
+      "note": "任せてはいけない施工会社（職人社長・9.8万回/登録20万）| 建築実務"
+    },
+    {
+      "video_id": "_t0LKCy0XFU",
+      "note": "少ない畑で稼ぐ野菜作り（塚原農園・8.7万回/登録50万）| 営農収益"
+    },
+    {
+      "video_id": "IIkt32MO594",
+      "note": "軽貨物ドライバーを辞める理由（ずんだ探検隊・21万回）| 現役ドライバー実体験"
+    }
   ]
 }
