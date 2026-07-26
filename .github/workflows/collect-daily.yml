@@ -28,11 +28,7 @@ jobs:
 
       # 1ソースの失敗が他を巻き込まないよう continue-on-error で分離し、
       # コミット後に outcome を集計して失敗を報告する
-      - name: Collect prtimes
-        id: prtimes
-        continue-on-error: true
-        run: python bot/collectors/prtimes.py
-
+      # (prtimes は collect-prtimes.yml で1日5回実行に分離済み)
       - name: Collect gplay
         id: gplay
         continue-on-error: true
@@ -58,10 +54,9 @@ jobs:
           fi
 
       - name: Report collector failures
-        if: steps.prtimes.outcome == 'failure' || steps.gplay.outcome == 'failure' || steps.youtube.outcome == 'failure'
+        if: steps.gplay.outcome == 'failure' || steps.youtube.outcome == 'failure'
         run: |
           echo "Failed collectors:"
-          echo "  prtimes: ${{ steps.prtimes.outcome }}"
           echo "  gplay:   ${{ steps.gplay.outcome }}"
           echo "  youtube: ${{ steps.youtube.outcome }}"
           exit 1

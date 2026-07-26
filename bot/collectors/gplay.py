@@ -10,6 +10,7 @@
 """
 from __future__ import annotations
 
+import re
 import sys
 from typing import Any
 
@@ -25,15 +26,36 @@ FETCH_COUNT = 100  # 新着から取得する件数 (重複はcommon側で排除
 DEFAULT_LANG = "ja"
 DEFAULT_COUNTRY = "jp"
 
+# 収集時の粗い機械分類のみ (意味判断はLLM層の仕事。domain_painの判定はしない —
+# どのタグにも該当しない "other" が実質的なドメイン不満候補としてトリアージ対象になる)
+COMPLAINT_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("ads", re.compile(r"広告")),
+    ("bug", re.compile(
+        r"落ち|クラッシュ|強制終了|フリーズ|固ま|バグ|エラー|開かない|起動しない"
+        r"|表示されない|読み込め?な|同期(?:できない|されない|しない)"
+        r"|保存(?:できない|されない)|通信に失敗|重い|遅い"
+    )),
+    ("auth", re.compile(r"ログイン|サインイン|認証|パスワード|アカウント|引き継ぎ|機種変")),
+    ("price", re.compile(r"値上げ|課金|有料|料金|月額|年額|サブスク|高すぎ|高い|無料")),
+    ("support", re.compile(r"問い合わせ|問合せ|サポート|返信|返答|運営|対応し(?:て|ない)")),
+)
+
+
+def classify_complaint(body: str) -> list[str]:
+    """レビュー本文への粗い正規表現タグ付け。無マッチは ["other"] (ドメイン不満候補)。"""
+    tags = [name for name, pat in COMPLAINT_PATTERNS if pat.search(body)]
+    return tags or ["other"]
+
 
 def review_to_signal(app_id: str, review: dict[str, Any]) -> dict[str, Any]:
     """google-play-scraper のレビューdictを共通スキーマの信号に変換する。"""
     at = review.get("at")
+    body = review.get("content") or ""
     return common.build_signal(
         source="gplay",
         native_id=str(review["reviewId"]),
         title=f"[{app_id}] ★{review.get('score')} レビュー",
-        body=review.get("content") or "",
+        body=body,
         url=f"https://play.google.com/store/apps/details?id={app_id}",
         raw_category=f"score_{review.get('score')}",
         meta={
@@ -42,6 +64,7 @@ def review_to_signal(app_id: str, review: dict[str, Any]) -> dict[str, Any]:
             "reviewed_at": at.isoformat() if hasattr(at, "isoformat") else str(at or ""),
             "thumbs_up_count": review.get("thumbsUpCount"),
             "app_version": review.get("appVersion"),
+            "complaint_tags": classify_complaint(body),
         },
     )
 

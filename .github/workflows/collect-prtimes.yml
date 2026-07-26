@@ -1,0 +1,44 @@
+name: Collect signals (prtimes)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # JST 09:29 / 12:29 / 15:29 / 18:29 / 21:29。cron分は0分を避ける (Actions混雑対策)
+    # PR TIMESのRSSは直近200件のみのため、営業時間帯を1日5回ポーリングして取りこぼしを減らす
+    - cron: '29 0 * * *'
+    - cron: '29 3 * * *'
+    - cron: '29 6 * * *'
+    - cron: '29 9 * * *'
+    - cron: '29 12 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect-signals
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # prtimesコレクタはstdlibのみ (pip install不要)
+      - name: Collect prtimes
+        run: python bot/collectors/prtimes.py
+
+      - name: Commit signal data
+        run: |
+          git config user.name "signal-bot"
+          git config user.email "noreply@anthropic.com"
+          git add bot/data/signals/
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: prtimes signal collection [skip ci]"
+            git pull --rebase origin master
+            git push
+          fi

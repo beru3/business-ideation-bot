@@ -114,6 +114,13 @@ class TestPrtimesKeywords:
         ("原材料高騰に伴う値上げについて", ["値上げ"]),
         ("株式会社Bの事業譲渡に関するお知らせ", ["事業譲渡"]),
         ("○○ソフトのサポート終了と提供終了について", ["提供終了", "サポート終了"]),
+        # 2026-07拡張キーワード
+        ("○○事業からの撤退に関するお知らせ", ["撤退"]),
+        ("ロングセラー商品「△△」終売のご案内", ["終売"]),
+        ("××シリーズ販売終了のお知らせ", ["販売終了"]),
+        ("子会社2社の経営統合について", ["経営統合"]),
+        ("カスタマーサポート業務の移管について", ["移管"]),
+        ("旧プランの新規受付停止のお知らせ", ["新規受付停止"]),
     ])
     def test_matches(self, title, expected):
         assert sorted(prtimes.match_keywords(title)) == sorted(expected)
@@ -122,9 +129,28 @@ class TestPrtimesKeywords:
         "新サービスを開始しました",
         "資金調達を実施 シリーズAで5億円",
         "夏の新商品発売のお知らせ",
+        # 意図的除外の確認: 単体「統合」「改定」は複合語のみマッチ
+        "システム統合基盤をリリース",
+        "利用規約改定のお知らせ",
     ])
     def test_no_match(self, title):
         assert prtimes.match_keywords(title) == []
+
+
+class TestPrtimesMatchRelease:
+    def test_title_hit_takes_precedence(self):
+        matched, where = prtimes.match_release("値上げのお知らせ", "本文でもサービス終了に言及")
+        assert matched == ["値上げ"]
+        assert where == "title"
+
+    def test_description_hit(self):
+        matched, where = prtimes.match_release(
+            "重要なお知らせ", "誠に勝手ながら本サービスの提供終了を決定いたしました")
+        assert matched == ["提供終了"]
+        assert where == "description"
+
+    def test_no_hit(self):
+        assert prtimes.match_release("新商品のご案内", "夏の新作です") == ([], "")
 
 
 class TestPrtimesParseFeed:
@@ -177,6 +203,91 @@ class TestYoutubeNeedPatterns:
         matched = youtube.match_needs("自動化したいです")
         assert all(isinstance(p, str) for p in matched)
         assert any("自動化" in p for p in matched)
+
+
+class TestYoutubeTiers:
+    """2層パターン (2026-07-26): HIGHを1つでも含めば high、LOWのみなら low。"""
+
+    @pytest.mark.parametrize("text", [
+        "おすすめの家計簿アプリを教えてください",  # 文脈必須型「教えて」
+        "確定申告のやり方を教えてほしいです",
+        "こういうツールないですか",
+        "この作業を自動化したい",
+    ])
+    def test_high(self, text):
+        matched = youtube.match_needs(text)
+        assert matched != []
+        assert youtube.classify_tier(matched) == "high"
+
+    @pytest.mark.parametrize("text", [
+        "次の動画はいつですか？教えてください",  # 文脈なしの丁寧な依頼
+        "どうすればいいですか",
+    ])
+    def test_low(self, text):
+        matched = youtube.match_needs(text)
+        assert matched != []
+        assert youtube.classify_tier(matched) == "low"
+
+
+class TestYoutubeCommentAge:
+    def test_z_suffix_iso(self):
+        from datetime import datetime, timezone
+        now = datetime(2021, 5, 2, 12, 34, 56, tzinfo=timezone.utc)
+        assert youtube.comment_age_days("2021-05-01T12:34:56Z", now=now) == 1
+
+    def test_future_clamped_to_zero(self):
+        from datetime import datetime, timezone
+        now = datetime(2021, 5, 1, 0, 0, 0, tzinfo=timezone.utc)
+        assert youtube.comment_age_days("2021-05-02T00:00:00Z", now=now) == 0
+
+    @pytest.mark.parametrize("value", [None, "", "unknown", "2021/05/01"])
+    def test_unparsable_returns_none(self, value):
+        assert youtube.comment_age_days(value) is None
+
+
+class TestYoutubeChannelRss:
+    FEED = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<feed xmlns="http://www.w3.org/2005/Atom"'
+        ' xmlns:yt="http://www.youtube.com/xml/schemas/2015">'
+        "<title>チャンネル名</title>"
+        "<entry><yt:videoId>vid_new01</yt:videoId><title>新しい動画</title>"
+        "<published>2026-07-20T09:00:00+00:00</published></entry>"
+        "<entry><yt:videoId>vid_old01</yt:videoId><title>古い動画</title>"
+        "<published>2025-01-01T09:00:00+00:00</published></entry>"
+        "</feed>"
+    ).encode("utf-8")
+
+    def test_parse(self):
+        entries = youtube.parse_channel_rss(self.FEED)
+        assert [e["video_id"] for e in entries] == ["vid_new01", "vid_old01"]
+        assert entries[0]["title"] == "新しい動画"
+        assert entries[0]["published"] == "2026-07-20T09:00:00+00:00"
+
+
+class TestYoutubeSelectRecentVideos:
+    def _entry(self, vid: str, published: str) -> dict:
+        return {"video_id": vid, "title": "t", "published": published}
+
+    def test_filters_by_age_window(self):
+        from datetime import datetime, timezone
+        now = datetime(2026, 7, 26, 0, 0, 0, tzinfo=timezone.utc)
+        entries = [
+            self._entry("recent", "2026-07-01T00:00:00+00:00"),   # 25日前
+            self._entry("too_old", "2026-01-01T00:00:00+00:00"),  # 90日超
+            self._entry("no_date", ""),
+        ]
+        selected = youtube.select_recent_videos(entries, now=now)
+        assert [e["video_id"] for e in selected] == ["recent"]
+
+    def test_limits_per_channel_and_sorts_newest_first(self):
+        from datetime import datetime, timezone
+        now = datetime(2026, 7, 26, 0, 0, 0, tzinfo=timezone.utc)
+        entries = [
+            self._entry(f"v{i}", f"2026-07-{10 + i:02d}T00:00:00+00:00") for i in range(7)
+        ]
+        selected = youtube.select_recent_videos(entries, per_channel=5, now=now)
+        assert [e["video_id"] for e in selected] == ["v6", "v5", "v4", "v3", "v2"]
 
 
 # ──────────────────────────────────────────────
@@ -249,3 +360,27 @@ class TestGplayReviewToSignal:
         assert sig["body"] == "全然同期できない"
         assert sig["meta"]["app_id"] == "com.example.app"
         assert sig["meta"]["reviewed_at"] == "2026-07-20T10:00:00"
+        assert sig["meta"]["complaint_tags"] == ["bug"]
+
+
+class TestGplayClassifyComplaint:
+    @pytest.mark.parametrize("body,expected", [
+        ("誤タップ誘発の広告が多すぎる", ["ads"]),
+        ("アップデート後に起動しない", ["bug"]),
+        ("機種変したらデータの引き継ぎができない", ["auth"]),
+        ("月額が高すぎる。無料版の機能も減った", ["price"]),
+        ("問い合わせても返信がない", ["support"]),
+    ])
+    def test_single_tag(self, body, expected):
+        assert gplay.classify_complaint(body) == expected
+
+    def test_multi_tag(self):
+        tags = gplay.classify_complaint("ログインできず、サポートに問い合わせても返答なし")
+        assert tags == ["auth", "support"]
+
+    def test_domain_pain_falls_to_other(self):
+        # 機械分類に該当しない不満 = ドメイン不満候補としてトリアージ対象
+        assert gplay.classify_complaint("圃場の区画分けが手入力でしかできない") == ["other"]
+
+    def test_empty_body(self):
+        assert gplay.classify_complaint("") == ["other"]

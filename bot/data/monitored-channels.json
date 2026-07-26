@@ -1,0 +1,69 @@
+{
+  "_comment": "youtubeコレクタの監視対象チャンネル。LLMセッションが週次で追加削除する（cronは読むだけ）。各chのRSSから公開90日以内・最新5本の動画を自動選定してコメントを監視する。初期選定2026-07-26: 旧monitored-videos.json 24本の投稿チャンネルからバーティカル重複を整理して15ch（基準: バーティカル該当・投稿頻度・コメント欄の活性。ベンダー公式chは製品サポートコメントに偏るため除外）。",
+  "_entry_example": {
+    "channel_id": "UCxxxxxxxxxxxxxxxxxxxxxx",
+    "note": "チャンネル名 | 監視理由のメモ (任意)"
+  },
+  "channels": [
+    {
+      "channel_id": "UCs7rJz4WvRVd0-PbXKiBi2Q",
+      "note": "大河内薫 | 個人事業主・税務バーティカル（確定申告の実務質問コメント）"
+    },
+    {
+      "channel_id": "UCwKupwJ1EpdNH8Z98SKjY2Q",
+      "note": "脱・税理士スガワラくん | 税務2本目（節税・法人化の実務質問）"
+    },
+    {
+      "channel_id": "UCF27uipT8xmfaIALkQ14hKA",
+      "note": "ずんだ探検隊 | 軽貨物ドライバー実体験（#56隣接・収支/手数料の不満）"
+    },
+    {
+      "channel_id": "UC00NI5MjN0v0o_4UaNORVqQ",
+      "note": "軽貨物ひとりオーナー社長 | 軽貨物開業・経営の実務の詰まり"
+    },
+    {
+      "channel_id": "UCNkibDFHKRpY3KNm-jTTIsQ",
+      "note": "ケアきょう | 現場介護職の実務コメント（大手介護職ch）"
+    },
+    {
+      "channel_id": "UCdY_0h4wn8-IYapT1VRpx7Q",
+      "note": "介護記録解説ch | 介護記録の書き方（openカテゴリ#33隣接・記録負担の不満）"
+    },
+    {
+      "channel_id": "UCI-_lpDZ6fsRbNjo-FzxBuA",
+      "note": "職人社長の家づくり工務店 | 建築実務（登録20万・施主/職人双方のコメント）"
+    },
+    {
+      "channel_id": "UC_SFvxKxt6ywtxYfnJI-gIA",
+      "note": "建設業を持ち上げるTV | 建設・工事写真の需要側信号"
+    },
+    {
+      "channel_id": "UC0pyyPwW_-1Ug0itc3NCnjQ",
+      "note": "塗り替え道場 | 一人親方の税務バックオフィス（recheckカテゴリ#48隣接）"
+    },
+    {
+      "channel_id": "UCLqJkPsnrXsnAKtluU6lMQA",
+      "note": "産廃処理業者公式ch | 産廃マニフェスト実務（紙運用の非効率・電子化ニーズ）"
+    },
+    {
+      "channel_id": "UC3OXmvFeeZbg7AzjJFoT8oA",
+      "note": "農Tube委員会 | 農業簿記・会計ソフト（農業特有の未充足）"
+    },
+    {
+      "channel_id": "UCLE5fDDmenoz83BJIvox39A",
+      "note": "塚原農園 | 営農収益（登録50万・小規模農家の実務コメント）"
+    },
+    {
+      "channel_id": "UCaxV7Sf7pdNjlahl6BtJBBw",
+      "note": "金子晃之 | Excel・業務効率化（「こういうアプリない？」型コメントの典型ソース）"
+    },
+    {
+      "channel_id": "UC67Wr_9pA4I0glIxDt_Cpyw",
+      "note": "両学長 リベラルアーツ大学 | 副業実践者の質問・相談コメント"
+    },
+    {
+      "channel_id": "UCCE9oxk2-JbB6Awty-YzrUw",
+      "note": "ビジネスコミュニケーション研修ch | 敬語・ビジネスマナー（openカテゴリ#32隣接）"
+    }
+  ]
+}
