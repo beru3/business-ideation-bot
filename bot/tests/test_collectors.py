@@ -195,9 +195,20 @@ class TestYoutubeNeedPatterns:
         "このアプリ最高",
         "チャンネル登録しました",
         "автоматизация",
+        # 2026-07-26: 実データで誤爆した叙述表現 (依頼ではない)
+        "大変な思いをして作ってくれている人がいると思うと",
+        "母が作ってくれたお弁当",
     ])
     def test_no_match(self, text):
         assert youtube.match_needs(text) == []
+
+    @pytest.mark.parametrize("text", [
+        "誰か作ってほしい",
+        "こういうの作ってください",
+        "作ってくれないかな",
+    ])
+    def test_request_forms_still_match(self, text):
+        assert youtube.match_needs(text) != []
 
     def test_returns_matched_pattern_strings(self):
         matched = youtube.match_needs("自動化したいです")
