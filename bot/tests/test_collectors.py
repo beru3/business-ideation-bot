@@ -239,6 +239,34 @@ class TestYoutubeTiers:
         assert matched != []
         assert youtube.classify_tier(matched) == "low"
 
+    # PAIN層 (v3.2): 経験談として語られる不満・自前計算。軽貨物102コメントの実地検証由来
+    @pytest.mark.parametrize("text", [
+        "時給はガソリン代差し引いたら1200円程度。まあ割に合わないですね",
+        "時給計算すると割に合わん",
+        "経費自腹で50万じゃやってられんわ",
+        "積荷から拘束12時間で週6働いて手元に残るは40万",
+        "雇用保険払ってないから怪我しても何の補償もない",
+        "宅配なんて軽貨物で一番効率悪くて儲からない仕事",
+    ])
+    def test_pain(self, text):
+        matched = youtube.match_needs(text)
+        assert matched != []
+        assert youtube.classify_tier(matched) == "pain"
+
+    @pytest.mark.parametrize("text", [
+        # 特異度検証 (地政学雑談コーパス1,451件で誤爆2件だった水準を守る)
+        "中国の高速鉄道は赤字でも路線網を広げている",
+        "日本は10期連続の貿易赤字国なんですが",
+        "コスパのいい製品に負ける。苦労して稼いだ金は大事だ",
+    ])
+    def test_pain_no_false_positive(self, text):
+        assert youtube.match_needs(text) == []
+
+    def test_high_beats_pain(self):
+        # highとpainが同時にマッチする場合はhigh優先
+        matched = youtube.match_needs("収支管理が大変で割に合わない。いいアプリないですか")
+        assert youtube.classify_tier(matched) == "high"
+
 
 class TestYoutubeCommentAge:
     def test_z_suffix_iso(self):

@@ -73,6 +73,22 @@ NEED_PATTERNS_HIGH: tuple[str, ...] = (
     r"(?:アプリ|ツール|ソフト|サイト|サービス|やり方|方法|管理|申告|手続き|設定)[^。！？!?\n]{0,30}教えて(?:ください|下さい|ほしい|欲しい|いただけ)",
 )
 
+# ペイン語 PAIN層 (v3.2 / 2026-07-26): 明示的なツール要求ではなく「経験談として
+# 語られる不満・自前計算」を拾う。軽貨物102コメントの実地検証で判明した欠落 —
+# ドメイン不満は「アプリが欲しい」ではなく「時給計算すると割に合わん」の形で現れる。
+# 実測: 特異度99.9% (雑談1,451件で誤爆2) / 感度12.7% (軽貨物102件で13検出)
+NEED_PATTERNS_PAIN: tuple[str, ...] = (
+    r"割に合わ",
+    r"時給(?:換算|計算)(?:する|した)?と",
+    r"実質(?:時給|手取り)",
+    r"経費(?:が|も)?(?:自腹|自己負担|持ち|かかりすぎ)",
+    r"(?:ガソリン|燃料)代?(?:を)?(?:差し引|自腹|自己負担)",
+    r"手(?:取り|元に残る|元に残った)(?:は|が)?\d+万?",
+    r"(?:儲かり|儲から|稼げ)(?:ない|ません|まへん|ん(?:わ|よ|。|$))",
+    r"(?:補償|保証|保障)(?:も|が)?(?:ない|無い|無し|なし)",
+    r"自腹",
+)
+
 # ニーズ語 LOW層: 丁寧な依頼一般にマッチする広いパターン (補助証拠)。
 # 2026-07-26: 初回36件の78%が文脈なし「教えてください」で誤爆したためLOWに降格
 NEED_PATTERNS_LOW: tuple[str, ...] = (
@@ -81,11 +97,13 @@ NEED_PATTERNS_LOW: tuple[str, ...] = (
 )
 
 # 既存テスト互換のため全パターンの結合も保持
-NEED_PATTERNS: tuple[str, ...] = NEED_PATTERNS_HIGH + NEED_PATTERNS_LOW
+NEED_PATTERNS: tuple[str, ...] = NEED_PATTERNS_HIGH + NEED_PATTERNS_PAIN + NEED_PATTERNS_LOW
 
 _COMPILED_HIGH = tuple(re.compile(p) for p in NEED_PATTERNS_HIGH)
+_COMPILED_PAIN = tuple(re.compile(p) for p in NEED_PATTERNS_PAIN)
 _COMPILED_LOW = tuple(re.compile(p) for p in NEED_PATTERNS_LOW)
 _HIGH_SET = frozenset(NEED_PATTERNS_HIGH)
+_PAIN_SET = frozenset(NEED_PATTERNS_PAIN)
 
 _ATOM_NS = {
     "atom": "http://www.w3.org/2005/Atom",
@@ -94,15 +112,20 @@ _ATOM_NS = {
 
 
 def match_needs(text: str) -> list[str]:
-    """テキストにマッチしたニーズ語パターン(文字列)のリストを返す (high+low両層)。"""
+    """テキストにマッチしたニーズ語パターン(文字列)のリストを返す (high+pain+low全層)。"""
     matched = [p.pattern for p in _COMPILED_HIGH if p.search(text)]
+    matched.extend(p.pattern for p in _COMPILED_PAIN if p.search(text))
     matched.extend(p.pattern for p in _COMPILED_LOW if p.search(text))
     return matched
 
 
 def classify_tier(matched: list[str]) -> str:
-    """マッチ結果の信頼度層。HIGHを1つでも含めば high、LOWのみなら low。"""
-    return "high" if any(p in _HIGH_SET for p in matched) else "low"
+    """マッチ結果の信頼度層。high (明示的ツール要求) > pain (不満・収支語り) > low (丁寧な依頼一般)。"""
+    if any(p in _HIGH_SET for p in matched):
+        return "high"
+    if any(p in _PAIN_SET for p in matched):
+        return "pain"
+    return "low"
 
 
 def comment_age_days(published_at: str | None, now: datetime | None = None) -> int | None:

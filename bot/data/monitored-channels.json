@@ -1,5 +1,5 @@
 {
-  "_comment": "youtubeコレクタの監視対象チャンネル。LLMセッションが週次で追加削除する（cronは読むだけ）。各chのRSSから公開90日以内・最新5本の動画を自動選定してコメントを監視する。初期選定2026-07-26: 旧monitored-videos.json 24本の投稿チャンネルからバーティカル重複を整理して15ch（基準: バーティカル該当・投稿頻度・コメント欄の活性。ベンダー公式chは製品サポートコメントに偏るため除外）。",
+  "_comment": "youtubeコレクタの監視対象チャンネル。LLMセッションが週次で追加削除する（cronは読むだけ）。各chのRSS掲載分（最大15本）を監視する（90日窓はv3.2で撤廃）。初期選定2026-07-26: 旧monitored-videos.json 24本の投稿チャンネルからバーティカル重複を整理（基準: バーティカル該当・投稿頻度・コメント欄の活性。ベンダー公式chは製品サポートコメントに偏るため除外）。同日削除: ずんだ探検隊UCF27uipT8xmfaIALkQ14hKA＝軽貨物専門ではなく地政学雑談chと実データ検証で判明（コメント1,451件が全て時事ネタ）。軽貨物動画IIkt32MO594はpinned側で監視継続。",
   "_entry_example": {
     "channel_id": "UCxxxxxxxxxxxxxxxxxxxxxx",
     "note": "チャンネル名 | 監視理由のメモ (任意)"
@@ -12,10 +12,6 @@
     {
       "channel_id": "UCwKupwJ1EpdNH8Z98SKjY2Q",
       "note": "脱・税理士スガワラくん | 税務2本目（節税・法人化の実務質問）"
-    },
-    {
-      "channel_id": "UCF27uipT8xmfaIALkQ14hKA",
-      "note": "ずんだ探検隊 | 軽貨物ドライバー実体験（#56隣接・収支/手数料の不満）"
     },
     {
       "channel_id": "UC00NI5MjN0v0o_4UaNORVqQ",
