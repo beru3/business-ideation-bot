@@ -280,7 +280,18 @@ class TestYoutubeSelectRecentVideos:
     def _entry(self, vid: str, published: str) -> dict:
         return {"video_id": vid, "title": "t", "published": published}
 
-    def test_filters_by_age_window(self):
+    def test_default_no_age_window(self):
+        # v3.2: 既定は日数フィルタなし (evergreen動画のコメントが主要な信号源のため)
+        from datetime import datetime, timezone
+        now = datetime(2026, 7, 26, 0, 0, 0, tzinfo=timezone.utc)
+        entries = [
+            self._entry("recent", "2026-07-01T00:00:00+00:00"),
+            self._entry("old_evergreen", "2020-01-01T00:00:00+00:00"),  # 6年前でも含める
+        ]
+        selected = youtube.select_recent_videos(entries, now=now)
+        assert [e["video_id"] for e in selected] == ["recent", "old_evergreen"]
+
+    def test_explicit_age_window_filters(self):
         from datetime import datetime, timezone
         now = datetime(2026, 7, 26, 0, 0, 0, tzinfo=timezone.utc)
         entries = [
@@ -288,7 +299,7 @@ class TestYoutubeSelectRecentVideos:
             self._entry("too_old", "2026-01-01T00:00:00+00:00"),  # 90日超
             self._entry("no_date", ""),
         ]
-        selected = youtube.select_recent_videos(entries, now=now)
+        selected = youtube.select_recent_videos(entries, max_age_days=90, now=now)
         assert [e["video_id"] for e in selected] == ["recent"]
 
     def test_limits_per_channel_and_sorts_newest_first(self):
@@ -299,6 +310,27 @@ class TestYoutubeSelectRecentVideos:
         ]
         selected = youtube.select_recent_videos(entries, per_channel=5, now=now)
         assert [e["video_id"] for e in selected] == ["v6", "v5", "v4", "v3", "v2"]
+
+
+class TestYoutubeMergeVideoTargets:
+    def test_rss_and_pinned_merge(self):
+        targets = youtube.merge_video_targets(
+            [("vidA", "UC_ch1"), ("vidB", "UC_ch2")],
+            ["vidP"],
+        )
+        assert targets == [
+            ("vidA", "UC_ch1", "channel_rss"),
+            ("vidB", "UC_ch2", "channel_rss"),
+            ("vidP", "", "pinned"),
+        ]
+
+    def test_pinned_duplicate_of_rss_not_revisited(self):
+        # 同一動画がRSSと固定の両方に載る場合はRSS由来を優先し重複巡回しない
+        targets = youtube.merge_video_targets([("vidA", "UC_ch1")], ["vidA", "vidP"])
+        assert targets == [("vidA", "UC_ch1", "channel_rss"), ("vidP", "", "pinned")]
+
+    def test_empty_inputs(self):
+        assert youtube.merge_video_targets([], []) == []
 
 
 # ──────────────────────────────────────────────
