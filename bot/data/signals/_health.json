@@ -1,15 +1,15 @@
 {
   "gplay": {
-    "last_success_at": "2026-08-05T22:21:18.116206+00:00",
-    "rows_collected": 0
+    "last_success_at": "2026-08-07T01:02:18.208510+00:00",
+    "rows_collected": 7
   },
   "prtimes": {
     "last_success_at": "2026-08-06T14:54:45.857042+00:00",
     "rows_collected": 0
   },
   "youtube": {
-    "last_success_at": "2026-08-05T22:22:02.095328+00:00",
-    "rows_collected": 3
+    "last_success_at": "2026-08-07T01:02:55.702583+00:00",
+    "rows_collected": 6
   },
   "laws": {
     "last_success_at": "2026-08-02T23:16:46.229102+00:00",
